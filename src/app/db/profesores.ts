@@ -1,6 +1,6 @@
 import { Iprofesor } from '../interfaces/iprofesor';
 
-export const PROFESORES: Iprofesor[] = [
+export const DATOS_PROFESORES: any[] = [
   {
     id: 1,
     usuarios_id: 1,

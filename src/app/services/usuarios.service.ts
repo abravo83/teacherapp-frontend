@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 
+import { Iusuario } from '../interfaces/iusuario';
+import { USUARIOS } from '../db/usuarios';
+
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class UsuariosService {
+  arrUsuarios: Iusuario[] = USUARIOS;
 
-  constructor() { }
+  constructor() {}
 }
