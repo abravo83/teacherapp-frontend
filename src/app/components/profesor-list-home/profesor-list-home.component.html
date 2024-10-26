@@ -9,6 +9,10 @@
     <article>
       <app-profesor-card-home [myProfesor]="profesor"></app-profesor-card-home>
     </article>
+    } @empty {
+    <article class="col-12">
+      <h3>No hay Profesores para esta Materia</h3>
+    </article>
     }
   </div>
 </article>
