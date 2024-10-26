@@ -9,4 +9,6 @@ export const MATERIAS_PROFESORES: any[] = [
   { id: 8, usuarios_id: 8, Materias_id: 8 },
   { id: 9, usuarios_id: 1, Materias_id: 9 },
   { id: 10, usuarios_id: 4, Materias_id: 10 },
+  { id: 9, usuarios_id: 11, Materias_id: 9 },
+  { id: 10, usuarios_id: 13, Materias_id: 10 },
 ];

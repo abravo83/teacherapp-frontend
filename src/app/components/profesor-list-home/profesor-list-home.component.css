@@ -1,0 +1,6 @@
+.profesor-list-home {
+  max-height: 70vh;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}

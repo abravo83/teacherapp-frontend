@@ -1,0 +1,14 @@
+<article class="profesor-list-home">
+  <Aside>
+    <app-filter-home (materia_id_emitida)="filterProfesorByMaterias($event)">
+    </app-filter-home>
+  </Aside>
+
+  <div>
+    @for (profesor of usuariosList; track profesor.id) {
+    <article>
+      <app-profesor-card-home [myProfesor]="profesor"></app-profesor-card-home>
+    </article>
+    }
+  </div>
+</article>

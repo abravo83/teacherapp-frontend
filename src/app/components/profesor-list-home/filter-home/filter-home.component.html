@@ -1,0 +1,12 @@
+<h2>Profesores</h2>
+<form #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
+  <div class="d-flex gap-3 mb-4">
+    <select class="form-select" name="materia_id" ngModel>
+      <option value="">Todas las materias</option>
+      @for (materia of materiaList; track materia.id) {
+      <option [value]="materia.id">{{ materia.nombre }}</option>
+      }
+    </select>
+    <input type="submit" class="btn btn-danger" value="Filtrar Materias" />
+  </div>
+</form>

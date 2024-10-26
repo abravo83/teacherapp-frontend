@@ -1,0 +1,23 @@
+<section class="my2 container profesores-list">
+  <div class="card my-2 shadow">
+    <h5 class="card-header bg-dark text-white">
+      {{ myProfesor.nombre }} {{ myProfesor.apellidos }}
+    </h5>
+    <div class="card-body d-flex justify-content-between gap-2">
+      <div>
+        <p class="card-text">Experiencia: {{ myProfesor.meses_experiencia }}</p>
+        <p class="card-text">Precio Hora: {{ myProfesor.precio_hora }}</p>
+        <a href="#" class="btn btn-primary">Contactar</a>
+      </div>
+      <div>
+        <p class="card-text">{{ myProfesor.materias }}</p>
+      </div>
+      <img
+        class=""
+        [src]="myProfesor.foto"
+        [alt]="myProfesor.nombre"
+        height="110px"
+      />
+    </div>
+  </div>
+</section>

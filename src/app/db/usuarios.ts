@@ -8,7 +8,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'juan@email.com',
     password: 'password123',
     rol: 'profesor',
-    foto: 'juan.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -18,7 +18,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'maria@email.com',
     password: 'password456',
     rol: 'alumno',
-    foto: 'maria.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -28,7 +28,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'carlos@email.com',
     password: 'password789',
     rol: 'administrador',
-    foto: 'carlos.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -38,7 +38,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'ana@email.com',
     password: 'passwordabc',
     rol: 'profesor',
-    foto: 'ana.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -48,7 +48,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'pedro@email.com',
     password: 'passworddef',
     rol: 'alumno',
-    foto: 'pedro.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -58,7 +58,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'laura@email.com',
     password: 'password101',
     rol: 'profesor',
-    foto: 'laura.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -68,7 +68,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'miguel@email.com',
     password: 'password202',
     rol: 'alumno',
-    foto: 'miguel.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -78,7 +78,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'elena@email.com',
     password: 'password303',
     rol: 'profesor',
-    foto: 'elena.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -88,7 +88,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'pablo@email.com',
     password: 'password404',
     rol: 'alumno',
-    foto: 'pablo.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -98,7 +98,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'sara@email.com',
     password: 'password505',
     rol: 'alumno',
-    foto: 'sara.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -108,7 +108,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'david@email.com',
     password: 'password606',
     rol: 'profesor',
-    foto: 'david.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -118,7 +118,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'lucia@email.com',
     password: 'password707',
     rol: 'alumno',
-    foto: 'lucia.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -128,7 +128,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'javier@email.com',
     password: 'password808',
     rol: 'profesor',
-    foto: 'javier.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
   {
@@ -138,7 +138,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'carmen@email.com',
     password: 'password909',
     rol: 'alumno',
-    foto: 'carmen.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
     activo: true,
   },
   {
@@ -148,7 +148,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'antonio@email.com',
     password: 'password010',
     rol: 'administrador',
-    foto: 'antonio.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
     activo: true,
   },
 ];
