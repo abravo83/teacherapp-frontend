@@ -3,11 +3,12 @@ import { ProfesoresService } from '../../services/profesores.service';
 import { Iprofesor } from '../../interfaces/iprofesor';
 import { FilterHomeComponent } from './filter-home/filter-home.component';
 import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-home.component';
+import { MapaHomeComponent } from './mapa-home/mapa-home.component';
 
 @Component({
   selector: 'app-profesor-list-home',
   standalone: true,
-  imports: [FilterHomeComponent, ProfesorCardHomeComponent],
+  imports: [FilterHomeComponent, ProfesorCardHomeComponent, MapaHomeComponent],
   templateUrl: './profesor-list-home.component.html',
   styleUrl: './profesor-list-home.component.css',
 })

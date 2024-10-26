@@ -71,23 +71,8 @@ export class ProfesoresService {
   getAllMaterias() {
     return this.arrMaterias;
   }
-  /*
-  filterByMaterias(id: number): any {
-    // Filtra los registros de MATERIAS_PROFESORES por el ID de la materia
-    const profesoresMateria = MATERIAS_PROFESORES.filter(
-      (mp) => mp.Materias_id === id
-    );
 
-    // Obtén los usuarios que coincidan con los IDs filtrados
-    const usuariosFiltrados = USUARIOS.filter((usuario) =>
-      profesoresMateria.some((mp) => mp.usuarios_id === usuario.id)
-    );
-
-    return usuariosFiltrados;
-  }
-
-*/
-  filterByMaterias(materiaId: number = 1) {
+  filterByMaterias(materiaId: number) {
     // Filtrar los usuarios_id que tienen la materiaId deseada
     const usuariosFiltrados = MATERIAS_PROFESORES.filter(
       (mp) => mp.Materias_id === materiaId
