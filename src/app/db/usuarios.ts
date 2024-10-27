@@ -28,7 +28,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'carlos@email.com',
     password: 'password789',
     rol: 'administrador',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Bill_Gates_-_2023_-_P062021-967902_%28cropped%29.jpg/300px-Bill_Gates_-_2023_-_P062021-967902_%28cropped%29.jpg',
     activo: true,
   },
   {
@@ -58,7 +58,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'laura@email.com',
     password: 'password101',
     rol: 'profesor',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Charlie_Sheen_March_2009.JPG/330px-Charlie_Sheen_March_2009.JPG',
     activo: true,
   },
   {
@@ -78,7 +78,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'elena@email.com',
     password: 'password303',
     rol: 'profesor',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6a/Gal_Gadot_2018_cropped_retouched.jpg/220px-Gal_Gadot_2018_cropped_retouched.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/THEY_ARE_ALL_DEAD_actress_Elena_Anaya_%28cropped%29_%28cropped%29.jpg/330px-THEY_ARE_ALL_DEAD_actress_Elena_Anaya_%28cropped%29_%28cropped%29.jpg',
     activo: true,
   },
   {
@@ -108,7 +108,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'david@email.com',
     password: 'password606',
     rol: 'profesor',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4f/2023-11-16_Gala_de_los_Latin_Grammy%2C_22_%28David_Guetta%29.jpg/345px-2023-11-16_Gala_de_los_Latin_Grammy%2C_22_%28David_Guetta%29.jpg',
     activo: true,
   },
   {
@@ -128,7 +128,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'javier@email.com',
     password: 'password808',
     rol: 'profesor',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Javier_Santaolalla_conferencia_Divulgaci%C3%B3n_cient%C3%ADfica_y_Universidad_p%C3%BAblica5_%28cropped%29.png/330px-Javier_Santaolalla_conferencia_Divulgaci%C3%B3n_cient%C3%ADfica_y_Universidad_p%C3%BAblica5_%28cropped%29.png',
     activo: true,
   },
   {
@@ -148,7 +148,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'antonio@email.com',
     password: 'password010',
     rol: 'administrador',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/ae/Michael_Jordan_in_2014.jpg/220px-Michael_Jordan_in_2014.jpg',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Antonio_Banderas-66031_%28cropped%29.jpg/375px-Antonio_Banderas-66031_%28cropped%29.jpg',
     activo: true,
   },
 ];

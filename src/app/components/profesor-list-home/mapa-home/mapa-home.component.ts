@@ -10,6 +10,7 @@ import { ProfesoresService } from '../../../services/profesores.service';
   styleUrl: './mapa-home.component.css',
 })
 export class MapaHomeComponent {
+  @Input() myProfesor!: any;
   myposition = signal<any>('');
   private profesoresService = inject(ProfesoresService);
   profesoresList: any = [];
@@ -23,7 +24,6 @@ export class MapaHomeComponent {
       );
       this.myposition.set(center);
     });
-    this.profesoresList = this.profesoresService.getAll();
   }
 
   getposition(coords: any) {

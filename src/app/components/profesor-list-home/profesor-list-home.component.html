@@ -20,7 +20,15 @@
     </div>
   </section>
 
-  <section>
-    <app-mapa-home></app-mapa-home>
+  <section class="mapa">
+    <google-map width="100%" [zoom]="12" [center]="myposition()">
+      <map-marker [position]="myposition()"></map-marker>
+
+      @for (profesor of usuariosList; track $index ) {
+
+      <app-mapa-home [myProfesor]="profesor"></app-mapa-home>
+
+      }
+    </google-map>
   </section>
 </div>

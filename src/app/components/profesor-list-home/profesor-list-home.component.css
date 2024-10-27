@@ -9,6 +9,10 @@ section {
   width: 100%;
 }
 
+mapa {
+  height: 100%;
+}
+
 @media (min-width: 800px) {
   .flex {
     flex-direction: row;
