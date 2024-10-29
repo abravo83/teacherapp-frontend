@@ -10,7 +10,10 @@
         <a href="#" class="btn btn-primary">Contactar</a>
       </div>
       <div>
-        <p class="card-text">{{ myProfesor.materias }}</p>
+        <h5>Areas de Conocimiento:</h5>
+        @for (item of myProfesor.materias; track $index) {
+        <p class="card-text">{{ item }}</p>
+        }
       </div>
       <img
         class=""

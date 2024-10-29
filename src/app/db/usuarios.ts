@@ -151,4 +151,14 @@ export const USUARIOS: Iusuario[] = [
     foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/01/Antonio_Banderas-66031_%28cropped%29.jpg/375px-Antonio_Banderas-66031_%28cropped%29.jpg',
     activo: true,
   },
+  {
+    id: 16,
+    nombre: 'Albert',
+    apellidos: 'Einstein Koch',
+    email: 'albert@email.com',
+    password: 'password010',
+    rol: 'profesor',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Albert_Einstein_Head.jpg/220px-Albert_Einstein_Head.jpg',
+    activo: true,
+  },
 ];

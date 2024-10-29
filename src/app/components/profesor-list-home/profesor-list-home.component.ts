@@ -4,7 +4,7 @@ import { Iprofesor } from '../../interfaces/iprofesor';
 import { FilterHomeComponent } from './filter-home/filter-home.component';
 import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-home.component';
 import { MapaHomeComponent } from './mapa-home/mapa-home.component';
-import { GoogleMap, MapMarker } from '@angular/google-maps';
+import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -15,6 +15,7 @@ import { GoogleMap, MapMarker } from '@angular/google-maps';
     MapaHomeComponent,
     GoogleMap,
     MapMarker,
+    MapAdvancedMarker,
   ],
   templateUrl: './profesor-list-home.component.html',
   styleUrl: './profesor-list-home.component.css',
@@ -24,7 +25,6 @@ export class ProfesorListHomeComponent {
   profesorService = inject(ProfesoresService);
   //variables
   usuariosList: any[] = [];
-  profesoresList: any = [];
   myposition = signal<any>('');
 
   ngOnInit() {
@@ -37,7 +37,6 @@ export class ProfesorListHomeComponent {
       );
       this.myposition.set(center);
     });
-    console.log(this.usuariosList);
   }
 
   getposition(coords: any) {

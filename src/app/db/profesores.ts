@@ -55,4 +55,13 @@ export const DATOS_PROFESORES: any[] = [
     meses_experiencia: 77,
     validado: false,
   },
+  {
+    id: 7,
+    usuarios_id: 16,
+    precio_hora: 99.0,
+    localizacion: '-0.163085, -78.459711',
+    telefono: '645678901',
+    meses_experiencia: 150,
+    validado: true,
+  },
 ];

@@ -12,7 +12,6 @@ import { ProfesoresService } from '../../../services/profesores.service';
 })
 export class FilterHomeComponent {
   materiaList: Imateria[] = [];
-  usuariosList: any[] = [];
   profesoresService = inject(ProfesoresService);
   @Output() materia_id_emitida: EventEmitter<number> = new EventEmitter();
 
@@ -22,8 +21,5 @@ export class FilterHomeComponent {
   selectMateria(filterFormValue: any) {
     let idMateria = Number(filterFormValue.materia_id);
     this.materia_id_emitida.emit(idMateria);
-
-    // this.usuariosList = this.profesoresService.fiterByMaterias(idMateria);
-    // console.log(this.usuariosList);
   }
 }
