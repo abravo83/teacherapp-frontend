@@ -2,23 +2,63 @@
 @import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
 
 /* colores */
-
+:root {
+  --color-text-main: #333;
+  --color-text-secondary: #3F3F44;
+  --color-text-tertiary: #b2b2b4; 
+  --color-background-main:#ffffff;
+  --color-background-secondary: #f6f6f6;
+  --color-button: #FDCB9E;
+  --color-link-verde: #CCEABB;
+  --color-chat-recibido: #F1F1F1;
+  --color-chat-enviado: #3F3F44;
+  --font-family: Work Sans, Arial, sans-serif;
+  --font-size-base: 16px;
+  --line-height-base: 1.5;
+  --margin-base: 0;
+  --padding-base: 0;
+}
 
 /* header */
+.hide-link{
+  display:none;
+  @media(max-width: 991px){
+      display: inline-block;
+  }   
+}
+.ocultarli{
+  display: flex;
+  @media(max-width: 991px){
+      display: none;
+  }    
+}
+img.rounded-circle {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  &:hover{    
+  transform: scale(1.2);
+  }    
+}
 
 .mi-li li a{
-  border-radius: 6px;
+border-radius: 6px;
 }
+
 .mi-li li a:hover{	
-  padding-left: 6px;
-  font-weight: 600;
-  background-color: rgba(197, 193, 193, 0.171);
+  padding-left: 8px;
+font-weight: 400;
+background-color: var(--color-button);
 }
 @media(min-width:992px){
-
-  .hover-bg li a:hover{
-     border-radius: 6px;
-     background-color: rgba(255, 254, 254, 0.623);
-  }
+.hover-bg li a:hover{
+  border-radius: 6px;
+  background-color: var(--color-button)
+}
+}
+.dropdown:hover .dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 100%; 
+  left: 0;
 }
 /* header */
