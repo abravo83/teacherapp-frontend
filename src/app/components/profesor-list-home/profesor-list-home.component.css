@@ -1,0 +1,27 @@
+.flex {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+aside,
+section {
+  width: 100%;
+}
+
+mapa {
+  height: 100%;
+}
+
+@media (min-width: 800px) {
+  .flex {
+    flex-direction: row;
+  }
+}
+
+.profesor-list-home {
+  max-height: 70vh;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  padding: 10px;
+}

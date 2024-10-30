@@ -1,28 +1,4 @@
-/* You can add global styles to this file, and also import other style files */
-@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
-
-/* colores */
-
-
-/* header */
-
-.mi-li li a{
-  border-radius: 6px;
-}
-
-.mi-li li a:hover{	
-  padding-left: 6px;
-  font-weight: 600;
-  background-color: rgba(197, 193, 193, 0.171);
-}
-
-@media(min-width:992px){
-  .hover-bg li a:hover{
-     border-radius: 6px;
-     background-color: rgba(255, 254, 254, 0.623);
-  }
-}
-
+/* Estilos generales app, guardadas en custom properties */
 :root {
     --color-text-main: #333;
     --color-text-secondary: #3F3F44;
@@ -60,6 +36,7 @@ html, body {
 html:focus-within {
     scroll-behavior: smooth; 
 }
+
 
 /* Para que las imágenes sean responsive, así como canvas y videos */
 img, picture, svg, video, canvas{

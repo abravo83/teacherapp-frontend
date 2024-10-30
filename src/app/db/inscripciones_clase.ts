@@ -1,0 +1,58 @@
+export const INSCRIPCIONES_CLASE = [
+  {
+    id: 1,
+    alumno_id: 2,
+    profesor_id: 1,
+    fecha_registro: new Date(Date.now() - 30 * 86400000),
+    fecha_fin: new Date(Date.now() + 150 * 86400000),
+  },
+  {
+    id: 2,
+    alumno_id: 5,
+    profesor_id: 1,
+    fecha_registro: new Date(Date.now() - 14 * 86400000),
+    fecha_fin: new Date(Date.now() + 180 * 86400000),
+  },
+  {
+    id: 3,
+    alumno_id: 2,
+    profesor_id: 4,
+    fecha_registro: new Date(Date.now() - 7 * 86400000),
+    fecha_fin: new Date(Date.now() + 90 * 86400000),
+  },
+  {
+    id: 4,
+    alumno_id: 7,
+    profesor_id: 6,
+    fecha_registro: new Date(Date.now() - 21 * 86400000),
+    fecha_fin: new Date(Date.now() + 120 * 86400000),
+  },
+  {
+    id: 5,
+    alumno_id: 9,
+    profesor_id: 8,
+    fecha_registro: new Date(Date.now() - 60 * 86400000),
+    fecha_fin: new Date(Date.now() + 60 * 86400000),
+  },
+  {
+    id: 6,
+    alumno_id: 4,
+    profesor_id: 1,
+    fecha_registro: new Date(Date.now() - 30 * 86400000),
+    fecha_fin: new Date(Date.now() + 180 * 86400000),
+  },
+  {
+    id: 7,
+    alumno_id: 5,
+    profesor_id: 4,
+    fecha_registro: new Date(Date.now() - 90 * 86400000),
+    fecha_fin: new Date(Date.now() + 30 * 86400000),
+  },
+  {
+    id: 8,
+    alumno_id: 7,
+    profesor_id: 8,
+    fecha_registro: new Date(Date.now() - 14 * 86400000),
+    fecha_fin: new Date(Date.now() + 150 * 86400000),
+  },
+];

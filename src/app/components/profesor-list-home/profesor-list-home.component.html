@@ -1,0 +1,35 @@
+<div class="flex">
+  <section class="profesor-list-home">
+    <Aside>
+      <app-filter-home (materia_id_emitida)="filterProfesorByMaterias($event)">
+      </app-filter-home>
+    </Aside>
+
+    <div>
+      @for (profesor of usuariosList; track profesor.id) {
+      <article>
+        <app-profesor-card-home
+          [myProfesor]="profesor"
+        ></app-profesor-card-home>
+      </article>
+      } @empty {
+      <article class="col-12">
+        <h3>No hay Profesores para esta Materia</h3>
+      </article>
+      }
+    </div>
+  </section>
+
+  <section class="mapa">
+    <google-map width="100%" [zoom]="12" [center]="myposition()">
+      <!-- MUESTRA POSICION DEL USUARIO EN MAPA  -->
+      <!-- <map-marker [position]="myposition()"></map-marker> -->
+
+      @for (profesor of usuariosList; track $index ) {
+
+      <app-mapa-home [myProfesor]="profesor"></app-mapa-home>
+
+      }
+    </google-map>
+  </section>
+</div>
