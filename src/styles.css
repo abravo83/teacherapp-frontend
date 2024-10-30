@@ -5,83 +5,46 @@
 
 
 /* header */
+.hide-link{
+  display:none;
+  @media(max-width: 991px){
+      display: inline-block;
+  }   
+}
+.ocultarli{
+  display: flex;
+  @media(max-width: 991px){
+      display: none;
+  }    
+}
+img.rounded-circle {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+  &:hover{    
+  transform: scale(1.2);
+  }    
+}
 
 .mi-li li a{
-  border-radius: 6px;
+border-radius: 6px;
 }
 
 .mi-li li a:hover{	
-  padding-left: 6px;
-  font-weight: 600;
-  background-color: rgba(197, 193, 193, 0.171);
+  padding-left: 8px;
+  font-weight: 400;
+  background-color:#FDCB9E
 }
 
 @media(min-width:992px){
-  .hover-bg li a:hover{
-     border-radius: 6px;
-     background-color: rgba(255, 254, 254, 0.623);
-  }
+.hover-bg li a:hover{
+  border-radius: 6px;
+  background-color: #FDCB9E
 }
-
-:root {
-    --color-text-main: #333;
-    --color-text-secondary: #3F3F44;
-    --color-text-tertiary: #b2b2b4; 
-    --color-background-main:#ffffff;
-    --color-background-secondary: #f6f6f6;
-    --color-button: #FDCB9E;
-    --color-link-verde: #CCEABB;
-    --color-chat-recibido: #F1F1F1;
-    --color-chat-enviado: #3F3F44;
-    --font-family: Work Sans, Arial, sans-serif;
-    --font-size-base: 16px;
-    --line-height-base: 1.5;
-    --margin-base: 0;
-    --padding-base: 0;
 }
-
-/* Estos estilos se aplican globalmente */
-* {
-    box-sizing: border-box;
-    margin: var(--margin-base);
-    padding: var(--padding-base);
+.dropdown:hover .dropdown-menu {
+  display: block;
+  position: absolute;
+  top: 100%; 
+  left: 0;
 }
-
-html, body {
-    height: 100%;
-    color: var(--color-text-main);
-    background-color: var(--color-background-main);
-    font-family: var(--font-family);
-    font-size: var(--font-size-base);
-    line-height: var(--line-height-base);
-}
-
-/* Para que la experiencia al usuario sea mejor, cuando se desplace por un elemento */
-html:focus-within {
-    scroll-behavior: smooth; 
-}
-
-/* Para que las imágenes sean responsive, así como canvas y videos */
-img, picture, svg, video, canvas{
-    max-width: 100%;
-    height: auto;
-}
-
-/* Para que los ordered y unordered lists no tengan puntos o barras */
-ul[role='list'], ol[role='list']{
-    list-style: none; 
-}
-
-/* Apaga las animaciones cuando un usuario no quiere verlas */
-@media (prefers-reduced-motion: reduce){
-    html:focus-within {
-        scroll-behavior: auto;
-    }
-    *, *::before, *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-        scroll-behavior: auto !important;
-        transition: none;
-    }
-}
+/* header */

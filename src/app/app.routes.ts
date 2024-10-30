@@ -9,4 +9,6 @@ export const routes: Routes = [
     loadChildren: () =>
       import('./profile/profile.module').then((m) => m.ProfileModule),
   },
+  //{path:"login", component:LoginComponent},
+  //{path:"register", component:RegisterComponent},
 ];
