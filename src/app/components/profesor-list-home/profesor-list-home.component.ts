@@ -5,6 +5,7 @@ import { FilterHomeComponent } from './filter-home/filter-home.component';
 import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-home.component';
 import { MapaHomeComponent } from './mapa-home/mapa-home.component';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -21,22 +22,42 @@ import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
   styleUrl: './profesor-list-home.component.css',
 })
 export class ProfesorListHomeComponent {
-  //inyectable
   profesorService = inject(ProfesoresService);
-  //variables
   usuariosList: any[] = [];
   myposition = signal<any>('');
+  isGoogleMapsLoaded = false;
 
   ngOnInit() {
+    // Cargar el script de Google Maps dinámicamente
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.token}`;
+    script.defer = true;
+    script.async = true;
+    document.head.appendChild(script);
+
+    // Esperar a que el script se cargue
+    script.onload = () => {
+      this.isGoogleMapsLoaded = true;
+      this.initializeMap();
+    };
+
+    script.onerror = () => {
+      console.error('Error al cargar Google Maps');
+    };
+
     this.usuariosList = this.profesorService.getAll();
-    //api de geolocalizacion de js nativa
-    navigator.geolocation.getCurrentPosition((position) => {
-      let center = new google.maps.LatLng(
-        position.coords.latitude,
-        position.coords.longitude
-      );
-      this.myposition.set(center);
-    });
+  }
+
+  private initializeMap() {
+    if (this.isGoogleMapsLoaded) {
+      navigator.geolocation.getCurrentPosition((position) => {
+        let center = new google.maps.LatLng(
+          position.coords.latitude,
+          position.coords.longitude
+        );
+        this.myposition.set(center);
+      });
+    }
   }
 
   getposition(coords: any) {

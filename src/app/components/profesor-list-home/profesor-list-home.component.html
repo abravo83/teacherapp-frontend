@@ -1,9 +1,9 @@
 <div class="flex">
   <section class="profesor-list-home">
-    <Aside>
+    <aside>
       <app-filter-home (materia_id_emitida)="filterProfesorByMaterias($event)">
       </app-filter-home>
-    </Aside>
+    </aside>
 
     <div>
       @for (profesor of usuariosList; track profesor.id) {
@@ -21,15 +21,14 @@
   </section>
 
   <section class="mapa">
+    <@if (isGoogleMapsLoaded) {
     <google-map width="100%" [zoom]="12" [center]="myposition()">
-      <!-- MUESTRA POSICION DEL USUARIO EN MAPA  -->
-      <!-- <map-marker [position]="myposition()"></map-marker> -->
-
       @for (profesor of usuariosList; track $index ) {
-
       <app-mapa-home [myProfesor]="profesor"></app-mapa-home>
-
       }
     </google-map>
+    } @else {
+    <div>Cargando mapa...</div>
+    }
   </section>
 </div>
