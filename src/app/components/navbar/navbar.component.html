@@ -1,7 +1,5 @@
-<nav
-  class="navbar navbar-expand-lg bg-secondary-subtle border-1 text-white shadow fixed-top px-3 p-sm-3"
->
-  <div class="container px-4">
+<nav class="navbar navbar-expand-lg border-1 text-white shadow px-3">
+  <div class="container-fluid px-4">
     <div class="text-black">
       <i class="fa-brands fa-bootstrap"></i>
     </div>
@@ -17,9 +15,17 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="offcanvas offcanvas-start" id="menu">
-      <div class="offcanvas-header bg-secondary-subtle text-black">
-        <i class="fa-brands fa-bootstrap"></i>
+      <div class="offcanvas-header border-bottom text-black">
+        <a class="nav-link" routerLinkActive="active" aria-current="page"
+          ><img
+            src="https://i.pravatar.cc/500?u=graciela.ponceabeyta@peticiones.online"
+            alt="Profile"
+            class="rounded-circle img"
+            width="32"
+            height="32"
+        /></a>
 
         <button
           type="button"
@@ -27,21 +33,127 @@
           class="btn-close bg-white"
         ></button>
       </div>
-
+      @if(!login()){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item px-lg-4">
-            <a class="nav-link" href="#">Home</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/home']"
+              >Inicio</a
+            >
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">Registrarse</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/login']"
+              >Iniciar sesion</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/register']"
+              >Registrarse</a
+            >
           </li>
         </ul>
       </div>
+      } @else{
+      <div class="offcanvas-body text-start">
+        <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              ><i class="fa-regular fa-bell" style="font-size: 22px"></i
+            ></a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              ><i class="fa-regular fa-message" style="font-size: 22px"></i>
+            </a>
+          </li>
+
+          <li class="nav-item ocultarli dropdown mx-2">
+            <a
+              class="nav-link nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              data-bs-toggle="dropdown-menu"
+              aria-expanded="false"
+              role="button"
+              ><img
+                src="https://i.pravatar.cc/500?u=graciela.ponceabeyta@peticiones.online"
+                alt="Profile"
+                class="rounded-circle img"
+                width="32"
+                height="32"
+              />
+              <span class="ms-1"> Area Personal </span>
+            </a>
+            <ul class="dropdown-menu border-0">
+              <li><a class="dropdown-item" href="#">Mi perfil</a></li>
+              <li>
+                <a class="dropdown-item" (click)="login()" href="#"
+                  >Cerrar Sesion
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              >Mi perfil</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              >Mis alumnos</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              >Mensajes</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              >Opiniones</a
+            >
+          </li>
+        </ul>
+      </div>
+      }
     </div>
   </div>
 </nav>
