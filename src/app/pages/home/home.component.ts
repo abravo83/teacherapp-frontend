@@ -3,8 +3,8 @@ import { RouterLink } from '@angular/router';
 
 import { ProfesorCardHomeComponent } from '../../components/profesor-list-home/profesor-card-home/profesor-card-home.component';
 import { ProfesorListHomeComponent } from '../../components/profesor-list-home/profesor-list-home.component';
-import { NavbarComponent } from "../../components/navbar/navbar.component";
 import { FooterComponent } from "../../components/footer/footer.component";
+import { NavbarComponent } from '../../components/navbar/navbar.component';
 
 @Component({
   selector: 'app-home',
