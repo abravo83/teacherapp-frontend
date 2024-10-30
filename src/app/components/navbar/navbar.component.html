@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg border-1 text-white fixed-top shadow px-3">
+<nav class="navbar navbar-expand-lg border-1 text-white shadow px-3">
   <div class="container-fluid px-4">
     <div class="text-black">
       <i class="fa-brands fa-bootstrap"></i>
@@ -33,7 +33,7 @@
           class="btn-close bg-white"
         ></button>
       </div>
-      @if(!islogin()){
+      @if(!login()){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item px-lg-4">
@@ -109,7 +109,7 @@
             <ul class="dropdown-menu border-0">
               <li><a class="dropdown-item" href="#">Mi perfil</a></li>
               <li>
-                <a class="dropdown-item" (click)="logout()" href="#"
+                <a class="dropdown-item" (click)="login()" href="#"
                   >Cerrar Sesion
                 </a>
               </li>

@@ -10,11 +10,9 @@ import { RouterLink } from '@angular/router';
 })
 export class NavbarComponent {
 
-  islogin():boolean{
+  login():boolean{
     return true;
   }
-
-  logout(){}
 
 
 }
