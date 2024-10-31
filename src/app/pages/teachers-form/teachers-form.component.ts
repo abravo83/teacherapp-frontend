@@ -138,8 +138,7 @@ export class TeachersFormComponent implements OnInit {
       },
       materias: this.teacherForm.value.materias
     };
-
-    delete formData.usuario.password;
+    
     console.log(formData);
 
     try {

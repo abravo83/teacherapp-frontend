@@ -7,13 +7,13 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 
 @Component({
-  selector: 'app-form-student',
+  selector: 'app-students-form',
   standalone: true,
-  templateUrl: './form-student.component.html',
-  styleUrls: ['./form-student.component.css'],
+  templateUrl: './students-form.component.html',
+  styleUrls: ['./students-form.component.css'],
   imports: [ReactiveFormsModule, CommonModule]
 })
-export class FormStudentComponent implements OnInit {
+export class StudentsFormComponent implements OnInit {
 
   alumnosService = inject(AlumnosService);
   router = inject(Router);
@@ -25,7 +25,6 @@ export class FormStudentComponent implements OnInit {
 
   constructor() {
     this.studentForm = new FormGroup({
-      id: new FormControl(null),  
       nombre: new FormControl(null, [Validators.required, Validators.maxLength(45)]),
       apellidos: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
       email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(60)]),
@@ -58,55 +57,51 @@ export class FormStudentComponent implements OnInit {
       if (params.id) {
         this.tipo = 'Actualizar';
         const alumno: Iusuario | undefined = await this.alumnosService.getAlumnoById(Number(params.id));
-        if (alumno) {
+        if (alumno && alumno.rol === 'alumno') {
           this.studentForm.patchValue(alumno);
+        } else {
+          Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: 'Usuario no encontrado o no es un alumno',
+            confirmButtonColor: '#d33'
+          });
+          this.router.navigate(['/home']);
         }
       }
     });
   }
 
   async obtenerDatosFormulario() {
-    const formData = {
-      alumno: {
-        ...this.studentForm.value,
-        rol: 'alumno',
-        activo: true
-      }
+    const { repitepassword, ...alumnoData } = this.studentForm.value;
+    const formData: Iusuario = {
+      ...alumnoData,
+      rol: 'alumno',
+      activo: true
     };
-
-    delete formData.alumno.repitepassword;
-
     console.log(formData);
-    if (formData.alumno.id) {
-      try {
-        const response = await this.alumnosService.actualizarAlumno(formData.alumno);
-        if (response) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: 'Alumno actualizado exitosamente.',
-            confirmButtonColor: '#28a745'
-          });
-          this.router.navigate(['/home']);
-        }
-      } catch (error: any) {
-        this.errorForm = error;
+
+    try {
+      if (this.tipo === 'Actualizar') {
+        await this.alumnosService.actualizarAlumno(formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Alumno actualizado exitosamente.',
+          confirmButtonColor: '#28a745'
+        });
+      } else {
+        await this.alumnosService.registroAlumno(formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Alumno registrado exitosamente.',
+          confirmButtonColor: '#28a745'
+        });
       }
-    } else {
-      try {
-        const response = await this.alumnosService.registroAlumno(formData.alumno);
-        if (response) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: 'Alumno registrado exitosamente.',
-            confirmButtonColor: '#28a745'
-          });
-          this.router.navigate(['/home']);
-        }
-      } catch (error: any) {
-        this.errorForm = error;
-      }
+      this.router.navigate(['/home']);
+    } catch (error) {
+      this.errorForm = error as any;
     }
   }
 }

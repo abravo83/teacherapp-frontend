@@ -5,8 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { TeachersFormComponent } from './pages/teachers-form/teachers-form.component';
-import { FormStudentComponent } from './pages/form-student/form-student.component';
-
+import { StudentsFormComponent } from './pages/students-form/students-form.component';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
@@ -25,9 +24,9 @@ export const routes: Routes = [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
       { path: 'registrar', component: RegisterComponent },
       { path: 'nuevo-profesor', component: TeachersFormComponent },
-      { path: 'nuevo-alumno', component: FormStudentComponent },
+      { path: 'nuevo-alumno', component: StudentsFormComponent },
       { path: 'editar-profesor/:id', component: TeachersFormComponent },
-      { path: 'editar-alumno/:id', component: FormStudentComponent },
+      { path: 'editar-alumno/:id', component: StudentsFormComponent },
     ],
   },
 
