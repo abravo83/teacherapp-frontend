@@ -17,17 +17,19 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
-  
 
-  {path: "registro", component: RegisterComponent},
-  {path: "nuevo-profesor", component: FormTeacherComponent},
-  {path: "nuevo-alumno", component: FormStudentComponent},
-  {path: "editar-profesor/:id", component: FormTeacherComponent},
-  {path: "editar-alumno/:id", component: FormStudentComponent},
+  {
+    path: 'dashboard',
+    component: DashboardComponent,
+    children: [
+      { path: '', pathMatch: 'full', redirectTo: 'home' },
+      { path: 'registro', component: RegisterComponent },
+      { path: 'nuevo-profesor', component: FormTeacherComponent },
+      { path: 'nuevo-alumno', component: FormStudentComponent },
+      { path: 'editar-profesor/:id', component: FormTeacherComponent },
+      { path: 'editar-alumno/:id', component: FormStudentComponent },
+    ],
+  },
 
-
-
-
-  { path: 'dashboard', component: DashboardComponent },
   { path: '**', redirectTo: 'home' },
 ];
