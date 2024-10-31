@@ -8,6 +8,7 @@ import { MATERIAS } from '../db/materias';
 import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
 import {PROFESORES} from '../db/profesoresForm.db'
+import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
 
 
 @Injectable({
@@ -107,52 +108,37 @@ export class ProfesoresService {
 
 
   //ARTURO
-  getProfesorById(id: number): Promise<Iprofesor | undefined> {
-    console.log('Obteniendo profesor por ID:', id);
+  getProfesorById(id: number): Promise<IProfesorCompleto | undefined> {
     return new Promise((resolve) => {
-      const profesor = PROFESORES.find((prof) => prof.id === id);
-      console.log('Resultado de búsqueda:', profesor);
-      resolve(profesor ?? undefined);
+      const profesor = PROFESORES.find((prof) => prof.usuario.id === id);
+      resolve(profesor);
     });
   }
 
-  async registroProfesor(profesor: Iprofesor, materias: number[]) {
-    console.log('Registrando profesor:', profesor);
-    profesor.id = PROFESORES.length > 0 ? Math.max(...PROFESORES.map(p => p.id || 0)) + 1 : 1;
-    profesor.usuarios_id = profesor.id;
-    PROFESORES.push({ ...profesor });
-    console.log('Profesor añadido:', profesor);
-    console.log('Array de profesores actualizado:', PROFESORES);
-    await this.actualizarMateriasProfesor(profesor.usuarios_id, materias);
-    return profesor;
+  async registroProfesor(profesorData: IProfesorCompleto): Promise<IProfesorCompleto> {
+    const nuevoProfesor: IProfesorCompleto = {
+      usuario: {
+        id: PROFESORES.length + 1,
+        ...profesorData.usuario
+      },
+      profesor: {
+        ...profesorData.profesor,
+        usuarios_id: PROFESORES.length + 1 
+      },
+      materias: profesorData.materias
+    };
+    PROFESORES.push(nuevoProfesor);
+    return nuevoProfesor;
   }
 
-  async actualizarProfesor(profesor: Iprofesor, materias: number[]) {
-    console.log('Actualizando profesor:', profesor);
-    const index = PROFESORES.findIndex((prof) => prof.id === profesor.id);
-    if (index !== -1 && profesor.id !== undefined) {
-      PROFESORES[index] = { ...PROFESORES[index], ...profesor };
-      console.log('Profesor actualizado en la posición', index);
-      console.log('Array de profesores después de actualizar:', PROFESORES);
-      await this.actualizarMateriasProfesor(profesor.usuarios_id, materias);
-      return profesor;
+  async actualizarProfesor(profesorData: IProfesorCompleto): Promise<IProfesorCompleto> {
+    const index = PROFESORES.findIndex(
+      (prof) => prof.usuario.id === profesorData.usuario.id && prof.usuario.rol === 'profesor'
+    );
+    if (index !== -1) {
+      PROFESORES[index] = profesorData;
+      return PROFESORES[index];
     }
-    console.log("Error: Profesor no encontrado");
     throw new Error("Profesor no encontrado");
-  }
-
-  private async actualizarMateriasProfesor(profesorId: number, materias: number[]) {
-    console.log('Actualizando materias para el profesor con ID:', profesorId);
-    MATERIAS_PROFESORES.splice(0, MATERIAS_PROFESORES.length, ...MATERIAS_PROFESORES.filter(
-      (item) => item.usuarios_id !== profesorId
-    ));
-    materias.forEach((materiaId) => {
-      MATERIAS_PROFESORES.push({
-        id: MATERIAS_PROFESORES.length > 0 ? Math.max(...MATERIAS_PROFESORES.map(mp => mp.id)) + 1 : 1,
-        usuarios_id: profesorId,
-        Materias_id: materiaId
-      });
-    });
-    console.log('Array de materias actualizado:', MATERIAS_PROFESORES);
   }
 }

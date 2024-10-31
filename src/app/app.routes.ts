@@ -4,7 +4,7 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogoutComponent } from './pages/logout/logout.component';
-import { FormTeacherComponent } from './pages/form-teacher/form-teacher.component';
+import { TeachersFormComponent } from './pages/teachers-form/teachers-form.component';
 import { FormStudentComponent } from './pages/form-student/form-student.component';
 
 export const routes: Routes = [
@@ -23,10 +23,10 @@ export const routes: Routes = [
     component: DashboardComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
-      { path: 'registro', component: RegisterComponent },
-      { path: 'nuevo-profesor', component: FormTeacherComponent },
+      { path: 'registrar', component: RegisterComponent },
+      { path: 'nuevo-profesor', component: TeachersFormComponent },
       { path: 'nuevo-alumno', component: FormStudentComponent },
-      { path: 'editar-profesor/:id', component: FormTeacherComponent },
+      { path: 'editar-profesor/:id', component: TeachersFormComponent },
       { path: 'editar-alumno/:id', component: FormStudentComponent },
     ],
   },

@@ -1,21 +1,22 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ReactiveFormsModule } from '@angular/forms';
-import { Iprofesor } from '../../interfaces/iprofesor';
+import { IProfesorCompleto } from '../../interfaces/iprofesor-completo.interface';
 import { ProfesoresService } from '../../services/profesores.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MATERIAS } from '../../db/materias';
+import { MATERIAS } from '../../db/materias.db';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { MATERIAS_PROFESORES } from '../../db/profesoresForm.db';
+import { MATERIAS_PROFESORES } from '../../db/materias_profesores.db';
+import { IMateriaProfesor } from '../../interfaces/imateria-profesor.interfaces';
 
 @Component({
-  selector: 'app-form-teacher',
+  selector: 'app-teacher-form',
   standalone: true,
-  templateUrl: './form-teacher.component.html',
-  styleUrls: ['./form-teacher.component.css'],
+  templateUrl: './teachers-form.component.html',
+  styleUrls: ['./teachers-form.component.css'],
   imports: [ReactiveFormsModule, CommonModule]
 })
-export class FormTeacherComponent implements OnInit {
+export class TeachersFormComponent implements OnInit {
   profesoresService = inject(ProfesoresService);
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
@@ -29,7 +30,7 @@ export class FormTeacherComponent implements OnInit {
 
   constructor() {
     this.teacherForm = new FormGroup({
-      id: new FormControl(null), // Añadido para gestionar el id
+      id: new FormControl(null), 
       nombre: new FormControl(null, [Validators.required, Validators.maxLength(45)]),
       apellidos: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
       email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(60)]),
@@ -66,19 +67,19 @@ export class FormTeacherComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
-        const profesor: Iprofesor | undefined = await this.profesoresService.getProfesorById(Number(params.id));
+        const profesor: IProfesorCompleto | undefined = await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
           this.teacherForm.patchValue({
-            id: profesor.id, 
-            nombre: profesor.nombre,
-            apellidos: profesor.apellidos,
-            email: profesor.email,
-            foto: profesor.foto,
-            telefono: profesor.telefono,
-            precio_hora: profesor.precio_hora,
-            localizacion: profesor.localizacion,
-            meses_experiencia: profesor.meses_experiencia,
-            materias: this.obtenerMateriasProfesor(profesor.usuarios_id),
+            id: profesor.usuario.id, 
+            nombre: profesor.usuario.nombre,
+            apellidos: profesor.usuario.apellidos,
+            email: profesor.usuario.email,
+            foto: profesor.usuario.foto,
+            telefono: profesor.profesor.telefono,
+            precio_hora: profesor.profesor.precio_hora,
+            localizacion: profesor.profesor.localizacion,
+            meses_experiencia: profesor.profesor.meses_experiencia,
+            materias: this.obtenerMateriasProfesor(profesor.usuario.id ?? 0),
           });
         }
       }
@@ -87,8 +88,8 @@ export class FormTeacherComponent implements OnInit {
 
   obtenerMateriasProfesor(profesorId: number): number[] {
     return MATERIAS_PROFESORES
-      .filter(relacion => relacion.usuarios_id === profesorId)
-      .map(relacion => relacion.Materias_id);
+      .filter((relacion: IMateriaProfesor) => relacion.usuarios_id === profesorId)
+      .map((relacion: IMateriaProfesor) => relacion.materias_id);
   }
 
   alternarDesplegable() {
@@ -118,48 +119,50 @@ export class FormTeacherComponent implements OnInit {
 
   async obtenerDatosFormulario() {
     const formData = {
-      profesor: {
-        ...this.teacherForm.value,
+      usuario: {
+        id: this.teacherForm.value.id,
+        nombre: this.teacherForm.value.nombre,
+        apellidos: this.teacherForm.value.apellidos,
+        email: this.teacherForm.value.email,
+        password: this.teacherForm.value.password,
+        foto: this.teacherForm.value.foto,
         rol: 'profesor',
-        activo: true,
-        validado: false,
+        activo: true
       },
-      materias: this.teacherForm.value.materias,
+      profesor: {
+        precio_hora: this.teacherForm.value.precio_hora,
+        localizacion: this.teacherForm.value.localizacion,
+        telefono: this.teacherForm.value.telefono,
+        meses_experiencia: this.teacherForm.value.meses_experiencia,
+        validado: false
+      },
+      materias: this.teacherForm.value.materias
     };
-    console.log("Datos enviados:", formData);
 
-    delete formData.profesor.repitepassword;
+    delete formData.usuario.password;
+    console.log(formData);
 
-    if (formData.profesor.id) {
-      try {
-        const response = await this.profesoresService.actualizarProfesor(formData.profesor, formData.materias);
-        if (response) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: 'Profesor actualizado exitosamente.',
-            confirmButtonColor: '#28a745'
-          });
-          this.router.navigate(['/home']);
-        }
-      } catch (error: any) {
-        this.errorForm = error;
+    try {
+      if (this.tipo === 'Actualizar') {
+        await this.profesoresService.actualizarProfesor(formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Profesor actualizado exitosamente.',
+          confirmButtonColor: '#28a745'
+        });
+      } else {
+        await this.profesoresService.registroProfesor(formData);
+        Swal.fire({
+          icon: 'success',
+          title: 'Éxito',
+          text: 'Profesor registrado exitosamente.',
+          confirmButtonColor: '#28a745'
+        });
       }
-    } else {
-      try {
-        const response = await this.profesoresService.registroProfesor(formData.profesor, formData.materias);
-        if (response) {
-          Swal.fire({
-            icon: 'success',
-            title: 'Éxito',
-            text: 'Profesor registrado exitosamente.',
-            confirmButtonColor: '#28a745'
-          });
-          this.router.navigate(['/home']);
-        }
-      } catch (error: any) {
-        this.errorForm = error;
-      }
+      this.router.navigate(['/home']);
+    } catch (error) {
+      this.errorForm = error as any;
     }
   }
 }
