@@ -4,6 +4,7 @@ import { Iusuario } from '../../interfaces/iusuario';
 import { AlumnosService } from '../../services/alumnos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-form-student',
@@ -24,6 +25,7 @@ export class FormStudentComponent implements OnInit {
 
   constructor() {
     this.studentForm = new FormGroup({
+      id: new FormControl(null),  
       nombre: new FormControl(null, [Validators.required, Validators.maxLength(45)]),
       apellidos: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
       email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(60)]),
@@ -74,13 +76,16 @@ export class FormStudentComponent implements OnInit {
 
     delete formData.alumno.repitepassword;
 
-    console.log("Datos enviados:", formData);
-
-    if (this.studentForm.value.id) {
+    if (formData.alumno.id) {
       try {
         const response = await this.alumnosService.actualizarAlumno(formData.alumno);
         if (response) {
-          alert('Alumno actualizado');
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Alumno actualizado exitosamente.',
+            confirmButtonColor: '#28a745'
+          });
           this.router.navigate(['/home']);
         }
       } catch (error: any) {
@@ -90,6 +95,12 @@ export class FormStudentComponent implements OnInit {
       try {
         const response = await this.alumnosService.registroAlumno(formData.alumno);
         if (response) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Alumno registrado exitosamente.',
+            confirmButtonColor: '#28a745'
+          });
           this.router.navigate(['/home']);
         }
       } catch (error: any) {

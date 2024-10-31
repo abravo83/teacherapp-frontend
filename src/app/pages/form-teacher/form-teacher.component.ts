@@ -5,6 +5,7 @@ import { ProfesoresService } from '../../services/profesores.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MATERIAS } from '../../db/materias';
 import { CommonModule } from '@angular/common';
+import Swal from 'sweetalert2';
 import { MATERIAS_PROFESORES } from '../../db/profesoresForm.db';
 
 @Component({
@@ -28,6 +29,7 @@ export class FormTeacherComponent implements OnInit {
 
   constructor() {
     this.teacherForm = new FormGroup({
+      id: new FormControl(null), // Añadido para gestionar el id
       nombre: new FormControl(null, [Validators.required, Validators.maxLength(45)]),
       apellidos: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
       email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(60)]),
@@ -38,9 +40,6 @@ export class FormTeacherComponent implements OnInit {
         Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/)
       ]),
       repitepassword: new FormControl(null, [Validators.required]),
-      
-      
-      
       foto: new FormControl(null, [Validators.maxLength(255), Validators.pattern(/^https?:\/\/.*\.(?:png|jpg|jpeg|webp)$/)]),
       telefono: new FormControl(null, [Validators.required, Validators.pattern(/^\d{9}$/)]),
       precio_hora: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(99.99)]),
@@ -70,6 +69,7 @@ export class FormTeacherComponent implements OnInit {
         const profesor: Iprofesor | undefined = await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
           this.teacherForm.patchValue({
+            id: profesor.id, // Importante para gestionar la actualización
             nombre: profesor.nombre,
             apellidos: profesor.apellidos,
             email: profesor.email,
@@ -130,10 +130,16 @@ export class FormTeacherComponent implements OnInit {
 
     delete formData.profesor.repitepassword;
 
-    if (this.teacherForm.value.id) {
+    if (formData.profesor.id) {
       try {
         const response = await this.profesoresService.actualizarProfesor(formData.profesor, formData.materias);
         if (response) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Profesor actualizado exitosamente.',
+            confirmButtonColor: '#28a745'
+          });
           this.router.navigate(['/home']);
         }
       } catch (error: any) {
@@ -143,6 +149,12 @@ export class FormTeacherComponent implements OnInit {
       try {
         const response = await this.profesoresService.registroProfesor(formData.profesor, formData.materias);
         if (response) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Éxito',
+            text: 'Profesor registrado exitosamente.',
+            confirmButtonColor: '#28a745'
+          });
           this.router.navigate(['/home']);
         }
       } catch (error: any) {
