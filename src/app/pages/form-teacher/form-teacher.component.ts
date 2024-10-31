@@ -69,7 +69,7 @@ export class FormTeacherComponent implements OnInit {
         const profesor: Iprofesor | undefined = await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
           this.teacherForm.patchValue({
-            id: profesor.id, // Importante para gestionar la actualización
+            id: profesor.id, 
             nombre: profesor.nombre,
             apellidos: profesor.apellidos,
             email: profesor.email,

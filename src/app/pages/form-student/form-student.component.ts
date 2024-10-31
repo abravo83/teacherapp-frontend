@@ -76,6 +76,7 @@ export class FormStudentComponent implements OnInit {
 
     delete formData.alumno.repitepassword;
 
+    console.log(formData);
     if (formData.alumno.id) {
       try {
         const response = await this.alumnosService.actualizarAlumno(formData.alumno);

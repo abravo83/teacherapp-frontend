@@ -107,38 +107,52 @@ export class ProfesoresService {
 
 
   //ARTURO
-
   getProfesorById(id: number): Promise<Iprofesor | undefined> {
+    console.log('Obteniendo profesor por ID:', id);
     return new Promise((resolve) => {
       const profesor = PROFESORES.find((prof) => prof.id === id);
-      resolve(profesor);
+      console.log('Resultado de búsqueda:', profesor);
+      resolve(profesor ?? undefined);
     });
   }
 
   async registroProfesor(profesor: Iprofesor, materias: number[]) {
-    profesor.id = PROFESORES.length + 1;
+    console.log('Registrando profesor:', profesor);
+    profesor.id = PROFESORES.length > 0 ? Math.max(...PROFESORES.map(p => p.id || 0)) + 1 : 1;
     profesor.usuarios_id = profesor.id;
-    PROFESORES.push(profesor);
+    PROFESORES.push({ ...profesor });
+    console.log('Profesor añadido:', profesor);
+    console.log('Array de profesores actualizado:', PROFESORES);
     await this.actualizarMateriasProfesor(profesor.usuarios_id, materias);
     return profesor;
   }
 
   async actualizarProfesor(profesor: Iprofesor, materias: number[]) {
+    console.log('Actualizando profesor:', profesor);
     const index = PROFESORES.findIndex((prof) => prof.id === profesor.id);
-    if (index !== -1) {
+    if (index !== -1 && profesor.id !== undefined) {
       PROFESORES[index] = { ...PROFESORES[index], ...profesor };
+      console.log('Profesor actualizado en la posición', index);
+      console.log('Array de profesores después de actualizar:', PROFESORES);
       await this.actualizarMateriasProfesor(profesor.usuarios_id, materias);
       return profesor;
     }
+    console.log("Error: Profesor no encontrado");
     throw new Error("Profesor no encontrado");
   }
 
-  private actualizarMateriasProfesor(profesorId: number, materias: number[]) {
+  private async actualizarMateriasProfesor(profesorId: number, materias: number[]) {
+    console.log('Actualizando materias para el profesor con ID:', profesorId);
     MATERIAS_PROFESORES.splice(0, MATERIAS_PROFESORES.length, ...MATERIAS_PROFESORES.filter(
       (item) => item.usuarios_id !== profesorId
     ));
     materias.forEach((materiaId) => {
-      MATERIAS_PROFESORES.push({ id: MATERIAS_PROFESORES.length + 1, usuarios_id: profesorId, Materias_id: materiaId });
+      MATERIAS_PROFESORES.push({
+        id: MATERIAS_PROFESORES.length > 0 ? Math.max(...MATERIAS_PROFESORES.map(mp => mp.id)) + 1 : 1,
+        usuarios_id: profesorId,
+        Materias_id: materiaId
+      });
     });
+    console.log('Array de materias actualizado:', MATERIAS_PROFESORES);
   }
 }
