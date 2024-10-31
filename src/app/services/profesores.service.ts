@@ -7,6 +7,8 @@ import { Iusuario } from '../interfaces/iusuario';
 import { MATERIAS } from '../db/materias';
 import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
+import {PROFESORES} from '../db/profesoresForm.db'
+
 
 @Injectable({
   providedIn: 'root',
@@ -98,6 +100,45 @@ export class ProfesoresService {
         ...profesorDatos,
         materias,
       };
+    });
+  }
+
+
+
+
+  //ARTURO
+
+  getProfesorById(id: number): Promise<Iprofesor | undefined> {
+    return new Promise((resolve) => {
+      const profesor = PROFESORES.find((prof) => prof.id === id);
+      resolve(profesor);
+    });
+  }
+
+  async registroProfesor(profesor: Iprofesor, materias: number[]) {
+    profesor.id = PROFESORES.length + 1;
+    profesor.usuarios_id = profesor.id;
+    PROFESORES.push(profesor);
+    await this.actualizarMateriasProfesor(profesor.usuarios_id, materias);
+    return profesor;
+  }
+
+  async actualizarProfesor(profesor: Iprofesor, materias: number[]) {
+    const index = PROFESORES.findIndex((prof) => prof.id === profesor.id);
+    if (index !== -1) {
+      PROFESORES[index] = { ...PROFESORES[index], ...profesor };
+      await this.actualizarMateriasProfesor(profesor.usuarios_id, materias);
+      return profesor;
+    }
+    throw new Error("Profesor no encontrado");
+  }
+
+  private actualizarMateriasProfesor(profesorId: number, materias: number[]) {
+    MATERIAS_PROFESORES.splice(0, MATERIAS_PROFESORES.length, ...MATERIAS_PROFESORES.filter(
+      (item) => item.usuarios_id !== profesorId
+    ));
+    materias.forEach((materiaId) => {
+      MATERIAS_PROFESORES.push({ id: MATERIAS_PROFESORES.length + 1, usuarios_id: profesorId, Materias_id: materiaId });
     });
   }
 }

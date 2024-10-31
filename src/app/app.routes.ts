@@ -4,6 +4,8 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogoutComponent } from './pages/logout/logout.component';
+import { FormTeacherComponent } from './pages/form-teacher/form-teacher.component';
+import { FormStudentComponent } from './pages/form-student/form-student.component';
 
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -15,7 +17,17 @@ export const routes: Routes = [
   },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
-  { path: 'register', component: RegisterComponent },
+  
+
+  {path: "registro", component: RegisterComponent},
+  {path: "nuevo-profesor", component: FormTeacherComponent},
+  {path: "nuevo-alumno", component: FormStudentComponent},
+  {path: "editar-profesor/:id", component: FormTeacherComponent},
+  {path: "editar-alumno/:id", component: FormStudentComponent},
+
+
+
+
   { path: 'dashboard', component: DashboardComponent },
   { path: '**', redirectTo: 'home' },
 ];
