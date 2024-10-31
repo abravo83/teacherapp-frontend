@@ -34,6 +34,7 @@ border-radius: 6px;
   font-weight: 400;
   background-color:#FDCB9E
 }
+
 @media(min-width:992px){
 .hover-bg li a:hover{
   border-radius: 6px;
