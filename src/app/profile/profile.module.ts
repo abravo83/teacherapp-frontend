@@ -8,6 +8,8 @@ import { CalendarComponent } from './profesor/calendar/calendar.component';
 import { MessagesComponent } from './profesor/messages/messages.component';
 import { ReviewsComponent } from './profesor/reviews/reviews.component';
 import { ProfesorDashboardComponent } from './profesor/profesor-dashboard/profesor-dashboard.component';
+import { NavbarComponent } from '../components/navbar/navbar.component';
+import { FooterComponent } from '../components/footer/footer.component';
 
 @NgModule({
   declarations: [
