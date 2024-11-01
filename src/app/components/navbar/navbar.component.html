@@ -1,10 +1,6 @@
-<nav
-  class="navbar navbar-expand-lg bg-secondary-subtle border-1 text-white shadow fixed-top px-3 p-sm-3"
->
-  <div class="container px-4">
-    <div class="text-black">
-      <i class="fa-brands fa-bootstrap"></i>
-    </div>
+<nav class="navbar navbar-expand-lg border-1 text-white shadow px-3">
+  <div class="container-fluid px-4">
+    <div class="text-black">LOGO</div>
 
     <button
       class="navbar-toggler border-0 bg-white"
@@ -17,9 +13,12 @@
     >
       <span class="navbar-toggler-icon"></span>
     </button>
+
     <div class="offcanvas offcanvas-start" id="menu">
-      <div class="offcanvas-header bg-secondary-subtle text-black">
-        <i class="fa-brands fa-bootstrap"></i>
+      <div class="offcanvas-header border-bottom text-black">
+        <a class="nav-link" routerLinkActive="active" aria-current="page"
+          >LOGO</a
+        >
 
         <button
           type="button"
@@ -27,21 +26,318 @@
           class="btn-close bg-white"
         ></button>
       </div>
-
+      @if(getlogin().islogin === false){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item px-lg-4">
-            <a class="nav-link" href="#">Home</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/home']"
+              >Inicio</a
+            >
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" href="#">Registrarse</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/login']"
+              >Iniciar sesion</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Login</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'registrar']"
+              >Registrarse</a
+            >
           </li>
         </ul>
       </div>
+      }@else if(getlogin().islogin === true && getlogin().role === 'admin' ){
+      <div class="offcanvas-body text-start">
+        <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Notificaciones"
+              ><i class="fa-regular fa-bell" style="font-size: 22px"></i
+            ></a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link d-flex justify-content-center align-items-center"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Clases/Profesores"
+              ><i
+                class="fa-duotone fa-solid fa-person-chalkboard"
+                style="font-size: 22px"
+              ></i>
+            </a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Estudiantes"
+              ><i
+                class="fa-duotone fa-solid fa-graduation-cap"
+                style="font-size: 22px"
+              ></i>
+            </a>
+          </li>
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Ajustes de perfil"
+              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
+            </a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Salir"
+              ><i
+                class="fa-solid fa-right-from-bracket"
+                style="font-size: 22px"
+              ></i>
+            </a>
+          </li>
+
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
+              Notificaciones
+            </a>
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <svg
+                width="20"
+                height="22"
+                viewBox="0 0 20 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 18.4H3.33333C3.03865 18.4 2.75603 18.5212 2.54766 18.7368C2.33929 18.9525 2.22222 19.245 2.22222 19.55C2.22222 19.855 2.33929 20.1475 2.54766 20.3632C2.75603 20.5788 3.03865 20.7 3.33333 20.7H20V23H3.33333C2.44928 23 1.60143 22.6365 0.976311 21.9895C0.35119 21.3425 0 20.465 0 19.55V2.3C0 1.69 0.234126 1.10499 0.650874 0.673654C1.06762 0.242321 1.63285 0 2.22222 0H20V18.4ZM2.22222 16.1575C2.40222 16.1195 2.58778 16.1 2.77778 16.1H17.7778V2.3H2.22222V16.1575ZM14.4444 8.05H5.55556V5.75H14.4444V8.05Z"
+                  fill="#3F3F44"
+                />
+              </svg>
+              Clases/Profesores</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <i
+                class="fa-duotone fa-solid fa-user-group"
+                style="font-size: 22px"
+              ></i>
+              Comunidad</a
+            >
+          </li>
+
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <i class="fa-solid fa-gear" style="font-size: 22px"></i> Ajustes
+              de Perfil</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/home']"
+            >
+              <i
+                class="fa-solid fa-right-from-bracket"
+                style="font-size: 22px"
+              ></i>
+              Salir</a
+            >
+          </li>
+        </ul>
+      </div>
+
+      } @else if(getlogin().islogin === true && getlogin().role === 'profesor'
+      || getlogin().role === 'alumno' ){
+      <div class="offcanvas-body text-start">
+        <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Notificaciones"
+              ><i class="fa-regular fa-bell" style="font-size: 22px"></i
+            ></a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="clases/profesores"
+              ><svg
+                width="20"
+                height="22"
+                viewBox="0 0 20 22"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 17.6H3.33333C3.03865 17.6 2.75603 17.7159 2.54766 17.9222C2.33929 18.1285 2.22222 18.4083 2.22222 18.7C2.22222 18.9917 2.33929 19.2715 2.54766 19.4778C2.75603 19.6841 3.03865 19.8 3.33333 19.8H20V22H3.33333C2.44928 22 1.60143 21.6523 0.976311 21.0335C0.35119 20.4146 0 19.5752 0 18.7V2.2C0 1.61652 0.234126 1.05694 0.650874 0.644365C1.06762 0.231785 1.63285 0 2.22222 0H20V17.6ZM2.22222 15.455C2.40222 15.4187 2.58778 15.4 2.77778 15.4H17.7778V2.2H2.22222V15.455ZM14.4444 7.7H5.55556V5.5H14.4444V7.7Z"
+                  fill="#3F3F44"
+                />
+              </svg>
+            </a>
+          </li>
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Ajustes de perfil"
+              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
+            </a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Salir"
+              ><i
+                class="fa-solid fa-right-from-bracket"
+                style="font-size: 22px"
+              ></i>
+            </a>
+          </li>
+
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
+              Notificaciones
+            </a>
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <svg
+                width="20"
+                height="22"
+                viewBox="0 0 20 23"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M20 18.4H3.33333C3.03865 18.4 2.75603 18.5212 2.54766 18.7368C2.33929 18.9525 2.22222 19.245 2.22222 19.55C2.22222 19.855 2.33929 20.1475 2.54766 20.3632C2.75603 20.5788 3.03865 20.7 3.33333 20.7H20V23H3.33333C2.44928 23 1.60143 22.6365 0.976311 21.9895C0.35119 21.3425 0 20.465 0 19.55V2.3C0 1.69 0.234126 1.10499 0.650874 0.673654C1.06762 0.242321 1.63285 0 2.22222 0H20V18.4ZM2.22222 16.1575C2.40222 16.1195 2.58778 16.1 2.77778 16.1H17.7778V2.3H2.22222V16.1575ZM14.4444 8.05H5.55556V5.75H14.4444V8.05Z"
+                  fill="#3F3F44"
+                />
+              </svg>
+              Clases/Profesores</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <i
+                class="fa-duotone fa-solid fa-user-group"
+                style="font-size: 22px"
+              ></i>
+              Comunidad</a
+            >
+          </li>
+
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+            >
+              <i class="fa-solid fa-gear" style="font-size: 22px"></i> Ajustes
+              de Perfil</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/home']"
+            >
+              <i
+                class="fa-solid fa-right-from-bracket"
+                style="font-size: 22px"
+              ></i>
+              Salir</a
+            >
+          </li>
+        </ul>
+      </div>
+      }
     </div>
   </div>
 </nav>
