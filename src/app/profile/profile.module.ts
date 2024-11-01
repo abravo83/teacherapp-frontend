@@ -1,12 +1,13 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileRoutingModule } from './profile-routing.module';
-import { MyAccountComponent } from './my-account/my-account.component';
-import { MyClassesComponent } from './my-classes/my-classes.component';
-import { MyStudentsComponent } from './my-students/my-students.component';
-import { CalendarComponent } from './calendar/calendar.component';
-import { MessagesComponent } from './messages/messages.component';
-import { ReviewsComponent } from './reviews/reviews.component';
+import { MyAccountComponent } from './profesor/my-account/my-account.component';
+import { MyClassesComponent } from './profesor/my-classes/my-classes.component';
+import { MyStudentsComponent } from './profesor/my-students/my-students.component';
+import { CalendarComponent } from './profesor/calendar/calendar.component';
+import { MessagesComponent } from './profesor/messages/messages.component';
+import { ReviewsComponent } from './profesor/reviews/reviews.component';
+import { ProfesorDashboardComponent } from './profesor/profesor-dashboard/profesor-dashboard.component';
 
 @NgModule({
   declarations: [
@@ -16,8 +17,13 @@ import { ReviewsComponent } from './reviews/reviews.component';
     CalendarComponent,
     MessagesComponent,
     ReviewsComponent,
+    ProfesorDashboardComponent,
   ],
-
-  imports: [CommonModule, ProfileRoutingModule],
+  imports: [
+    CommonModule,
+    ProfileRoutingModule,
+    NavbarComponent,
+    FooterComponent,
+  ],
 })
 export class ProfileModule {}
