@@ -1,11 +1,11 @@
 <div class="flex">
-  <section class="profesor-list-home">
+  <section>
     <aside>
-      <app-filter-home (materia_id_emitida)="filterProfesorByMaterias($event)">
+      <app-filter-home (filtro_emitido)="filterProfesor($event)">
       </app-filter-home>
     </aside>
 
-    <div>
+    <div class="profesor-list-home">
       @for (profesor of usuariosList; track profesor.id) {
       <article>
         <app-profesor-card-home
@@ -21,8 +21,8 @@
   </section>
 
   <section class="mapa">
-    <@if (isGoogleMapsLoaded) {
-    <google-map width="100%" [zoom]="12" [center]="myposition()">
+    @if (isGoogleMapsLoaded) {
+    <google-map width="100%" height="100%" [zoom]="12" [center]="myposition()">
       @for (profesor of usuariosList; track $index ) {
       <app-mapa-home [myProfesor]="profesor"></app-mapa-home>
       }
