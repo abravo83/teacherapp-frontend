@@ -60,15 +60,13 @@ export class ProfesorListHomeComponent {
     }
   }
 
-  getposition(coords: any) {
-    let resultado: string = coords;
-    let array: any[] = resultado.split(',');
-    return new google.maps.LatLng(array[0], array[1]);
-  }
-
-  filterProfesorByMaterias(event: number) {
-    if (event !== 0) {
-      this.usuariosList = this.profesorService.filterByMaterias(event);
+  filterProfesor(event: any) {
+    if (event[0] !== 0) {
+      this.usuariosList = this.profesorService.filterByMaterias(
+        event[0],
+        event[1],
+        event[2]
+      );
     } else {
       this.usuariosList = this.profesorService.getAll();
     }
