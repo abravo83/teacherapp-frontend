@@ -1,0 +1,14 @@
+<app-navbar></app-navbar>
+
+<div class="dashboard-container">
+    <aside class="sidebar">
+        <app-sidebar-menu></app-sidebar-menu>
+    </aside>
+
+    <section class="dashboard-content">
+        <app-welcome-message [role]="'Profesor'"></app-welcome-message>
+        <router-outlet></router-outlet> 
+    </section>
+</div>
+
+<app-footer></app-footer>
