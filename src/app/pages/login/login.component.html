@@ -1,13 +1,24 @@
-<div>
-  <header class="mb-5">
-    <app-navbar></app-navbar>
-  </header>
-
-  <body>
-    <p>login works!</p>
-  </body>
-
-  <footer class="mt-5">
-    <app-footer></app-footer>
-  </footer>
-</div>
+<section class="bg-body p-3 d-flex flex-column justify-content-center align-items-center vh-100">
+  <div>
+    <h1><p class="fw-light text-center">Hola, <span class="fw-bold">¡bienvenido!</span></p>
+      <p class="fw-light text-center">¿Preparado para aprender?</p>
+    </h1>
+    <form #loginForm="ngForm" (ngSubmit)="getLoginData(loginForm.value, loginForm)">
+      <div class="my-2 fw-light">
+        <label for="email" class="form-label ">Tu email</label>
+        <input class="form-control" type="email" id="email" name="email" placeholder="nombre@email.com" ngModel>
+      </div>
+      <div class="my-2 fw-light">
+        <label for="password" class="form-label">Contraseña</label>
+        <input class="form-control" type="password" id="password" name="password" placeholder="Escribe tu contraseña" ngModel>
+      </div>
+      <div class="my-4 fw-semibold">
+      <input class="btn w-100 bg_button" type="submit" value="Entrar">
+      </div>
+      @if(error === true){
+      <p class="mt-3 text-center text-danger small">{{msg}}</p>
+      }
+      <p class="text-center">¿No tienes una cuenta? Regístrate <a routerLinkActive="active" aria-current="page" [routerLink]="['/dashboard', 'registrar']" title="Ir a registro">aquí</a></p>
+    </form>
+  </div>
+</section>

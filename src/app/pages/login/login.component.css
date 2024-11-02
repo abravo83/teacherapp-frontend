@@ -1,0 +1,22 @@
+
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+section{
+    font-family: "Work Sans", sans-serif;
+}
+input {
+    background-color: #F6F6F6;
+}
+
+.bg_button{
+    background-color: #FDCB9E;
+}
+.bg_button:hover{
+    background-color: #f8c192;
+    text-shadow: 1px 1px 1px;
+}
+
+a{
+    color: black;
+    font-weight: 500;
+}
+
