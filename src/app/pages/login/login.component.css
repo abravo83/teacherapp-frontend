@@ -7,12 +7,8 @@ input {
     background-color: #F6F6F6;
 }
 
-.bg_button{
-    background-color: #FDCB9E;
-}
-.bg_button:hover{
-    background-color: #f8c192;
-    text-shadow: 1px 1px 1px;
+.button-primary {
+    background-color: var(--color-button1);
 }
 
 a{
@@ -20,3 +16,51 @@ a{
     font-weight: 500;
 }
 
+.alert-box {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 20px;
+    position: absolute; /* o fixed según donde quieras que aparezca */
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    z-index: 1000; /* Asegúrate de que esté por encima de otros elementos */
+}
+
+.alert-box input {
+    margin: 10px 0;
+    padding: 0.5em;
+    width: 100%; /* O el ancho que desees */
+}
+
+.alert-box button {
+    margin-top: 10px;
+}
+
+.buttons-forgetpassword {
+    display: flex; /* Usar flexbox */
+    justify-content: space-between; /* Espacia los botones */
+    align-items: center; /* Alinea verticalmente */
+}
+
+.b-forgetpassword-send {
+    /* Estilos para el botón Enviar */
+    background-color: var(--color-button1); /* Color de fondo */
+    color: var(--color-text-secondary); /* Color de texto */
+    padding: 0.5em 1em; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 3px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+}
+
+.b-forgetpassword-close {
+    /* Estilos para el botón Cerrar */
+    background-color: var(--color-button3); /* Color de fondo */
+    color: var(--color-text-secondary); /* Color de texto */
+    padding: 0.5em 1em; /* Espaciado interno */
+    border: none; /* Sin borde */
+    border-radius: 3px; /* Bordes redondeados */
+    cursor: pointer; /* Cursor de puntero */
+}
