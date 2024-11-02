@@ -7,9 +7,8 @@ import { Iusuario } from '../interfaces/iusuario';
 import { MATERIAS } from '../db/materias';
 import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
-import {PROFESORES} from '../db/profesoresForm.db'
+import { PROFESORES } from '../db/profesoresForm.db';
 import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
-
 
 @Injectable({
   providedIn: 'root',
@@ -74,38 +73,121 @@ export class ProfesoresService {
   getAllMaterias() {
     return this.arrMaterias;
   }
+  //
 
-  filterByMaterias(materiaId: number) {
+  // filterByMaterias(materiaId: number) {
+  //   // Filtrar los usuarios_id que tienen la materiaId deseada
+  //   const usuariosFiltrados = MATERIAS_PROFESORES.filter(
+  //     (mp) => mp.Materias_id === materiaId
+  //   ).map((mp) => mp.usuarios_id);
+
+  //   // Obtener el array de usuarios con sus datos completos
+  //   return USUARIOS.filter((usuario) =>
+  //     usuariosFiltrados.includes(usuario.id)
+  //   ).map((usuario) => {
+  //     // Obtener datos adicionales del profesor
+  //     const profesorDatos = DATOS_PROFESORES.find(
+  //       (dp) => dp.usuarios_id === usuario.id
+  //     );
+  //     // Obtener las materias que enseña el profesor
+  //     const materias = MATERIAS_PROFESORES.filter(
+  //       (mp) => mp.usuarios_id === usuario.id
+  //     )
+  //       .map((mp) => MATERIAS.find((m) => m.id === mp.Materias_id)?.nombre)
+  //       .filter(Boolean) as string[];
+
+  //     return {
+  //       ...usuario,
+  //       ...profesorDatos,
+  //       materias,
+  //     };
+  //   });
+  // }
+
+  filterByMaterias(
+    materiaId: number,
+    experiencia: [number, number] = [0, 1000000],
+    precio: [number, number] = [0, 1000000]
+  ) {
     // Filtrar los usuarios_id que tienen la materiaId deseada
     const usuariosFiltrados = MATERIAS_PROFESORES.filter(
       (mp) => mp.Materias_id === materiaId
     ).map((mp) => mp.usuarios_id);
 
     // Obtener el array de usuarios con sus datos completos
-    return USUARIOS.filter((usuario) =>
-      usuariosFiltrados.includes(usuario.id)
-    ).map((usuario) => {
-      // Obtener datos adicionales del profesor
-      const profesorDatos = DATOS_PROFESORES.find(
-        (dp) => dp.usuarios_id === usuario.id
-      );
-      // Obtener las materias que enseña el profesor
-      const materias = MATERIAS_PROFESORES.filter(
-        (mp) => mp.usuarios_id === usuario.id
-      )
-        .map((mp) => MATERIAS.find((m) => m.id === mp.Materias_id)?.nombre)
-        .filter(Boolean) as string[];
+    return USUARIOS.filter((usuario) => usuariosFiltrados.includes(usuario.id))
+      .map((usuario) => {
+        // Obtener datos adicionales del profesor
+        const profesorDatos = DATOS_PROFESORES.find(
+          (dp) =>
+            dp.usuarios_id === usuario.id &&
+            dp.meses_experiencia >= experiencia[0] &&
+            dp.meses_experiencia <= experiencia[1] &&
+            dp.precio_hora >= precio[0] &&
+            dp.precio_hora <= precio[1]
+        );
 
-      return {
-        ...usuario,
-        ...profesorDatos,
-        materias,
-      };
-    });
+        // Si el profesor no cumple con el rango de experiencia o precio, se omite
+        if (!profesorDatos) return null;
+
+        // Obtener las materias que enseña el profesor
+        const materias = MATERIAS_PROFESORES.filter(
+          (mp) => mp.usuarios_id === usuario.id
+        )
+          .map((mp) => MATERIAS.find((m) => m.id === mp.Materias_id)?.nombre)
+          .filter(Boolean) as string[];
+
+        return {
+          ...usuario,
+          ...profesorDatos,
+          materias,
+        };
+      })
+      .filter(Boolean); // Eliminar los elementos nulos
   }
 
+  getFiltro(filtro: {
+    idmateria: number;
+    experiencia: number[];
+    precio: number;
+  }) {
+    // Filtrar por los profesores que imparten la materia indicada
+    const profesoresConMateria = MATERIAS_PROFESORES.filter(
+      (item) => item.Materias_id === filtro.idmateria
+    );
+    console.log(profesoresConMateria);
+    // Filtrar profesores según la experiencia y el precio
+    const profesoresFiltrados = profesoresConMateria
+      .map((item) => {
+        const profesor = DATOS_PROFESORES.find(
+          (prof) =>
+            prof.usuarios_id === item.usuarios_id &&
+            prof.meses_experiencia >= filtro.experiencia[0] &&
+            prof.meses_experiencia <= filtro.experiencia[1] &&
+            prof.precio_hora <= filtro.precio &&
+            prof.validado // Omitir si no deseas considerar si está validado o no
+        );
 
-
+        if (profesor) {
+          const usuario = USUARIOS.find(
+            (user) => user.id === profesor.usuarios_id
+          );
+          const materia = MATERIAS.find((mat) => mat.id === item.Materias_id);
+          return {
+            profesor: usuario ? `${usuario.nombre} ${usuario.apellidos}` : '',
+            materia: materia ? materia.nombre : '',
+            experiencia: profesor.meses_experiencia,
+            precio_hora: profesor.precio_hora,
+            localizacion: profesor.localizacion,
+            telefono: profesor.telefono,
+          };
+        }
+        return null;
+      })
+      .filter((item) => item !== null);
+    console.log(profesoresFiltrados);
+    return profesoresFiltrados;
+  }
 
   //ARTURO
   getProfesorById(id: number): Promise<IProfesorCompleto | undefined> {
@@ -115,30 +197,36 @@ export class ProfesoresService {
     });
   }
 
-  async registroProfesor(profesorData: IProfesorCompleto): Promise<IProfesorCompleto> {
+  async registroProfesor(
+    profesorData: IProfesorCompleto
+  ): Promise<IProfesorCompleto> {
     const nuevoProfesor: IProfesorCompleto = {
       usuario: {
         id: PROFESORES.length + 1,
-        ...profesorData.usuario
+        ...profesorData.usuario,
       },
       profesor: {
         ...profesorData.profesor,
-        usuarios_id: PROFESORES.length + 1 
+        usuarios_id: PROFESORES.length + 1,
       },
-      materias: profesorData.materias
+      materias: profesorData.materias,
     };
     PROFESORES.push(nuevoProfesor);
     return nuevoProfesor;
   }
 
-  async actualizarProfesor(profesorData: IProfesorCompleto): Promise<IProfesorCompleto> {
+  async actualizarProfesor(
+    profesorData: IProfesorCompleto
+  ): Promise<IProfesorCompleto> {
     const index = PROFESORES.findIndex(
-      (prof) => prof.usuario.id === profesorData.usuario.id && prof.usuario.rol === 'profesor'
+      (prof) =>
+        prof.usuario.id === profesorData.usuario.id &&
+        prof.usuario.rol === 'profesor'
     );
     if (index !== -1) {
       PROFESORES[index] = profesorData;
       return PROFESORES[index];
     }
-    throw new Error("Profesor no encontrado");
+    throw new Error('Profesor no encontrado');
   }
 }
