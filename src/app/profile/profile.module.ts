@@ -10,6 +10,8 @@ import { ReviewsComponent } from './profesor/reviews/reviews.component';
 import { ProfesorDashboardComponent } from './profesor/profesor-dashboard/profesor-dashboard.component';
 import { NavbarComponent } from '../components/navbar/navbar.component';
 import { FooterComponent } from '../components/footer/footer.component';
+import { SharedModule } from '../shared/shared/shared.module';
+import { SidebarMenuComponent } from '../components/sidebar-menu/sidebar-menu.component';
 
 @NgModule({
   declarations: [
@@ -20,12 +22,14 @@ import { FooterComponent } from '../components/footer/footer.component';
     MessagesComponent,
     ReviewsComponent,
     ProfesorDashboardComponent,
+    SidebarMenuComponent,
   ],
   imports: [
     CommonModule,
     ProfileRoutingModule,
     NavbarComponent,
     FooterComponent,
+    SharedModule,
   ],
 })
 export class ProfileModule {}

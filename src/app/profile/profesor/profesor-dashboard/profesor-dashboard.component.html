@@ -1,6 +1,14 @@
 <app-navbar></app-navbar>
 
-<h1>Bienvenido, Profesor</h1>
-<router-outlet></router-outlet>
+<div class="dashboard-container">
+    <aside class="sidebar">
+      <app-sidebar-menu></app-sidebar-menu> <!-- Aquí debería estar el sidebar -->
+    </aside>
+
+  <section class="content">
+    <app-welcome-message [role]="'Profesor'"></app-welcome-message>
+    <router-outlet></router-outlet> <!-- Aquí cargará el contenido dinámico -->
+  </section>
+</div>
 
 <app-footer></app-footer>
