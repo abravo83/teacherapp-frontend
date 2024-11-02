@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TeacherDataService } from '../../../services/teacher-data.service';
 
 @Component({
   selector: 'app-my-classes',
   templateUrl: './my-classes.component.html',
-  styleUrls: ['./my-classes.component.css'],
+  styleUrl: './my-classes.component.css',
+  encapsulation: ViewEncapsulation.None,
 })
 export class MyClassesComponent {
   courses$: Observable<any[]>;
