@@ -1,1 +1,25 @@
-<p>my-classes works!</p>
+<div class="courses-list">
+  <h2>Mis Clases</h2>
+  <table>
+      <thead>
+          <tr>
+              <th>Nombre Alumno</th>
+              <th>Clase</th>
+              <th>Fecha</th>
+              <th>Nº Clases</th>
+              <th>Precio Clase</th>
+              <th>Total Pagado</th>
+          </tr>
+      </thead>
+      <tbody>
+          <tr *ngFor="let course of courses$ | async">
+              <td>{{ course.alumnoNombre }}</td>
+              <td>{{ course.claseNombre }}</td>
+              <td>{{ course.fecha | date: 'dd/MM/yyyy' }}</td>
+              <td>{{ course.numClases }}</td>
+              <td>{{ course.precioClase }}€</td>
+              <td>{{ course.totalPagado }}€</td>
+          </tr>
+      </tbody>
+  </table>
+</div>
