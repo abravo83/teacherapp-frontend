@@ -40,7 +40,7 @@ export const DATOS_PROFESORES: any[] = [
   {
     id: 5,
     usuarios_id: 11,
-    precio_hora: 28.0,
+    precio_hora: 88.0,
     localizacion: '0.337153, -78.218874',
     telefono: '634567890',
     meses_experiencia: 21,

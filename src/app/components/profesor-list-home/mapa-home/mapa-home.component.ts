@@ -31,8 +31,4 @@ export class MapaHomeComponent {
     let array: any[] = resultado.split(',');
     return new google.maps.LatLng(array[0], array[1]);
   }
-
-  filttrarmapa(materia: number) {
-    this.profesoresList = this.profesoresService.filterByMaterias(materia);
-  }
 }

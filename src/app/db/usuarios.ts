@@ -58,7 +58,7 @@ export const USUARIOS: Iusuario[] = [
     email: 'laura@email.com',
     password: 'password101',
     rol: 'profesor',
-    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Charlie_Sheen_March_2009.JPG/330px-Charlie_Sheen_March_2009.JPG',
+    foto: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Laura_Pausini_2009.04.30_021.jpg/405px-Laura_Pausini_2009.04.30_021.jpg',
     activo: true,
   },
   {
