@@ -1,37 +1,97 @@
-<section class="bg-body p-3 d-flex flex-column justify-content-center align-items-center vh-100">
+<header class="mb-1">
+  <app-navbar></app-navbar>
+</header>
+
+<section
+  class="bg-body p-3 d-flex flex-column justify-content-center align-items-center vh-100"
+>
   <div>
-    <h1><p class="fw-light text-center">Hola, <span class="fw-bold">¡bienvenido!</span></p>
+    <h1>
+      <p class="fw-light text-center">
+        Hola, <span class="fw-bold">¡bienvenido!</span>
+      </p>
       <p class="fw-light text-center">¿Preparado para aprender?</p>
     </h1>
-    <form #loginForm="ngForm" (ngSubmit)="getLoginData(loginForm.value, loginForm)">
+    <form
+      #loginForm="ngForm"
+      (ngSubmit)="getLoginData(loginForm.value, loginForm)"
+    >
       <div class="my-2 fw-light">
-        <label for="email" class="form-label ">Tu email</label>
-        <input class="form-control" type="email" id="email" name="email" placeholder="nombre@email.com" ngModel>
+        <label for="email" class="form-label">Tu email</label>
+        <input
+          class="form-control"
+          type="email"
+          id="email"
+          name="email"
+          placeholder="nombre@email.com"
+          ngModel
+        />
       </div>
       <div class="my-2 fw-light">
         <label for="password" class="form-label">Contraseña</label>
-        <input class="form-control" type="password" id="password" name="password" placeholder="Escribe tu contraseña" ngModel>
+        <input
+          class="form-control"
+          type="password"
+          id="password"
+          name="password"
+          placeholder="Escribe tu contraseña"
+          ngModel
+        />
       </div>
       <div class="container-right">
-        <button class="my-1 fw-bold margin-right-auto" style="color: var(--color-text-secondary); font-size: 0.875em;" (click)="toggleAlert()">¿Olvidaste la contraseña?</button>
+        <button
+          class="my-1 fw-bold margin-right-auto"
+          style="color: var(--color-text-secondary); font-size: 0.875em"
+          (click)="toggleAlert()"
+        >
+          ¿Olvidaste la contraseña?
+        </button>
       </div>
       <!-- Div para mostrar el mensaje de alerta -->
       <div *ngIf="showAlert" class="alert-box">
-        <p class="tittle-forgetpassword" style="text-align: center; font-size: 1.2em; font-weight: bold;">¿Has olvidado tu contraseña?</p>
-        <p class="subtitle-forgetpassword">Introduce tu dirección de correo electrónico y te enviaremos un enlace para restablecer tu contraseña.</p>
-        <input type="email" placeholder="Introduce tu correo"/>
+        <p
+          class="tittle-forgetpassword"
+          style="text-align: center; font-size: 1.2em; font-weight: bold"
+        >
+          ¿Has olvidado tu contraseña?
+        </p>
+        <p class="subtitle-forgetpassword">
+          Introduce tu dirección de correo electrónico y te enviaremos un enlace
+          para restablecer tu contraseña.
+        </p>
+        <input type="email" placeholder="Introduce tu correo" />
         <div class="buttons-forgetpassword">
-          <button (click)="sendEmail()" type="submit" class="b-forgetpassword-send">Enviar</button>
-          <button (click)="toggleAlert()" class="b-forgetpassword-close">Cerrar</button>
+          <button
+            (click)="sendEmail()"
+            type="submit"
+            class="b-forgetpassword-send"
+          >
+            Enviar
+          </button>
+          <button (click)="toggleAlert()" class="b-forgetpassword-close">
+            Cerrar
+          </button>
         </div>
       </div>
       <div class="my-4 fw-semibold">
-      <input class="button-primary" type="submit" value="Entrar"> 
+        <input class="button-primary" type="submit" value="Entrar" />
       </div>
       @if(error === true){
-      <p class="mt-3 text-center text-danger small">{{msg}}</p>
+      <p class="mt-3 text-center text-danger small">{{ msg }}</p>
       }
-      <p class="text-center">¿No tienes una cuenta? Regístrate <a routerLinkActive="active" aria-current="page" [routerLink]="['/dashboard', 'registrar']" title="Ir a registro">aquí</a></p>
+      <p class="text-center">
+        ¿No tienes una cuenta? Regístrate
+        <a
+          routerLinkActive="active"
+          aria-current="page"
+          [routerLink]="['/dashboard', 'registrar']"
+          title="Ir a registro"
+          >aquí</a
+        >
+      </p>
     </form>
   </div>
 </section>
+<footer class="mt-1">
+  <app-footer></app-footer>
+</footer>
