@@ -5,7 +5,7 @@ import { FilterHomeComponent } from './filter-home/filter-home.component';
 import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-home.component';
 import { MapaHomeComponent } from './mapa-home/mapa-home.component';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
-import { environment } from '../../../environments/environment';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-profesor-list-home',
