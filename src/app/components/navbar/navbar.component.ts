@@ -9,9 +9,9 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  login: boolean = true;
-  role:string = 'administrador';
-  notiCount: number = 0
+  login: boolean = false;
+  role:string = 'alumno';
+  notiCount: number = 1
   
 
   hasnoti():boolean{
