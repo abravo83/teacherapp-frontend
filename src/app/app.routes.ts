@@ -9,13 +9,23 @@ import { StudentsFormComponent } from './pages/students-form/students-form.compo
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'logout', component: LogoutComponent },
+
   {
     path: 'profile',
     loadChildren: () =>
       import('./profile/profile.module').then((m) => m.ProfileModule),
   },
-  { path: 'login', component: LoginComponent },
-  { path: 'logout', component: LogoutComponent },
+
+  {
+    path: 'signup',
+    component: RegisterComponent,
+    children: [
+      { path: 'nuevo-profesor', component: TeachersFormComponent },
+      { path: 'nuevo-alumno', component: StudentsFormComponent },
+    ],
+  },
 
   {
     path: 'dashboard',
