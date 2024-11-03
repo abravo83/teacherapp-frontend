@@ -1,0 +1,31 @@
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+section {
+  font-family: "Work Sans", sans-serif;
+}
+input {
+  background-color: #f6f6f6;
+}
+
+.title {
+  color: var(--color-button2);
+  background-color: var(--color-button4);
+  border-radius: 8px;
+}
+
+.button-primary {
+  background-color: var(--color-button1);
+}
+.button-secondary {
+  background-color: var(--color-button2);
+  color: var(--color-text-secondary);
+  padding: 0.5em 1em;
+  width: 100%;
+  border: none;
+  border-radius: 3px;
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.container {
+  max-width: 800px;
+  width: 90%;
+}

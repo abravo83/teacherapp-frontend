@@ -1,16 +1,16 @@
 /* Estilos generales app, guardadas en custom properties */
 :root {
   --color-text-main: #020202;
-  --color-text-secondary: #3F3F44;
-  --color-text-tertiary: #b2b2b4; 
-  --color-background-main:#ffffff;
+  --color-text-secondary: #3f3f44;
+  --color-text-tertiary: #b2b2b4;
+  --color-background-main: #ffffff;
   --color-background-secondary: #f6f6f6;
-  --color-button1: #FDCB9E;
-  --color-button2: #CCEABB;
-  --color-button3: #FCF5EE;
-  --color-link-verde: #CCEABB;
-  --color-chat-recibido: #F1F1F1;
-  --color-chat-enviado: #3F3F44;
+  --color-button1: #fdcb9e;
+  --color-button2: #cceabb;
+  --color-button3: #fcf5ee;
+  --color-link-verde: #cceabb;
+  --color-chat-recibido: #f1f1f1;
+  --color-chat-enviado: #3f3f44;
   --font-family: Work Sans, Arial, sans-serif;
   --font-size-base: 16px;
   --line-height-base: 1.5;
@@ -18,8 +18,9 @@
   --padding-base: 0;
 }
 
-html, body {
-  height: 100%;
+html,
+body {
+  /* height: 100%; */
   color: var(--color-text-main);
   background-color: var(--color-background-main);
   font-family: var(--font-family);
@@ -27,16 +28,28 @@ html, body {
   line-height: var(--line-height-base);
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: var(--font-family);
   color: var(--color-text-main);
   margin-bottom: 0.5em;
 }
 
+.wrapper {
+  max-width: 1300px;
+  margin: 60px auto 0;
+  overflow: auto;
+  min-height: calc(100vh - 172px);
+}
+
 /* Enlaces */
 a {
-    color: var(--color-link-verde);
-    text-decoration: none;
+  color: var(--color-link-verde);
+  text-decoration: none;
 }
 
 a:hover {
@@ -53,10 +66,9 @@ a:hover {
   width: 100%;
   border: none;
   border-radius: 3px;
-  transition: background-color 0.5s ease, box-shadow 0.5s ease;}
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
 
-  .button-primary:hover {
-    box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3); /* Sombra cuando el cursor está sobre el botón */
-  }
-
-
+.button-primary:hover {
+  box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3); /* Sombra cuando el cursor está sobre el botón */
+}
