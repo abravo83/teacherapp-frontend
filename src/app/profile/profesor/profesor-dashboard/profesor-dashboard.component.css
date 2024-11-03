@@ -4,7 +4,7 @@
   }
   
   .dashboard-content {
-    margin-left: 250px; /* Ajuste igual al ancho del sidebar */
+    margin-left: 250px;
     padding: 20px;
     flex: 1;
     background-color: var(--color-background-secondary);

@@ -1,10 +1,9 @@
 <app-navbar></app-navbar>
 
 <div class="dashboard-container">
-  <!-- Sidebar que contiene el menú de navegación -->
   <app-sidebar-menu></app-sidebar-menu>
 
-  <!-- Contenido principal -->
+
   <section class="dashboard-content">
     <app-welcome-message [role]="'Profesor'"></app-welcome-message>
     <router-outlet></router-outlet>

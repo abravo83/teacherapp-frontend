@@ -1,15 +1,15 @@
 :host {
     position: fixed;
-    top: 80px; /* Ajusta esta medida para que esté justo debajo del navbar */
+    top: 80px; 
     left: 0;
     width: 250px;
-    height: calc(100vh - 80px); /* Ajusta la altura para evitar que se sobreponga al navbar */
+    height: calc(100vh - 80px); 
     background-color: var(--color-background-main);
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
     display: flex;
     flex-direction: column;
     z-index: 1000;
-    padding-top: 20px; /* Espacio superior dentro del sidebar */
+    padding-top: 20px; 
   }
   
   ul {
