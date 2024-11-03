@@ -2,12 +2,12 @@ import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Imateria } from '../../../interfaces/imateria';
 import { ProfesoresService } from '../../../services/profesores.service';
-import { JsonPipe } from '@angular/common';
+import { CommonModule, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'app-filter-home',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, CommonModule],
   templateUrl: './filter-home.component.html',
   styleUrl: './filter-home.component.css',
 })
@@ -17,13 +17,18 @@ export class FilterHomeComponent {
   //varialbles
   materiaList: Imateria[] = [];
   experienciaList: any[] = [];
+  showFilters: boolean = false;
 
-  //output
   @Output() filtro_emitido: EventEmitter<[any, any, any]> = new EventEmitter();
 
   ngOnInit() {
     this.materiaList = this.profesoresService.getAllMaterias();
   }
+  toggleFilters() {
+    this.showFilters = !this.showFilters;
+    console.log('toggleFilters called, showFilters is now:', this.showFilters);
+  }
+
   selectMateria(filterFormValue: any) {
     let idMateria = Number(filterFormValue.materiaId);
 

@@ -1,56 +1,49 @@
-<h2>El Profesor perfecto mas cerca de ti</h2>
+<h2>El <strong>profesor perfecto</strong> más cerca de ti</h2>
 
-<div class="border border-1 border-dark rounded-1 p-3">
-  <h2 class="border-bottom border-1">Filtros</h2>
-
-  <form #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
-    <div class="d-flex justify-content-between">
-      <div class="text-center">
-        <h5>Materias</h5>
-        <select
-          (change)="selectMateria(filterForm.value)"
-          class="form-select"
-          name="materiaId"
-          ngModel
-        >
-          <option value="">Todas las materias</option>
-          @for (materia of materiaList; track materia.id) {
-          <option [value]="materia.id">{{ materia.nombre }}</option>
-          }
-        </select>
-      </div>
-
-      <div class="text-center">
-        <h5>Experiencia</h5>
-        <select
-          (change)="selectMateria(filterForm.value)"
-          class="form-select"
-          name="experiencia"
-          ngModel
-        >
-          <option [value]="[0, 10000000]">Todo</option>
-          <option [value]="[0, 12]">Hasta 1 año</option>
-          <option [value]="[13, 24]">Entre 1 y 2 años</option>
-          <option [value]="[25, 36]">Entre 2 y 3 años</option>
-          <option [value]="[37, 48]">Entre 3 y 4 años</option>
-          <option [value]="[49, 1000000]">Más de 4 años</option>
-        </select>
-      </div>
-      <div class="text-center">
-        <h5>Precio</h5>
-        <select
-          (change)="selectMateria(filterForm.value)"
-          class="form-select"
-          name="precio"
-          ngModel
-        >
-          <option [value]="[0, 10000000]">Todo</option>
-          <option [value]="[10, 50]">Entre 10 y 50 dolares</option>
-          <option [value]="[51, 75]">Entre 51 y 75 dolares</option>
-          <option [value]="[76, 100]">Entre 75 y 100 dolares</option>
-          <option [value]="[101, 100000000]">Más de 100 dolares</option>
-        </select>
-      </div>
-    </div>
-  </form>
+<div class="container-home-nav">
+  <div class="nav-home">
+    <ul>
+      <li>
+        <button (click)="toggleFilters()" style="cursor: pointer;" class="b-filters">Filtros</button>
+      <!-- </li>
+      <li> -->
+        <form *ngIf="showFilters" #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
+          <div class="d-flex justify-content-between">
+            <div class="text-center">
+              <h5>Materias</h5>
+              <select (change)="selectMateria(filterForm.value)" class="form-select" name="materiaId" ngModel>
+                <option value="0">Todas las materias</option>
+                <option *ngFor="let materia of materiaList" [value]="materia.id">{{ materia.nombre }}</option>
+              </select>
+            </div>
+            <div class="text-center">
+              <h5>Experiencia</h5>
+              <select (change)="selectMateria(filterForm.value)" class="form-select" name="experiencia" ngModel>
+                <option value="0,10000000">Todo</option>
+                <option value="0,12">Hasta 1 año</option>
+                <option value="13,24">Entre 1 y 2 años</option>
+                <option value="25,36">Entre 2 y 3 años</option>
+                <option value="37,48">Entre 3 y 4 años</option>
+                <option value="49,1000000">Más de 4 años</option>
+              </select>
+            </div>
+            <div class="text-center">
+              <h5>Precio</h5>
+              <select (change)="selectMateria(filterForm.value)" class="form-select" name="precio" ngModel>
+                <option value="0,10000000">Todo</option>
+                <option value="10,50">Entre 10 y 50 dólares</option>
+                <option value="51,75">Entre 51 y 75 dólares</option>
+                <option value="76,100">Entre 75 y 100 dólares</option>
+                <option value="101,100000000">Más de 100 dólares</option>
+              </select>
+            </div>
+          </div>
+        </form>
+      </li>
+      <li>
+        <button class="b-lastmonths" style="cursor: pointer;">Últimos meses
+        </button>
+      </li>
+    </ul>
+  </div>
 </div>

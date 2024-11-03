@@ -1,0 +1,31 @@
+ul {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    align-items: center;
+    justify-content: center;
+    align-content: stretch;
+    flex-wrap: nowrap;
+    flex-grow: 1;
+}
+
+li {
+    list-style: none;
+    padding: 0 15%;
+}
+
+.b-filters {
+    flex: 1 1 auto;
+    order: 1;
+    flex-basis: 50%;
+    padding: auto;
+}
+
+.b-lastmonths {
+    flex: 1 1 auto;
+    order: 2;
+    flex-basis: 50%;
+    padding: auto;
+
+}
+
