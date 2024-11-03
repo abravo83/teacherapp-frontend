@@ -2,24 +2,57 @@
   class="navbar navbar-expand-lg border-1 text-white shadow px-3 fixed-top z-1"
 >
   <div class="container-fluid px-4">
-    <div class="text-black">LOGO</div>
+    <div class="text-black">
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        aria-current="page"
+        [routerLink]="['/home']"
+        >LOGO</a
+      >
+    </div>
 
-    <button
-      class="navbar-toggler border-0 bg-white"
-      type="button"
-      data-bs-toggle="offcanvas"
-      data-bs-target="#menu"
-      aria-controls="menu"
-      aria-expanded="false"
-      aria-label="Toggle navigation"
-    >
-      <span class="navbar-toggler-icon"></span>
-    </button>
+    <div class="d-flex align-items-center justify-content-center">
+      <span>
+        @if(login === true && hasnoti()){
+        <ul class="navbar-nav hover-bg">
+          <li class="nav-item">
+            <a
+              class="nav-link position-relative d-lg-none"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', '']"
+              title="Notificaciones"
+            >
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
+            </a>
+          </li>
+        </ul>
+        }
+      </span>
 
+      <button
+        class="navbar-toggler border-0 bg-white"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#menu"
+        aria-controls="menu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
+        <span class="navbar-toggler-icon"></span>
+      </button>
+    </div>
     <div class="offcanvas offcanvas-start" id="menu">
       <div class="offcanvas-header border-bottom text-black">
         <a class="nav-link" routerLinkActive="active" aria-current="page"
-          >LOGO</a
+          >LOGooO</a
         >
 
         <button
@@ -28,7 +61,8 @@
           class="btn-close bg-white"
         ></button>
       </div>
-      @if(getlogin().islogin === false){
+
+      @if(login === false){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item px-lg-4">
@@ -62,7 +96,7 @@
         </ul>
       </div>
 
-      }@else if(getlogin().islogin === true && getlogin().role === 'admin' ){
+      }@else if(login === true && role === 'administrador' ){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item ocultarli mx-1">
@@ -72,7 +106,16 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
               title="Notificaciones"
-              ><i class="fa-regular fa-bell" style="font-size: 22px"></i
+            >
+              @if(hasnoti()){
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              }
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i
             ></a>
           </li>
 
@@ -135,6 +178,14 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
             >
+              @if(hasnoti()){
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              }
               <i class="fa-regular fa-bell" style="font-size: 22px"></i>
               Notificaciones
             </a>
@@ -196,7 +247,7 @@
         </ul>
       </div>
 
-      } @else if(getlogin().islogin === true && getlogin().role === 'alumno'){
+      } @else if(login === true && role === 'alumno'){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item ocultarli mx-1">
@@ -206,7 +257,16 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
               title="Notificaciones"
-              ><i class="fa-regular fa-bell" style="font-size: 22px"></i
+            >
+              @if(hasnoti()){
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              }
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i
             ></a>
           </li>
 
@@ -252,6 +312,14 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
             >
+              @if(hasnoti()){
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              }
               <i class="fa-regular fa-bell" style="font-size: 22px"></i>
               Notificaciones
             </a>
@@ -263,18 +331,7 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
             >
-              <svg
-                width="20"
-                height="22"
-                viewBox="0 0 20 23"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M20 18.4H3.33333C3.03865 18.4 2.75603 18.5212 2.54766 18.7368C2.33929 18.9525 2.22222 19.245 2.22222 19.55C2.22222 19.855 2.33929 20.1475 2.54766 20.3632C2.75603 20.5788 3.03865 20.7 3.33333 20.7H20V23H3.33333C2.44928 23 1.60143 22.6365 0.976311 21.9895C0.35119 21.3425 0 20.465 0 19.55V2.3C0 1.69 0.234126 1.10499 0.650874 0.673654C1.06762 0.242321 1.63285 0 2.22222 0H20V18.4ZM2.22222 16.1575C2.40222 16.1195 2.58778 16.1 2.77778 16.1H17.7778V2.3H2.22222V16.1575ZM14.4444 8.05H5.55556V5.75H14.4444V8.05Z"
-                  fill="#3F3F44"
-                />
-              </svg>
+              <i class="fa-solid fa-book" style="font-size: 22px"></i>
               Clases/Profesores</a
             >
           </li>
@@ -307,18 +364,27 @@
         </ul>
       </div>
 
-      } @else if(getlogin().islogin === true && getlogin().role === 'profesor'){
+      } @else if(login === true && role === 'profesor'){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item ocultarli mx-1">
             <a
-              class="nav-link"
+              class="nav-link position-relative"
               routerLinkActive="active"
               aria-current="page"
               [routerLink]="['/dashboard', '']"
               title="Notificaciones"
-              ><i class="fa-regular fa-bell" style="font-size: 22px"></i
-            ></a>
+            >
+              @if(hasnoti()){
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              }
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
+            </a>
           </li>
 
           <li class="nav-item ocultarli mx-1">
@@ -366,6 +432,14 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
             >
+              @if(hasnoti()){
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1"
+                style="font-size: 12px"
+                id="count-label"
+                >{{ notiCount }}</span
+              >
+              }
               <i class="fa-regular fa-bell" style="font-size: 22px"></i>
               Notificaciones
             </a>
@@ -377,19 +451,11 @@
               aria-current="page"
               [routerLink]="['/dashboard', '']"
             >
-              <svg
-                width="20"
-                height="22"
-                viewBox="0 0 20 23"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M20 18.4H3.33333C3.03865 18.4 2.75603 18.5212 2.54766 18.7368C2.33929 18.9525 2.22222 19.245 2.22222 19.55C2.22222 19.855 2.33929 20.1475 2.54766 20.3632C2.75603 20.5788 3.03865 20.7 3.33333 20.7H20V23H3.33333C2.44928 23 1.60143 22.6365 0.976311 21.9895C0.35119 21.3425 0 20.465 0 19.55V2.3C0 1.69 0.234126 1.10499 0.650874 0.673654C1.06762 0.242321 1.63285 0 2.22222 0H20V18.4ZM2.22222 16.1575C2.40222 16.1195 2.58778 16.1 2.77778 16.1H17.7778V2.3H2.22222V16.1575ZM14.4444 8.05H5.55556V5.75H14.4444V8.05Z"
-                  fill="#3F3F44"
-                />
-              </svg>
-              Clases/Profesores</a
+              <i
+                class="fa-duotone fa-solid fa-users"
+                style="font-size: 22px"
+              ></i>
+              Alumnos</a
             >
           </li>
 

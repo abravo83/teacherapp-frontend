@@ -9,17 +9,16 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  private login: boolean = false
-  private role:string = 'admin'
+  login: boolean = true;
+  role:string = 'administrador';
+  notiCount: number = 0
+  
 
-
-    getlogin(): {islogin:boolean; role:string}
-    {
-    return{
-      islogin: this.login,
-      role: this.role
-    }
+  hasnoti():boolean{
+    return this.notiCount>0;
   }
 
+
+   
 
 }
