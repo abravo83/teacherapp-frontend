@@ -1,1 +1,79 @@
-<p>my-account works!</p>
+<div class="account-container">
+  <h1>Hola, bienvenido {{ myAccountForm.get('usuario')?.get('nombre')?.value || 'Usuario' }}</h1>
+  <h2>General</h2>
+
+  <form [formGroup]="myAccountForm" (ngSubmit)="onSave()">
+    <div formGroupName="usuario">
+      <div>
+        <label>Nombre</label>
+        <input formControlName="nombre" />
+      </div>
+      <div>
+        <label>Apellidos</label>
+        <input formControlName="apellidos" />
+      </div>
+      <div>
+        <label>Email</label>
+        <input formControlName="email" type="email" />
+      </div>
+      <div>
+        <label>Teléfono</label>
+        <input formControlName="telefono" />
+      </div>
+    </div>
+
+    <div formGroupName="profesor">
+      <div>
+        <label>Precio por Hora</label>
+        <input formControlName="precio_hora" type="number" />
+      </div>
+      <div>
+        <label>Localización</label>
+        <input formControlName="localizacion" />
+      </div>
+      <div>
+        <label>Meses de Experiencia</label>
+        <input formControlName="meses_experiencia" type="number" />
+      </div>
+      <div formArrayName="materias">
+        <div *ngFor="let materia of materias.controls; let i = index">
+          <label>Materia {{ i + 1 }}</label>
+          <input [formControlName]="i" placeholder="Materia {{ i + 1 }}" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Información Adicional -->
+    <h2>Información Adicional</h2>
+    <div>
+      <label>Dirección</label>
+      <input formControlName="direccion" />
+    </div>
+    <div>
+      <label>Ciudad</label>
+      <input formControlName="ciudad" />
+    </div>
+    <div>
+      <label>Provincia</label>
+      <input formControlName="provincia" />
+    </div>
+    <div>
+      <label>Código Postal</label>
+      <input formControlName="codigo_postal" />
+    </div>
+    <div>
+      <label>País</label>
+      <input formControlName="pais" />
+    </div>
+    <div>
+      <label>Zona Horaria</label>
+      <input formControlName="zona_horaria" />
+    </div>
+    <div>
+      <label>Sobre mí</label>
+      <textarea formControlName="sobre_mi"></textarea>
+    </div>
+
+    <button type="submit">Guardar Cambios</button>
+  </form>
+</div>

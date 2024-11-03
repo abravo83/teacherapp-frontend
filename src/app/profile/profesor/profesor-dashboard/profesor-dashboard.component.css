@@ -1,0 +1,12 @@
+.dashboard-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .dashboard-content {
+    margin-left: 250px;
+    padding: 20px;
+    flex: 1;
+    background-color: var(--color-background-secondary);
+    color: var(--color-text-main);
+  }
