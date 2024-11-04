@@ -65,8 +65,10 @@ sendEmail() {
 
     // Método para validar el formato del correo electrónico
     const validarFormato = (email: string): boolean => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el formato del correo
-        return re.test(email); // Retorna verdadero si el formato es válido
+        const re = /.+@.+\..+/; 
+        email = email.trim();
+        console.log(email);
+        return re.test(email); 
     };
 
     // Método para validar el dominio del correo electrónico
@@ -77,7 +79,7 @@ sendEmail() {
 
     // Validar el formato del correo electrónico
     if (!validarFormato(email)) {
-        alert('El formato del correo electrónico es incorrecto. Asegúrate de que incluya un "@" y no dejes espacios');
+        alert('El formato del correo electrónico es incorrecto. Asegúrate de que incluya un "@" y no dejes espacios.');
         return;
     }
 

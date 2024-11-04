@@ -43,11 +43,12 @@
           style="color: var(--color-text-secondary); font-size: 0.875em"
           (click)="toggleAlert()"
         >
-          ¿Olvidaste la contraseña?
+        ¿Has olvidado tu contraseña?
         </button>
       </div>
       <!-- Div para mostrar el mensaje de alerta -->
-      <div *ngIf="showAlert" class="alert-box">
+      <div *ngIf="showAlert" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.5);"></div>
+      <div *ngIf="showAlert" class="alert-box" >
         <p
           class="tittle-forgetpassword"
           style="text-align: center; font-size: 1.2em; font-weight: bold"
@@ -58,7 +59,7 @@
           Introduce tu dirección de correo electrónico y te enviaremos un enlace
           para restablecer tu contraseña.
         </p>
-        <input type="email" placeholder="Introduce tu correo" />
+        <input type="email" name="email" placeholder="Introduce tu correo" [(ngModel)]="email" class="input-email"/>
         <div class="buttons-forgetpassword">
           <button
             (click)="sendEmail()"
