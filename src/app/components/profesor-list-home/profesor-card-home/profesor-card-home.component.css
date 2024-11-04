@@ -3,3 +3,32 @@
 section{
     font-family: "Work Sans", sans-serif;
 }
+
+.study-fields {
+    display: flex;
+    flex-direction: row;
+    padding: 1;                       
+    margin: 10px;                        
+    /* list-style-type: none;  */
+    gap: 1em;
+}
+
+.ul li {
+    display: inline-block;    /* el de arriba queda raro */
+    margin: 0 10px;    
+}
+
+.button-contact {
+    background-color: var(--color-button1);
+    color: var(--color-text-secondary);
+    padding: 0.5em 1em;
+    width: 100%;
+    border: none;
+    border-radius: 3px;
+    transition: background-color 0.5s ease, box-shadow 0.5s ease;
+    }
+      
+.button-contact:hover {
+    box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3); /* Sombra cuando el cursor está sobre el botón */
+    }
+      
