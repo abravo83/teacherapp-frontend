@@ -67,3 +67,7 @@ a {
 .login-wrapper {
   min-height: calc(100vh - 148px);
 }
+
+.error-box{
+  height: 21px;
+}
