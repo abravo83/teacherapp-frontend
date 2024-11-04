@@ -1,5 +1,5 @@
 <div class="account-container">
-  <h1>Hola, bienvenido {{ myAccountForm.get('usuario')?.get('nombre')?.value || 'Usuario' }}</h1>
+
   <h2>General</h2>
 
   <form [formGroup]="myAccountForm" (ngSubmit)="onSave()">

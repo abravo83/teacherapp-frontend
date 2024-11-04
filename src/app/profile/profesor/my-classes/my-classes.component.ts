@@ -5,7 +5,7 @@ import { TeacherDataService } from '../../../services/teacher-data.service';
 @Component({
   selector: 'app-my-classes',
   templateUrl: './my-classes.component.html',
-  styleUrl: './my-classes.component.css',
+  styleUrls: ['./my-classes.component.css'],
   encapsulation: ViewEncapsulation.None,
 })
 export class MyClassesComponent {

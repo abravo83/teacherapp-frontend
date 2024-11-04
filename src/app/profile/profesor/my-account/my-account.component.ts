@@ -2,8 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
 import { Iusuario } from '../../../interfaces/iusuario';
 import { Iprofesor } from '../../../interfaces/iprofesor';
-
-// Importar las bases de datos simuladas
 import { USUARIOS } from '../../../db/usuarios';
 import { DATOS_PROFESORES } from '../../../db/profesores';
 
@@ -42,7 +40,6 @@ export class MyAccountComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    // Obtener el usuario y profesor actual desde los datos simulados
     const usuarioData = USUARIOS.find((user) => user.id === this.usuarioId);
     const profesorData = DATOS_PROFESORES.find(
       (profesor) => profesor.usuarios_id === this.usuarioId
@@ -55,7 +52,6 @@ export class MyAccountComponent implements OnInit {
     if (profesorData) {
       this.myAccountForm.get('profesor')?.patchValue(profesorData);
 
-      // Inicializar el FormArray de materias
       const materiasFormArray = this.myAccountForm.get([
         'profesor',
         'materias',

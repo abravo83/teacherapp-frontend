@@ -1,7 +1,7 @@
-<div class="classes-header">
-  <h2>Clases</h2>
-  <div class="filters">
-    <label>
+<div class="header">
+  <h2 class="section-title text-center">Clases</h2>
+  <div class="filters d-flex justify-content-between mt-3">
+    <label class="filter-option">
       Ordenar por
       <select>
         <option>Nombre</option>
@@ -9,7 +9,7 @@
         <option>Número de clases</option>
       </select>
     </label>
-    <label>
+    <label class="filter-option">
       Últimos
       <select>
         <option>12 meses</option>
@@ -22,13 +22,13 @@
 </div>
 
 <div class="courses-list">
-  <h2>Mis Clases</h2>
+  <h3>Mis Clases</h3>
   <table>
     <thead>
       <tr>
         <th>Nombre Alumno</th>
         <th>Clase</th>
-        <th>Fecha</th>
+        <th>Fecha de Registro</th>
         <th>Nº Clases</th>
         <th>Precio Clase</th>
         <th>Total Pagado</th>
@@ -44,7 +44,7 @@
           </div>
         </td>
         <td>{{ course.claseNombre }}</td>
-        <td>{{ course.fecha | date: 'dd/MM/yyyy' }}</td>
+        <td>{{ course.fecha_registro | date: 'dd/MM/yyyy' }}</td>
         <td>{{ course.numClases }}</td>
         <td>{{ course.precioClase }}€</td>
         <td>{{ course.totalPagado }}€</td>

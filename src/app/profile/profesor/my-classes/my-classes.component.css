@@ -1,74 +1,87 @@
-.classes-header {
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+
+.my-classes-container {
+  display: flex;
+  font-family: "Work Sans", sans-serif;
+  width: 100%; /* Para que abarque todo el ancho */
+  padding: 20px;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Sombra sutil */
+  border-radius: 8px;
+}
+
+/* Estilo para el sidebar */
+app-sidebar-menu {
+  width: 200px; /* Ancho fijo del sidebar */
+  margin-right: 20px; /* Espacio entre el sidebar y el contenido principal */
+}
+
+/* Contenedor principal */
+.main-content {
+  flex-grow: 1; /* Para que ocupe el espacio restante */
+  max-width: 900px; /* Limitar el ancho del contenedor */
+  margin: 0 auto; /* Centramos el contenido dentro del contenedor */
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 8px;
+}
+
+/* Título de sección */
+.section-title {
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+/* Estilos para los filtros */
+.filters {
+  width: 100%;
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  margin-bottom: 1rem;
+  gap: 20px;
 }
 
-.classes-header h2 {
-  font-size: 1.8rem;
-  font-weight: bold;
-  color: var(--color-text-main);
+.filter-option select {
+  padding: 5px;
+  border-radius: 4px;
 }
 
-.filters label {
-  margin-right: 1rem;
-  color: var(--color-text-secondary);
-  font-size: 0.9rem;
+/* Listado de cursos */
+.courses-list {
+  width: 100%;
 }
 
-.filters select {
-  padding: 0.5rem;
-  font-size: 0.9rem;
+.sub-title {
+  font-size: 22px;
+  font-weight: 500;
 }
 
+/* Tabla */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 10px;
+}
+
+th, td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+th {
+  font-weight: 600;
+}
+
+/* Foto del alumno */
 .alumno-foto {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  margin-right: 0.5rem;
-  vertical-align: middle;
+  object-fit: cover;
 }
 
-.courses-list {
-  margin: 2rem;
+.student-info {
+  display: flex;
+  align-items: center;
 }
 
-.courses-list h2 {
-  color: var(--color-text-main);
-  font-size: 1.8rem;
-  font-weight: bold;
-  margin-bottom: 1rem;
-}
-
-.courses-list table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: var(--font-family);
-}
-
-.courses-list th,
-.courses-list td {
-  padding: 1rem;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.courses-list th {
-  background-color: var(--color-background-main);
-  color: var(--color-text-secondary);
-  font-weight: 600;
-}
-
-.courses-list td {
-  color: var(--color-text-main);
-}
-
-.courses-list tr:nth-child(even) {
-  background-color: var(--color-background-secondary);
-}
-
-.courses-list td:last-child {
-  color: var(--color-link-verde);
-  font-weight: bold;
-}
