@@ -7,7 +7,7 @@ import {
   AbstractControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { IProfesorCompleto } from '../../interfaces/iprofesor-completo.interface';
+import { IRespuestaTeachersForm } from '../../interfaces/iRespuestaTeachersForm.interface';
 import { ProfesoresService } from '../../services/profesores.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MATERIAS } from '../../db/materias.db';
@@ -103,7 +103,7 @@ export class TeachersFormComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
-        const profesor: IProfesorCompleto | undefined =
+        const profesor: IRespuestaTeachersForm | undefined =
           await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
           this.teacherForm.patchValue({

@@ -1,6 +1,6 @@
 import { Iusuario } from '../interfaces/iusuario';
 import { Imateria } from '../interfaces/imateria';
-export interface IProfesorCompleto {
+export interface IRespuestaTeachersForm {
   usuario: Iusuario;
   profesor: {
     id?: number; 

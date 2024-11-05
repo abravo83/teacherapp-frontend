@@ -8,7 +8,7 @@ import { MATERIAS } from '../db/materias';
 import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
 import { PROFESORES } from '../db/profesoresForm.db';
-import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
+import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -190,7 +190,7 @@ export class ProfesoresService {
   }
 
   //ARTURO
-  getProfesorById(id: number): Promise<IProfesorCompleto | undefined> {
+  getProfesorById(id: number): Promise<IRespuestaTeachersForm | undefined> {
     return new Promise((resolve) => {
       const profesor = PROFESORES.find((prof) => prof.usuario.id === id);
       resolve(profesor);
@@ -198,9 +198,9 @@ export class ProfesoresService {
   }
 
   async registroProfesor(
-    profesorData: IProfesorCompleto
-  ): Promise<IProfesorCompleto> {
-    const nuevoProfesor: IProfesorCompleto = {
+    profesorData: IRespuestaTeachersForm
+  ): Promise<IRespuestaTeachersForm> {
+    const nuevoProfesor: IRespuestaTeachersForm = {
       usuario: {
         id: PROFESORES.length + 1,
         ...profesorData.usuario,
@@ -216,8 +216,8 @@ export class ProfesoresService {
   }
 
   async actualizarProfesor(
-    profesorData: IProfesorCompleto
-  ): Promise<IProfesorCompleto> {
+    profesorData: IRespuestaTeachersForm
+  ): Promise<IRespuestaTeachersForm> {
     const index = PROFESORES.findIndex(
       (prof) =>
         prof.usuario.id === profesorData.usuario.id &&
