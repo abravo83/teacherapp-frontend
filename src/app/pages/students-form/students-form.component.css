@@ -29,3 +29,17 @@ input {
   max-width: 800px;
   width: 90%;
 }
+
+.form__img__profile {
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.form__last__row {
+  min-height: 250px;
+}
+
+.pointer {
+  cursor: pointer;
+}

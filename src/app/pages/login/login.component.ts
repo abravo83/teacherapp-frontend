@@ -52,14 +52,11 @@ export class LoginComponent {
 
 
   
-// Simulamos la lógica para enviar el correo
-
-
+//Desarrollo lógica de la alerta
 toggleAlert() {
     this.showAlert = !this.showAlert;
 }
 
-// Simulamos la lógica para enviar el correo
 sendEmail() {
     const email = this.email;
 

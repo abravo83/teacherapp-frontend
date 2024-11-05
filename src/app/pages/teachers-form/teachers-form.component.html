@@ -15,6 +15,38 @@
       class="mt-4"
     >
       <div class="row">
+        <div class="mx-auto my-2 fw-light col-md-6 text-center">
+          <label
+            class="form-label"
+            for="foto"
+            title="Modifica tu imagen de perfil"
+            >Foto
+            <img
+              [src]="profileImgUrl"
+              alt="Imagen de perfil"
+              class="form__img__profile img-fluid"
+            />
+          </label>
+          <input
+            class="form-control visually-hidden"
+            type="file"
+            id="foto"
+            formControlName="foto"
+            accept="image/png, image/jpeg, image/webp"
+            (change)="obtenerImagen($event)"
+          />
+          @if(checkControl('foto', 'maxlength')) {
+          <p class="text-danger">
+            La URL de la foto no debe exceder 255 caracteres
+          </p>
+          } @if(checkControl('foto', 'pattern')) {
+          <p class="text-danger">
+            Debe ser una URL válida de imagen (.png, .jpg, .jpeg, .webp)
+          </p>
+          }
+        </div>
+      </div>
+      <div class="row">
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="nombre">Nombre</label>
           <input
@@ -46,6 +78,42 @@
           <p class="text-danger">
             Los apellidos no deben exceder 150 caracteres
           </p>
+          }
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="my-2 fw-light col-md-6">
+          <label class="form-label" for="email">Email</label>
+          <input
+            class="form-control"
+            type="email"
+            id="email"
+            formControlName="email"
+            placeholder="Introduce el email"
+          />
+          @if(checkControl('email', 'required')) {
+          <p class="text-danger">El email es obligatorio</p>
+          } @if(checkControl('email', 'email')) {
+          <p class="text-danger">Formato de email inválido</p>
+          } @if(checkControl('email', 'maxlength')) {
+          <p class="text-danger">El email no debe exceder 60 caracteres</p>
+          }
+        </div>
+
+        <div class="my-2 fw-light col-md-6">
+          <label class="form-label" for="telefono">Teléfono</label>
+          <input
+            class="form-control"
+            type="text"
+            id="telefono"
+            formControlName="telefono"
+            placeholder="Introduce el teléfono"
+          />
+          @if(checkControl('telefono', 'required')) {
+          <p class="text-danger">El teléfono es obligatorio</p>
+          } @if(checkControl('telefono', 'pattern')) {
+          <p class="text-danger">El teléfono debe tener 9 dígitos</p>
           }
         </div>
       </div>
@@ -95,42 +163,6 @@
 
       <div class="row">
         <div class="my-2 fw-light col-md-6">
-          <label class="form-label" for="email">Email</label>
-          <input
-            class="form-control"
-            type="email"
-            id="email"
-            formControlName="email"
-            placeholder="Introduce el email"
-          />
-          @if(checkControl('email', 'required')) {
-          <p class="text-danger">El email es obligatorio</p>
-          } @if(checkControl('email', 'email')) {
-          <p class="text-danger">Formato de email inválido</p>
-          } @if(checkControl('email', 'maxlength')) {
-          <p class="text-danger">El email no debe exceder 60 caracteres</p>
-          }
-        </div>
-
-        <div class="my-2 fw-light col-md-6">
-          <label class="form-label" for="telefono">Teléfono</label>
-          <input
-            class="form-control"
-            type="text"
-            id="telefono"
-            formControlName="telefono"
-            placeholder="Introduce el teléfono"
-          />
-          @if(checkControl('telefono', 'required')) {
-          <p class="text-danger">El teléfono es obligatorio</p>
-          } @if(checkControl('telefono', 'pattern')) {
-          <p class="text-danger">El teléfono debe tener 9 dígitos</p>
-          }
-        </div>
-      </div>
-
-      <div class="row">
-        <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="precio_hora">Precio por Hora</label>
           <input
             class="form-control"
@@ -168,7 +200,7 @@
         </div>
       </div>
 
-      <div class="row">
+      <div class="form__last__row row">
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="localizacion">Localización</label>
           <input
@@ -184,28 +216,6 @@
           </p>
           }
         </div>
-        <div class="my-2 fw-light col-md-6">
-          <label class="form-label" for="foto">Foto</label>
-          <input
-            class="form-control"
-            type="text"
-            id="foto"
-            formControlName="foto"
-            placeholder="URL de la foto (opcional)"
-          />
-          @if(checkControl('foto', 'maxlength')) {
-          <p class="text-danger">
-            La URL de la foto no debe exceder 255 caracteres
-          </p>
-          } @if(checkControl('foto', 'pattern')) {
-          <p class="text-danger">
-            Debe ser una URL válida de imagen (.png, .jpg, .jpeg, .webp)
-          </p>
-          }
-        </div>
-      </div>
-
-      <div class="row">
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="materias">Materias</label>
           <button
@@ -241,11 +251,11 @@
         </div>
       </div>
 
-      <div class="mt-4 text-center">
+      <div class="mt-4 mb-5 text-center">
         <input
           type="submit"
           [value]="tipo"
-          class="button-primary"
+          class="button-primary pointer"
           [disabled]="!teacherForm.valid || errorForm.length > 0"
         />
       </div>
