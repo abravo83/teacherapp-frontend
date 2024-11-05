@@ -1,5 +1,12 @@
 import { Component, OnInit, inject } from '@angular/core';
-import { FormControl, FormGroup, Validators, ValidatorFn, AbstractControl, ReactiveFormsModule } from '@angular/forms';
+import {
+  FormControl,
+  FormGroup,
+  Validators,
+  ValidatorFn,
+  AbstractControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { IProfesorCompleto } from '../../interfaces/iprofesor-completo.interface';
 import { ProfesoresService } from '../../services/profesores.service';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -14,7 +21,7 @@ import { IMateriaProfesor } from '../../interfaces/imateria-profesor.interfaces'
   standalone: true,
   templateUrl: './teachers-form.component.html',
   styleUrls: ['./teachers-form.component.css'],
-  imports: [ReactiveFormsModule, CommonModule]
+  imports: [ReactiveFormsModule, CommonModule],
 })
 export class TeachersFormComponent implements OnInit {
   profesoresService = inject(ProfesoresService);
@@ -27,30 +34,59 @@ export class TeachersFormComponent implements OnInit {
   materiasList = MATERIAS;
   limiteMateriasExcedido = false;
   desplegableAbierto = false;
+  profileImgUrl: string = '/img/no_profile_freepick.webp';
 
   constructor() {
-    this.teacherForm = new FormGroup({
-      id: new FormControl(null), 
-      nombre: new FormControl(null, [Validators.required, Validators.maxLength(45)]),
-      apellidos: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
-      email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(60)]),
-      password: new FormControl(null, [
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(255),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/)
-      ]),
-      repitepassword: new FormControl(null, [Validators.required]),
-      foto: new FormControl(null, [Validators.maxLength(255), Validators.pattern(/^https?:\/\/.*\.(?:png|jpg|jpeg|webp)$/)]),
-      telefono: new FormControl(null, [Validators.required, Validators.pattern(/^\d{9}$/)]),
-      precio_hora: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(99.99)]),
-      localizacion: new FormControl(null, [Validators.maxLength(254)]),
-      meses_experiencia: new FormControl(null, [Validators.required, Validators.min(0)]),
-      materias: new FormControl([], [Validators.required])
-    }, { validators: this.validadorCoincidenciaContraseñas });
+    this.teacherForm = new FormGroup(
+      {
+        id: new FormControl(null),
+        nombre: new FormControl(null, [
+          Validators.required,
+          Validators.maxLength(45),
+        ]),
+        apellidos: new FormControl(null, [
+          Validators.required,
+          Validators.maxLength(150),
+        ]),
+        email: new FormControl(null, [
+          Validators.required,
+          Validators.email,
+          Validators.maxLength(60),
+        ]),
+        password: new FormControl(null, [
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(255),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
+        ]),
+        repitepassword: new FormControl(null, [Validators.required]),
+        foto: new FormControl(null, [
+          Validators.maxLength(255),
+          Validators.pattern(/^https?:\/\/.*\.(?:png|jpg|jpeg|webp)$/),
+        ]),
+        telefono: new FormControl(null, [
+          Validators.required,
+          Validators.pattern(/^\d{9}$/),
+        ]),
+        precio_hora: new FormControl(null, [
+          Validators.required,
+          Validators.min(0),
+          Validators.max(99.99),
+        ]),
+        localizacion: new FormControl(null, [Validators.maxLength(254)]),
+        meses_experiencia: new FormControl(null, [
+          Validators.required,
+          Validators.min(0),
+        ]),
+        materias: new FormControl([], [Validators.required]),
+      },
+      { validators: this.validadorCoincidenciaContraseñas }
+    );
   }
 
-  validadorCoincidenciaContraseñas: ValidatorFn = (group: AbstractControl): { [key: string]: any } | null => {
+  validadorCoincidenciaContraseñas: ValidatorFn = (
+    group: AbstractControl
+  ): { [key: string]: any } | null => {
     const password = group.get('password')?.value;
     const repitepassword = group.get('repitepassword')?.value;
     return password === repitepassword ? null : { checkpassword: true };
@@ -67,10 +103,11 @@ export class TeachersFormComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
-        const profesor: IProfesorCompleto | undefined = await this.profesoresService.getProfesorById(Number(params.id));
+        const profesor: IProfesorCompleto | undefined =
+          await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
           this.teacherForm.patchValue({
-            id: profesor.usuario.id, 
+            id: profesor.usuario.id,
             nombre: profesor.usuario.nombre,
             apellidos: profesor.usuario.apellidos,
             email: profesor.usuario.email,
@@ -87,9 +124,9 @@ export class TeachersFormComponent implements OnInit {
   }
 
   obtenerMateriasProfesor(profesorId: number): number[] {
-    return MATERIAS_PROFESORES
-      .filter((relacion: IMateriaProfesor) => relacion.usuarios_id === profesorId)
-      .map((relacion: IMateriaProfesor) => relacion.materias_id);
+    return MATERIAS_PROFESORES.filter(
+      (relacion: IMateriaProfesor) => relacion.usuarios_id === profesorId
+    ).map((relacion: IMateriaProfesor) => relacion.materias_id);
   }
 
   alternarDesplegable() {
@@ -127,18 +164,18 @@ export class TeachersFormComponent implements OnInit {
         password: this.teacherForm.value.password,
         foto: this.teacherForm.value.foto,
         rol: 'profesor',
-        activo: true
+        activo: true,
       },
       profesor: {
         precio_hora: this.teacherForm.value.precio_hora,
         localizacion: this.teacherForm.value.localizacion,
         telefono: this.teacherForm.value.telefono,
         meses_experiencia: this.teacherForm.value.meses_experiencia,
-        validado: false
+        validado: false,
       },
-      materias: this.teacherForm.value.materias
+      materias: this.teacherForm.value.materias,
     };
-    
+
     console.log(formData);
 
     try {
@@ -148,7 +185,7 @@ export class TeachersFormComponent implements OnInit {
           icon: 'success',
           title: 'Éxito',
           text: 'Profesor actualizado exitosamente.',
-          confirmButtonColor: '#28a745'
+          confirmButtonColor: '#28a745',
         });
       } else {
         await this.profesoresService.registroProfesor(formData);
@@ -156,12 +193,52 @@ export class TeachersFormComponent implements OnInit {
           icon: 'success',
           title: 'Éxito',
           text: 'Profesor registrado exitosamente.',
-          confirmButtonColor: '#28a745'
+          confirmButtonColor: '#28a745',
         });
       }
       this.router.navigate(['/home']);
     } catch (error) {
       this.errorForm = error as any;
+    }
+  }
+
+  obtenerImagen(event: Event): void {
+    // Limitar el tamano maximo de la imagen
+    const maxFileSize = 2 * 1024 * 1024; // 2MB
+
+    // Obtener el archivo
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const archivo = input.files[0];
+
+      if (archivo.size > maxFileSize) {
+        this.profileImgUrl = '/img/no_profile_freepick.webp';
+        this.teacherForm.patchValue({
+          foto: null,
+        });
+
+        // Mostramos un mensaje de error
+        Swal.fire({
+          icon: 'warning',
+          title: 'Imagen demasiado grande.',
+          text: 'La imagen excede el tamaño maximo de 2MB.',
+          confirmButtonColor: '#28a745',
+        });
+        return;
+      }
+      // Crear URL temporal para mostrar la imagen
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target?.result) {
+          this.profileImgUrl = e.target.result as string;
+        }
+      };
+      reader.readAsDataURL(archivo);
+
+      // Guardar el archivo en el formulario
+      this.teacherForm.patchValue({
+        foto: archivo,
+      });
     }
   }
 }
