@@ -6,6 +6,11 @@ import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { TeachersFormComponent } from './pages/teachers-form/teachers-form.component';
 import { StudentsFormComponent } from './pages/students-form/students-form.component';
+import { ProfesorDashboardComponent } from './profile/profesor/profesor-dashboard/profesor-dashboard.component';
+import { MyAccountComponent } from './profile/profesor/my-account/my-account.component';
+import { MyStudentsComponent } from './profile/profesor/my-students/my-students.component';
+import { MessagesComponent } from './profile/profesor/messages/messages.component';
+import { ReviewsComponent } from './profile/profesor/reviews/reviews.component';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
@@ -14,8 +19,14 @@ export const routes: Routes = [
 
   {
     path: 'profile',
-    loadChildren: () =>
-      import('./profile/profile.module').then((m) => m.ProfileModule),
+    component: ProfesorDashboardComponent,
+    children: [
+      { path: 'my-account', component: MyAccountComponent },
+      { path: 'my-students', component: MyStudentsComponent },
+      { path: 'messages', component: MessagesComponent },
+      { path: 'reviews', component: ReviewsComponent },
+      { path: '', redirectTo: 'my-account', pathMatch: 'full' },
+    ],
   },
 
   {

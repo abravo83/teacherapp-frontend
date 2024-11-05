@@ -1,14 +1,24 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import {
+  FormBuilder,
+  FormGroup,
+  Validators,
+  FormArray,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { Iusuario } from '../../../interfaces/iusuario';
 import { Iprofesor } from '../../../interfaces/iprofesor';
 import { USUARIOS } from '../../../db/usuarios';
 import { DATOS_PROFESORES } from '../../../db/profesores';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-my-account',
   templateUrl: './my-account.component.html',
   styleUrl: './my-account.component.css',
+  standalone: true,
+  imports: [DatePipe, FormsModule, ReactiveFormsModule, CommonModule],
 })
 export class MyAccountComponent implements OnInit {
   myAccountForm: FormGroup;

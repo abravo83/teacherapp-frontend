@@ -10,13 +10,13 @@ import { RouterModule } from '@angular/router';
   selector: 'app-profesor-dashboard',
   templateUrl: './profesor-dashboard.component.html',
   styleUrls: ['./profesor-dashboard.component.css'],
-  standalone: true, // Declaramos el componente como standalone
+  standalone: true,
   imports: [
     NavbarComponent,
     FooterComponent,
     SidebarMenuComponent,
     WelcomeMessageComponent,
-    RouterModule, // Importamos RouterModule para poder usar router-outlet
+    RouterModule,
   ],
 })
 export class ProfesorDashboardComponent implements OnInit {
