@@ -22,12 +22,13 @@ import { CommonModule, DatePipe } from '@angular/common';
 })
 export class MyAccountComponent implements OnInit {
   myAccountForm: FormGroup;
+  fotoUrl: string | null = null; // Añadimos esta propiedad para la foto
   usuarioId = 1; // Este ID se puede obtener dinámicamente del sistema de autenticación
 
   constructor(private fb: FormBuilder) {
     this.myAccountForm = this.fb.group({
       usuario: this.fb.group({
-        nombre: ['', Validators.required],
+        nombre: ['', [Validators.required, Validators.maxLength(45)]],
         apellidos: ['', Validators.required],
         email: ['', [Validators.required, Validators.email]],
         password: [''],
@@ -40,16 +41,12 @@ export class MyAccountComponent implements OnInit {
         materias: this.fb.array([]),
       }),
       direccion: [''],
-      ciudad: [''],
-      provincia: [''],
-      codigo_postal: [''],
-      pais: [''],
-      zona_horaria: [''],
       sobre_mi: [''],
     });
   }
 
   ngOnInit(): void {
+    // Cargar datos de usuario y profesor
     const usuarioData = USUARIOS.find((user) => user.id === this.usuarioId);
     const profesorData = DATOS_PROFESORES.find(
       (profesor) => profesor.usuarios_id === this.usuarioId
@@ -62,10 +59,10 @@ export class MyAccountComponent implements OnInit {
     if (profesorData) {
       this.myAccountForm.get('profesor')?.patchValue(profesorData);
 
-      const materiasFormArray = this.myAccountForm.get([
-        'profesor',
-        'materias',
-      ]) as FormArray;
+      // Cargar materias en el formulario
+      const materiasFormArray = this.myAccountForm.get(
+        'profesor.materias'
+      ) as FormArray;
       profesorData.materias.forEach((materia: any) =>
         materiasFormArray.push(this.fb.control(materia))
       );
@@ -76,7 +73,26 @@ export class MyAccountComponent implements OnInit {
     return this.myAccountForm.get('profesor.materias') as FormArray;
   }
 
-  onSave(): void {
+  // Método para manejar la imagen seleccionada
+  obtenerImagen(event: Event): void {
+    const input = event.target as HTMLInputElement;
+    if (input.files && input.files[0]) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.fotoUrl = reader.result as string;
+      };
+      reader.readAsDataURL(input.files[0]);
+    }
+  }
+
+  // Método de validación de errores
+  checkControl(controlName: string, errorType: string): boolean {
+    const control = this.myAccountForm.get(controlName);
+    return !!(control && control.hasError(errorType) && control.touched);
+  }
+
+  // Método para guardar cambios
+  guardarCambios(): void {
     if (this.myAccountForm.valid) {
       const formData: Iprofesor = this.myAccountForm.value;
       console.log('Datos actualizados:', formData);
