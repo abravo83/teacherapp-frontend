@@ -18,20 +18,24 @@
       
 
         <div class="study-general">
-          <h6>Áreas de Conocimiento:</h6>
+          <!-- <h6>Áreas de Conocimiento:</h6> -->
           @for (item of myProfesor.materias; track $index) {
           <ul class="study-fields">
             <li class="studies">{{ item }}</li>
           </ul>
           }
         </div>
-        <div>
-          <h6 class="card-text">
-            Meses de experiencia:
-             {{ myProfesor.meses_experiencia }}</h6>
-          <h6 class="card-text"> Precio por hora: {{ myProfesor.precio_hora }}€</h6>
+        <div class= "experience">
+          <h6 class="experience-prof">Meses de experiencia: </h6>
+          <div class="content-experience-prof"> {{ myProfesor.meses_experiencia }} </div>
+        </div>
+        <div class="price">
+          <!-- Precio por hora: dentro del h6 -->
+          <h6 class="price-prof"> </h6>
+          <div class="content-price-prof"> {{ myProfesor.precio_hora }}€ </div>
+        </div>
+        <div class="button-home-prof">
           <button class="button-contact" style="color:var(--color-text-primary); font-weight:500;">Contactar</button>
-          <!-- <a href="#" class="btn">Contactar</a> ESTO ESTABA EN LUGAR DEL BOTON-->
         </div>
       </div>
     </div>
