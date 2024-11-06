@@ -14,6 +14,11 @@ import { MateriasService } from '../../services/materias.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { MATERIAS_PROFESORES } from '../../db/materias_profesores.db';
+import { IMateriaProfesor } from '../../interfaces/imateria-profesor.interfaces';
+import { GooglemapsService } from '../../services/googlemaps.service';
+import { firstValueFrom } from 'rxjs';
+import { Feature } from '../../interfaces/icoordinates';
 
 @Component({
   selector: 'app-teacher-form',
@@ -24,10 +29,14 @@ import Swal from 'sweetalert2';
 })
 export class TeachersFormComponent implements OnInit {
   profesoresService = inject(ProfesoresService);
-  materiasService = inject(MateriasService);
+  CoordenadaService = inject(GooglemapsService);
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
 
+  coordenadas:string = ''; 
+  time?:any;
+  selectedPlace: Feature | null = null;
+  
   errorForm: any[] = [];
   tipo: string = 'Registra';
   teacherForm: FormGroup;
@@ -38,53 +47,63 @@ export class TeachersFormComponent implements OnInit {
   archivoSeleccionado: File | null = null;
 
   constructor() {
-    this.teacherForm = new FormGroup(
-      {
-        id: new FormControl(null),
-        nombre: new FormControl(null, [
-          Validators.required,
-          Validators.maxLength(45),
-        ]),
-        apellidos: new FormControl(null, [
-          Validators.required,
-          Validators.maxLength(150),
-        ]),
-        email: new FormControl(null, [
-          Validators.required,
-          Validators.email,
-          Validators.maxLength(60),
-        ]),
-        password: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(255),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
-        ]),
-        repitepassword: new FormControl(null, [Validators.required]),
-        foto: new FormControl(null),
-        telefono: new FormControl(null, [
-          Validators.required,
-          Validators.pattern(/^\d{9}$/),
-        ]),
-        precio_hora: new FormControl(null, [
-          Validators.required,
-          Validators.min(0),
-          Validators.max(99.99),
-        ]),
-        localizacion: new FormControl(null, [Validators.maxLength(254)]),
-        meses_experiencia: new FormControl(null, [
-          Validators.required,
-          Validators.min(0),
-        ]),
-        materias: new FormControl([], [Validators.required]),
-      },
-      { validators: this.validadorCoincidenciaContraseñas }
-    );
+    this.teacherForm = new FormGroup({
+      id: new FormControl(null), 
+      nombre: new FormControl(null, [Validators.required, Validators.maxLength(45)]),
+      apellidos: new FormControl(null, [Validators.required, Validators.maxLength(150)]),
+      email: new FormControl(null, [Validators.required, Validators.email, Validators.maxLength(60)]),
+      password: new FormControl(null, [
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(255),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/)
+      ]),
+      repitepassword: new FormControl(null, [Validators.required]),
+      foto: new FormControl(null, [Validators.maxLength(255), Validators.pattern(/^https?:\/\/.*\.(?:png|jpg|jpeg|webp)$/)]),
+      telefono: new FormControl(null, [Validators.required, Validators.pattern(/^\d{9}$/)]),
+      precio_hora: new FormControl(null, [Validators.required, Validators.min(0), Validators.max(99.99)]),
+      localizacion: new FormControl([],[Validators.required,Validators.min(4)]),
+      meses_experiencia: new FormControl(null, [Validators.required, Validators.min(0)]),
+      materias: new FormControl([], [Validators.required])
+    }, { validators: this.validadorCoincidenciaContraseñas });
   }
 
-  validadorCoincidenciaContraseñas: ValidatorFn = (
-    group: AbstractControl
-  ): { [key: string]: any } | null => {
+
+  /* direccion a longitud y latitud */
+  queryChanged(value:string):void{
+    if(this.time) clearTimeout(this.time);
+    this.time = setTimeout(()=>{
+      this.CoordenadaService.getCoordByQuery(value);
+    },
+    500)  
+  }
+
+  get isLoadingPlaces():boolean{
+    return this.CoordenadaService.isLoading;
+  }
+
+  get places():Feature[]{
+    return this.CoordenadaService.places;
+  }
+
+  selectPlace(place:Feature):void{
+    this.selectedPlace = place;
+    this.teacherForm.get('localizacion')?.setValue(
+      JSON.stringify(place.properties.full_address))
+    this.coordenadas = JSON.stringify({
+      /* si no es necesario el address se quita esta linea */
+      address:place.properties.full_address,
+      lat: place.geometry.coordinates[1],
+      lng: place.geometry.coordinates[0]
+    }
+    )
+   //console.log(this.coordenadas)
+    this.CoordenadaService.places= [];  
+  }
+  /* direccion */
+
+
+  validadorCoincidenciaContraseñas: ValidatorFn = (group: AbstractControl): { [key: string]: any } | null => {
     const password = group.get('password')?.value;
     const repitepassword = group.get('repitepassword')?.value;
     return password === repitepassword ? null : { checkpassword: true };
@@ -150,6 +169,12 @@ export class TeachersFormComponent implements OnInit {
     this.teacherForm.get('materias')?.setValue(selectedMaterias);
   }
 
+
+  
+  
+
+
+
   async obtenerDatosFormulario() {
     if (!this.teacherForm.valid) {
       console.log('Formulario no válido', this.teacherForm.errors);
@@ -170,7 +195,7 @@ export class TeachersFormComponent implements OnInit {
       },
       profesor: {
         precio_hora: this.teacherForm.value.precio_hora,
-        localizacion: this.teacherForm.value.localizacion,
+        localizacion: this.coordenadas,
         telefono: this.teacherForm.value.telefono,
         meses_experiencia: this.teacherForm.value.meses_experiencia,
         validado: false,
@@ -220,56 +245,22 @@ export class TeachersFormComponent implements OnInit {
     }
   }
 
-  obtenerImagen(event: Event): void {
-    const maxFileSize = 1 * 1024 * 1024; // 2MB
-    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
 
-    const input = event.target as HTMLInputElement;
-    if (input.files && input.files[0]) {
-      const archivo = input.files[0];
 
-      if (archivo.size > maxFileSize) {
-        this.profileImgUrl = '/img/no_profile_freepick.webp';
-        this.archivoSeleccionado = null;
-        this.teacherForm.get('foto')?.setValue(null);
 
-        Swal.fire({
-          icon: 'warning',
-          title: 'Imagen demasiado grande.',
-          text: 'La imagen excede el tamaño maximo de 1MB.',
-          confirmButtonColor: '#28a745',
-        });
-        return;
-      }
+  
 
-      if (!tiposPermitidos.includes(archivo.type)) {
-        this.profileImgUrl = '/img/no_profile_freepick.webp';
-        this.archivoSeleccionado = null;
-        this.teacherForm.get('foto')?.setValue(null);
 
-        Swal.fire({
-          icon: 'warning',
-          title: 'Formato no válido',
-          text: 'Solo se permiten archivos JPG, PNG o WEBP',
-          confirmButtonColor: '#28a745',
-        });
-        return;
-      }
 
-      this.archivoSeleccionado = archivo;
-      this.teacherForm.get('foto')?.setValue(archivo);
 
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        if (e.target?.result) {
-          this.profileImgUrl = e.target.result as string;
-        }
-      };
-      reader.readAsDataURL(archivo);
-    } else {
-      this.profileImgUrl = '/img/no_profile_freepick.webp';
-      this.archivoSeleccionado = null;
-      this.teacherForm.get('foto')?.setValue(null);
-    }
-  }
+
+
+
+
+
+
+
+
+
+
 }

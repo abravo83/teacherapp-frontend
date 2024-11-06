@@ -198,20 +198,31 @@
 
       <div class="form__last__row row">
         <div class="my-2 fw-light col-md-6">
-          <label class="form-label" for="localizacion">Localización</label>
+          <label class="form-label" for="localizacion">Direccion</label>
           <input
             class="form-control"
             type="text"
             id="localizacion"
             formControlName="localizacion"
-            placeholder="Introduce la localización"
+            placeholder="Introduce tu Direccion"
+            #txtQuery
+            (input)="queryChanged(txtQuery.value)"
           />
-          @if(checkControl('localizacion', 'maxlength')) {
-          <p class="text-danger">
-            La localización no debe exceder 254 caracteres
-          </p>
+          <ul class="list-group" *ngIf="places.length > 0 && !isLoadingPlaces">
+            <li
+              *ngFor="let place of places"
+              class="list-group-item list-group-item-action pointer"
+              [value]="place.geometry.coordinates"
+              (click)="selectPlace(place)"
+            >
+              <h6>{{ place.properties.full_address }}</h6>
+            </li>
+          </ul>
+          @if(checkControl('localizacion', 'required')) {
+          <small class="text-danger">La direccion es obligatoria</small>
           }
         </div>
+
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="materias">Materias</label>
           <button
