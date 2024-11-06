@@ -1,0 +1,27 @@
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+
+.container {
+    font-family: "Work Sans", sans-serif;
+  }
+  
+  .table th, .table td {
+    vertical-align: middle;
+  }
+  
+  img.rounded-circle {
+    object-fit: cover;
+  }
+  
+  .badge {
+    font-size: 0.9rem;
+  }
+  
+  button.btn-link {
+    color: #007bff;
+    text-decoration: none;
+    font-size: 0.8rem;
+  }
+  
+  button.btn-primary {
+    background-color: #ffa500;
+    border-color: #ffa500;}
