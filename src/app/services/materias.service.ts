@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { IMateriaProfesor } from '../interfaces/imateria-profesor.interfaces';
+import { Imateria } from '../interfaces/imateria';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores.db';
 import { MATERIAS } from '../db/materias.db';
+
 @Injectable({
   providedIn: 'root',
 })
 export class MateriasService {
-  async getMaterias(): Promise<any[]> {
+  async getMaterias(): Promise<Imateria[]> {
     return MATERIAS;
   }
 

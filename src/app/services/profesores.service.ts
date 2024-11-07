@@ -196,12 +196,12 @@ export class ProfesoresService {
       resolve(profesor);
     });
   }
-
-  async registroProfesor(formData: FormData): Promise<any> {
-    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
+  
+  async registroProfesor(formData: FormData): Promise<IRespuestaTeachersForm> {
     const profesorData = JSON.parse(
-      formData.get('profesor') as string
+      formData.get('datos') as string
     ) as IRespuestaTeachersForm;
+  
     const nuevoProfesor: IRespuestaTeachersForm = {
       usuario: {
         id: PROFESORES.length + 1,
@@ -213,24 +213,28 @@ export class ProfesoresService {
       },
       materias: profesorData.materias,
     };
+  
     PROFESORES.push(nuevoProfesor);
     return nuevoProfesor;
   }
-
-  async actualizarProfesor(formData: FormData): Promise<any> {
-    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
+  
+  async actualizarProfesor(formData: FormData): Promise<IRespuestaTeachersForm> {
     const profesorData = JSON.parse(
-      formData.get('profesor') as string
+      formData.get('datos') as string
     ) as IRespuestaTeachersForm;
+  
     const index = PROFESORES.findIndex(
       (prof) =>
         prof.usuario.id === profesorData.usuario.id &&
         prof.usuario.rol === 'profesor'
     );
+  
     if (index !== -1) {
       PROFESORES[index] = profesorData;
       return PROFESORES[index];
     }
+  
     throw new Error('Profesor no encontrado');
   }
+  
 }
