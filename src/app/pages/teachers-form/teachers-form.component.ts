@@ -9,12 +9,10 @@ import {
 } from '@angular/forms';
 import { IRespuestaTeachersForm } from '../../interfaces/iRespuestaTeachersForm.interface';
 import { ProfesoresService } from '../../services/profesores.service';
+import { MateriasService } from '../../services/materias.service';
 import { ActivatedRoute, Router } from '@angular/router';
-import { MATERIAS } from '../../db/materias.db';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { MATERIAS_PROFESORES } from '../../db/materias_profesores.db';
-import { IMateriaProfesor } from '../../interfaces/imateria-profesor.interfaces';
 
 @Component({
   selector: 'app-teacher-form',
@@ -25,13 +23,14 @@ import { IMateriaProfesor } from '../../interfaces/imateria-profesor.interfaces'
 })
 export class TeachersFormComponent implements OnInit {
   profesoresService = inject(ProfesoresService);
+  materiasService = inject(MateriasService);
   router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
 
   errorForm: any[] = [];
   tipo: string = 'Registra';
   teacherForm: FormGroup;
-  materiasList = MATERIAS;
+  materiasList: any[] = []; 
   limiteMateriasExcedido = false;
   desplegableAbierto = false;
   profileImgUrl: string = '/img/no_profile_freepick.webp';
@@ -97,13 +96,16 @@ export class TeachersFormComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.materiasList = await this.materiasService.getMaterias();
+
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
         const profesor: IRespuestaTeachersForm | undefined =
           await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
+          const materiasProfesor = await this.materiasService.obtenerMateriasProfesor(profesor.usuario.id ?? 0);
           this.teacherForm.patchValue({
             id: profesor.usuario.id,
             nombre: profesor.usuario.nombre,
@@ -114,24 +116,18 @@ export class TeachersFormComponent implements OnInit {
             precio_hora: profesor.profesor.precio_hora,
             localizacion: profesor.profesor.localizacion,
             meses_experiencia: profesor.profesor.meses_experiencia,
-            materias: this.obtenerMateriasProfesor(profesor.usuario.id ?? 0),
+            materias: materiasProfesor,
           });
         }
       }
     });
   }
 
-  obtenerMateriasProfesor(profesorId: number): number[] {
-    return MATERIAS_PROFESORES.filter(
-      (relacion: IMateriaProfesor) => relacion.usuarios_id === profesorId
-    ).map((relacion: IMateriaProfesor) => relacion.materias_id);
-  }
-
   alternarDesplegable() {
     this.desplegableAbierto = !this.desplegableAbierto;
   }
 
-  cambiarMateria(event: any) {
+  async cambiarMateria(event: any) {
     const selectedMaterias = this.teacherForm.value.materias || [];
     const materiaId = event.target.value;
     if (event.target.checked) {
@@ -183,8 +179,6 @@ export class TeachersFormComponent implements OnInit {
     if (this.teacherForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.teacherForm.get('foto')?.value);
     }
-
-    console.log(formData);
 
     try {
       if (this.tipo === 'Actualizar') {
