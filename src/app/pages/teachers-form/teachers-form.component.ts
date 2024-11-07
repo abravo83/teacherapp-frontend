@@ -8,7 +8,6 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { IRespuestaTeachersForm } from '../../interfaces/iRespuestaTeachersForm.interface';
-import { Iusuario } from '../../interfaces/iusuario';
 import { Imateria } from '../../interfaces/imateria';
 import { ProfesoresService } from '../../services/profesores.service';
 import { MateriasService } from '../../services/materias.service';
@@ -32,14 +31,13 @@ export class TeachersFormComponent implements OnInit {
   errorForm: any[] = [];
   tipo: string = 'Registra';
   teacherForm: FormGroup;
-  materiasList: Imateria[] = []; // Lista de objetos Imateria
+  materiasList: Imateria[] = [];
   limiteMateriasExcedido = false;
   desplegableAbierto = false;
   profileImgUrl: string = '/img/no_profile_freepick.webp';
   archivoSeleccionado: File | null = null;
 
   constructor() {
-    // Configuración del formulario
     this.teacherForm = new FormGroup(
       {
         id: new FormControl(null),
@@ -84,7 +82,6 @@ export class TeachersFormComponent implements OnInit {
     );
   }
 
-  // Validación personalizada para la coincidencia de contraseñas
   validadorCoincidenciaContraseñas: ValidatorFn = (
     group: AbstractControl
   ): { [key: string]: any } | null => {
@@ -101,17 +98,14 @@ export class TeachersFormComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // Carga las materias desde el servicio al iniciar el componente
     this.materiasList = await this.materiasService.getMaterias();
 
-    // Carga de datos para actualización (si existe un id en la ruta)
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
         const profesor: IRespuestaTeachersForm | undefined =
           await this.profesoresService.getProfesorById(Number(params.id));
         if (profesor) {
-          // Configura los datos del formulario para edición
           this.teacherForm.patchValue({
             id: profesor.usuario.id,
             nombre: profesor.usuario.nombre,
@@ -129,14 +123,13 @@ export class TeachersFormComponent implements OnInit {
     });
   }
 
-  // Método para alternar el estado del desplegable
   alternarDesplegable() {
     this.desplegableAbierto = !this.desplegableAbierto;
   }
 
   async cambiarMateria(event: any) {
     const selectedMaterias = this.teacherForm.value.materias || [];
-    const materiaId = Number(event.target.value); // Convertir a número
+    const materiaId = Number(event.target.value);
 
     if (event.target.checked) {
       if (selectedMaterias.length < 3) {
@@ -153,7 +146,7 @@ export class TeachersFormComponent implements OnInit {
       }
       this.limiteMateriasExcedido = false;
     }
-    
+
     this.teacherForm.get('materias')?.setValue(selectedMaterias);
   }
 
@@ -165,10 +158,6 @@ export class TeachersFormComponent implements OnInit {
 
     const formData = new FormData();
 
-    // Verificar materias seleccionadas antes de construir datosProfesor
-    console.log("Materias seleccionadas:", this.teacherForm.value.materias);
-
-    // Construir el objeto `IRespuestaTeachersForm` completo
     const datosProfesor: IRespuestaTeachersForm = {
       usuario: {
         id: this.teacherForm.value.id,
@@ -187,14 +176,15 @@ export class TeachersFormComponent implements OnInit {
         validado: false,
       },
       materias: this.teacherForm.value.materias.map((materiaId: number) => {
-        const materia = this.materiasList.find((mat: Imateria) => mat.id === materiaId);
+        const materia = this.materiasList.find(
+          (mat: Imateria) => mat.id === materiaId
+        );
         return materia!;
-      })
+      }),
     };
 
-    console.log("Contenido de datosProfesor antes de enviar:", datosProfesor);
+    console.log('Contenido de datosProfesor antes de enviar:', datosProfesor);
 
-    // Adjuntar el objeto `IRespuestaTeachersForm` como JSON en `formData`
     formData.append('datos', JSON.stringify(datosProfesor));
 
     if (this.teacherForm.get('foto')?.value instanceof File) {
