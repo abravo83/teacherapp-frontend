@@ -31,17 +31,13 @@
             class="form-control visually-hidden"
             type="file"
             id="foto"
-            formControlName="foto"
             accept="image/png, image/jpeg, image/webp"
             (change)="obtenerImagen($event)"
+            #fileInput
           />
-          @if(checkControl('foto', 'maxlength')) {
+          @if(checkControl('foto', 'formatoInvalido')) {
           <p class="text-danger">
-            La URL de la foto no debe exceder 255 caracteres
-          </p>
-          } @if(checkControl('foto', 'pattern')) {
-          <p class="text-danger">
-            Debe ser una URL válida de imagen (.png, .jpg, .jpeg, .webp)
+            El archivo debe ser una imagen en formato JPG, PNG o WEBP
           </p>
           }
         </div>

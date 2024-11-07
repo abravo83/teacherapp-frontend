@@ -197,9 +197,11 @@ export class ProfesoresService {
     });
   }
 
-  async registroProfesor(
-    profesorData: IRespuestaTeachersForm
-  ): Promise<IRespuestaTeachersForm> {
+  async registroProfesor(formData: FormData): Promise<any> {
+    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
+    const profesorData = JSON.parse(
+      formData.get('profesor') as string
+    ) as IRespuestaTeachersForm;
     const nuevoProfesor: IRespuestaTeachersForm = {
       usuario: {
         id: PROFESORES.length + 1,
@@ -215,9 +217,11 @@ export class ProfesoresService {
     return nuevoProfesor;
   }
 
-  async actualizarProfesor(
-    profesorData: IRespuestaTeachersForm
-  ): Promise<IRespuestaTeachersForm> {
+  async actualizarProfesor(formData: FormData): Promise<any> {
+    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
+    const profesorData = JSON.parse(
+      formData.get('profesor') as string
+    ) as IRespuestaTeachersForm;
     const index = PROFESORES.findIndex(
       (prof) =>
         prof.usuario.id === profesorData.usuario.id &&

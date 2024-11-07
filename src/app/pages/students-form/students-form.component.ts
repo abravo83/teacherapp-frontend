@@ -29,6 +29,7 @@ export class StudentsFormComponent implements OnInit {
   tipo: string = 'Registra';
   studentForm: FormGroup;
   profileImgUrl: string = '/img/no_profile_freepick.webp';
+  archivoSeleccionado: File | null = null;
 
   constructor() {
     this.studentForm = new FormGroup(
@@ -53,10 +54,7 @@ export class StudentsFormComponent implements OnInit {
           Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
         ]),
         repitepassword: new FormControl(null, [Validators.required]),
-        foto: new FormControl(null, [
-          Validators.maxLength(255),
-          Validators.pattern(/^https?:\/\/.*\.(?:png|jpg|jpeg|webp)$/),
-        ]),
+        foto: new FormControl(null),
       },
       { validators: this.validadorCoincidenciaContraseñas }
     );
@@ -99,12 +97,23 @@ export class StudentsFormComponent implements OnInit {
   }
 
   async obtenerDatosFormulario() {
+    // Instanciar FormData para tener disponible el método append
+    const formData = new FormData();
     const { repitepassword, ...alumnoData } = this.studentForm.value;
-    const formData: Iusuario = {
+    const datosAlumno: any = {
       ...alumnoData,
       rol: 'alumno',
       activo: true,
     };
+
+    // Adjuntar datos del profesor
+    formData.append('datos', JSON.stringify(datosAlumno));
+
+    // Adjuntar imagen si existe (Hay que estar atento en el back para extraer la imagen y moverla a una carpeta en /Public)
+    if (this.studentForm.get('foto')?.value instanceof File) {
+      formData.append('imagen', this.studentForm.get('foto')?.value);
+    }
+
     console.log(formData);
 
     try {
@@ -132,28 +141,49 @@ export class StudentsFormComponent implements OnInit {
   }
 
   obtenerImagen(event: Event): void {
-    // Limitar el tamano maximo de la imagen
-    const maxFileSize = 2 * 1024 * 1024; // 2MB
+    const maxFileSize = 1 * 1024 * 1024; // 2MB
+    const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
 
-    // Obtener el archivo
     const input = event.target as HTMLInputElement;
     if (input.files && input.files[0]) {
       const archivo = input.files[0];
 
+      // Validar tamaño del archivo
       if (archivo.size > maxFileSize) {
         this.profileImgUrl = '/img/no_profile_freepick.webp';
-        this.studentForm.patchValue({
-          foto: null,
-        });
+        this.archivoSeleccionado = null;
+        this.studentForm.get('foto')?.setValue(null);
 
         Swal.fire({
           icon: 'warning',
           title: 'Imagen demasiado grande.',
-          text: 'La imagen excede el tamaño maximo de 2MB.',
+          text: 'La imagen excede el tamaño maximo de 1MB.',
           confirmButtonColor: '#28a745',
         });
         return;
       }
+
+      // Validar tipo de archivo
+      if (!tiposPermitidos.includes(archivo.type)) {
+        this.profileImgUrl = '/img/no_profile_freepick.webp';
+        this.archivoSeleccionado = null;
+        this.studentForm.get('foto')?.setValue(null);
+
+        Swal.fire({
+          icon: 'warning',
+          title: 'Formato no válido',
+          text: 'Solo se permiten archivos JPG, PNG o WEBP',
+          confirmButtonColor: '#28a745',
+        });
+        return;
+      }
+
+      // Almacenar el archivo seleccionado
+      this.archivoSeleccionado = archivo;
+
+      // Actualizar el FormControl
+      this.studentForm.get('foto')?.setValue(archivo);
+
       // Crear URL temporal para mostrar la imagen
       const reader = new FileReader();
       reader.onload = (e) => {
@@ -162,11 +192,10 @@ export class StudentsFormComponent implements OnInit {
         }
       };
       reader.readAsDataURL(archivo);
-
-      // Guardar el archivo en el formulario
-      this.studentForm.patchValue({
-        foto: archivo,
-      });
+    } else {
+      this.profileImgUrl = '/img/no_profile_freepick.webp';
+      this.archivoSeleccionado = null;
+      this.studentForm.get('foto')?.setValue(null);
     }
   }
 }
