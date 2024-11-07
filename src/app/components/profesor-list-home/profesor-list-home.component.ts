@@ -5,7 +5,7 @@ import { FilterHomeComponent } from './filter-home/filter-home.component';
 import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-home.component';
 import { MapaHomeComponent } from './mapa-home/mapa-home.component';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
-import { environment } from '../../../environments/environments';
+//import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -30,7 +30,7 @@ export class ProfesorListHomeComponent {
   ngOnInit() {
     // Cargar el script de Google Maps dinámicamente
     const script = document.createElement('script');
-    script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.token}`;
+    //script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.token}`;
     script.defer = true;
     script.async = true;
     document.head.appendChild(script);
