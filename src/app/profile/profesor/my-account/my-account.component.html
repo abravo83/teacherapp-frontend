@@ -1,4 +1,14 @@
 <div class="container mt-4">
+
+  <!--Encabezado con botón de edición-->
+  <div class="d-flex justify-content-center mb-4">
+    <h2>Mi Cuenta</h2> 
+    <button class="btn button-secondary" (click)="activarEdicion()">
+      {{modoEdicion ? 'Guardad Cambios' : 'Editar'}}
+    </button>
+  </div>
+
+
   <!-- Foto de Perfil -->
   <div class="d-flex justify-content-center mb-4">
     <div>
@@ -13,6 +23,7 @@
         accept="image/*"
         (change)="obtenerImagen($event)"
         class="form-control mt-2"
+        [disabled]="!modoEdicion"
       />
     </div>
   </div>
@@ -32,6 +43,7 @@
             formControlName="nombre"
             class="form-control"
             placeholder="Introduce el nombre"
+            [disabled]="!modoEdicion"
           />
           <div *ngIf="checkControl('nombre', 'required')" class="text-danger">
             El nombre es obligatorio
@@ -49,6 +61,7 @@
             formControlName="apellidos"
             class="form-control"
             placeholder="Introduce los apellidos"
+            [disabled]="!modoEdicion"
           />
         </div>
 
@@ -60,6 +73,7 @@
             formControlName="email"
             class="form-control"
             placeholder="Introduce el email"
+            [disabled]="!modoEdicion"
           />
         </div>
 
@@ -71,6 +85,7 @@
             formControlName="telefono"
             class="form-control"
             placeholder="Introduce el teléfono"
+            [disabled]="!modoEdicion"
           />
         </div>
       </div>
@@ -90,6 +105,7 @@
             formControlName="precio_hora"
             class="form-control"
             placeholder="Introduce el precio por hora"
+            [disabled]="!modoEdicion"
           />
         </div>
 
@@ -101,6 +117,7 @@
             formControlName="localizacion"
             class="form-control"
             placeholder="Introduce la localización"
+            [disabled]="!modoEdicion"
           />
         </div>
 
@@ -112,6 +129,7 @@
             formControlName="meses_experiencia"
             class="form-control"
             placeholder="Introduce los meses de experiencia"
+            [disabled]="!modoEdicion"
           />
         </div>
 
@@ -123,6 +141,7 @@
               type="text"
               class="form-control mt-1"
               placeholder="Materia {{ i + 1 }}"
+              [disabled]="!modoEdicion"
             />
           </div>
         </div>
@@ -143,6 +162,7 @@
             formControlName="direccion"
             class="form-control"
             placeholder="Introduce la dirección"
+            [disabled]="!modoEdicion"
           />
         </div>
       </div>
@@ -159,6 +179,7 @@
           rows="4"
           class="form-control"
           placeholder="Describe algo sobre ti"
+          [disabled]="!modoEdicion"
         ></textarea>
       </div>
     </div>

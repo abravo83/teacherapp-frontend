@@ -24,6 +24,7 @@ export class MyAccountComponent implements OnInit {
   myAccountForm: FormGroup;
   fotoUrl: string | null = null; // Añadimos esta propiedad para la foto
   usuarioId = 1; // Este ID se puede obtener dinámicamente del sistema de autenticación
+  modoEdicion: boolean = false; // Única variable para controlar el modo edición
 
   constructor(private fb: FormBuilder) {
     this.myAccountForm = this.fb.group({
@@ -89,6 +90,14 @@ export class MyAccountComponent implements OnInit {
   checkControl(controlName: string, errorType: string): boolean {
     const control = this.myAccountForm.get(controlName);
     return !!(control && control.hasError(errorType) && control.touched);
+  }
+
+  // Activar/desactivar modo de edición
+  activarEdicion(): void {
+    this.modoEdicion = !this.modoEdicion;
+    if (!this.modoEdicion) {
+      this.guardarCambios();
+    }
   }
 
   // Método para guardar cambios
