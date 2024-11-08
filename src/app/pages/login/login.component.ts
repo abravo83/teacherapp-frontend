@@ -7,10 +7,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { Iusuario } from '../../interfaces/iusuario';
 import { CommonModule } from '@angular/common';
 
-type response = {
-  success: string;
-  token: string;
-}
+type Response = { message: string, token: string };
 
 @Component({
   selector: 'app-login',
@@ -37,8 +34,12 @@ export class LoginComponent {
   async getLoginData(formValue: Iusuario, form: any) {
     console.log("En funcion");
     try {
-      let response: response = await this.loginService.login(formValue);
-      if (response.success === "true") {
+      this.error = false;
+      console.log(formValue);
+      let response: Response = await this.loginService.login(formValue);
+      console.log(response);
+      console.log(response.message);
+      if (response.message === "Login correcto") {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/dashboard']);
       }

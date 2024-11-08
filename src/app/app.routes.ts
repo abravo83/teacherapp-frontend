@@ -11,6 +11,7 @@ import { MyAccountComponent } from './profile/profesor/my-account/my-account.com
 import { MyStudentsComponent } from './profile/profesor/my-students/my-students.component';
 import { MessagesComponent } from './profile/profesor/messages/messages.component';
 import { ReviewsComponent } from './profile/profesor/reviews/reviews.component';
+import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
@@ -40,7 +41,7 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: DashboardComponent, canActivate: [authGuard],
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
       { path: 'registrar', component: RegisterComponent },
