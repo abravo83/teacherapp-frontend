@@ -43,9 +43,10 @@ export class LoginComponent {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/dashboard']);
       }
-    } catch ({ message }: any) {
+    } catch ({ error }: any) {
+      console.log(error);
       this.error = true;
-      this.msg = message;
+      this.msg = error.message;
       
       form.reset()
     }
