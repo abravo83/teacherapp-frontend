@@ -9,7 +9,6 @@ import { StudentsFormComponent } from './pages/students-form/students-form.compo
 import { ProfesorDashboardComponent } from './profile/profesor/profesor-dashboard/profesor-dashboard.component';
 import { MyAccountComponent } from './profile/profesor/my-account/my-account.component';
 import { MyStudentsComponent } from './profile/profesor/my-students/my-students.component';
-import { MessagesComponent } from './profile/profesor/messages/messages.component';
 import { ReviewsComponent } from './profile/profesor/reviews/reviews.component';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
@@ -23,7 +22,13 @@ export const routes: Routes = [
     children: [
       { path: 'my-account', component: MyAccountComponent },
       { path: 'my-students', component: MyStudentsComponent },
-      { path: 'messages', component: MessagesComponent },
+      {
+        path: 'messages',
+        loadComponent: () =>
+          import('./profile/profesor/messages/messages.component').then(
+            (m) => m.MessagesComponent
+          ),
+      },
       { path: 'reviews', component: ReviewsComponent },
       { path: '', redirectTo: 'my-account', pathMatch: 'full' },
     ],
