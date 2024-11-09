@@ -8,6 +8,11 @@ import { USUARIOS } from '../db/usuarios';
 })
 export class UsuariosService {
   arrUsuarios: Iusuario[] = USUARIOS;
+  private usuarioActualId = 1;
 
   constructor() {}
+
+  getUsuarioActual(): Iusuario | undefined {
+    return this.arrUsuarios.find((user) => user.id === this.usuarioActualId);
+  }
 }

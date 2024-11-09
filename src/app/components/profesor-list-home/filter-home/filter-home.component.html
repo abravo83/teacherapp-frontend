@@ -1,12 +1,9 @@
-<h2>El <strong>profesor perfecto</strong> más cerca de ti</h2>
-
+<h2>Encuentra al <strong>profesor perfecto</strong> más cerca de ti</h2>
 <div class="container-home-nav">
   <div class="nav-home">
     <ul>
       <li>
         <button (click)="toggleFilters()" style="cursor: pointer;" class="b-filters">Filtros</button>
-      <!-- </li>
-      <li> -->
         <form *ngIf="showFilters" #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
           <div class="d-flex justify-content-between">
             <div class="text-center">

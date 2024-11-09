@@ -1,10 +1,30 @@
-<nav>
-    <ul>
-      <li><a routerLink="my-classes">Mis Clases</a></li>
-      <li><a routerLink="my-students">Mis Alumnos</a></li>
-      <li><a routerLink="calendar">Calendario</a></li>
-      <li><a routerLink="messages">Mensajes</a></li>
-      <li><a routerLink="my-account">Mi Cuenta</a></li>
-      <li><a routerLink="reviews">Reseñas</a></li>
-    </ul>
-  </nav>
+<ul>
+  <li>
+    <button [routerLink]="['/profile/my-students']" class="btn button-secondary w-100">
+      Mis Alumnos
+    </button>
+  </li>
+
+  <li>
+    <button [routerLink]="['/profile/messages']" class="btn button-secondary w-100">
+      Mensajes
+    </button>
+  </li>
+
+  <li>
+    <button [routerLink]="['/profile/my-account']" class="btn button-secondary w-100">
+      Mi Cuenta
+    </button>
+  </li>
+
+  <li>
+    <button [routerLink]="['/profile/reviews']" class="btn button-secondary w-100">
+      Reseñas
+    </button>
+  </li>
+
+</ul>
+
+
+
+
