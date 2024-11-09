@@ -20,37 +20,38 @@ export class AlumnosService {
 
   // Arturo
 
-
   getAlumnoById(id: number): Promise<Iusuario | undefined> {
     return new Promise((resolve) => {
-      const alumno = USUARIOS.find(user => user.id === id && user.rol === 'alumno');
+      const alumno = USUARIOS.find((user) => user.id === id && user.rol === 'alumno');
       resolve(alumno);
     });
   }
 
-  registroAlumno(alumno: Iusuario): Promise<Iusuario> {
-    return new Promise((resolve) => {
-      alumno.id = USUARIOS.length + 1;
-      USUARIOS.push(alumno);
-      resolve(alumno);
-    });
+  async registroAlumno(formData: FormData): Promise<Iusuario> {
+    const alumnoData = JSON.parse(formData.get('datos') as string) as Iusuario;
+    
+    const nuevoAlumno: Iusuario = {
+      id: USUARIOS.length + 1,
+      ...alumnoData,
+    };
+
+    // Agregar el nuevo alumno a la lista
+    USUARIOS.push(nuevoAlumno);
+    return nuevoAlumno;
   }
 
-  actualizarAlumno(alumno: Iusuario): Promise<Iusuario> {
-    return new Promise((resolve, reject) => {
-      const index = USUARIOS.findIndex(user => user.id === alumno.id && user.rol === 'alumno');
-      if (index !== -1) {
-        USUARIOS[index] = { ...USUARIOS[index], ...alumno };
-        resolve(USUARIOS[index]);
-      } else {
-        reject(new Error("Alumno no encontrado o no tiene rol de alumno"));
-      }
-    });
+  async actualizarAlumno(formData: FormData): Promise<Iusuario> {
+    const alumnoData = JSON.parse(formData.get('datos') as string) as Iusuario;
+
+    const index = USUARIOS.findIndex(
+      (user) => user.id === alumnoData.id && user.rol === 'alumno'
+    );
+
+    if (index !== -1) {
+      USUARIOS[index] = { ...USUARIOS[index], ...alumnoData };
+      return USUARIOS[index];
+    }
+
+    throw new Error('Alumno no encontrado o no tiene rol de alumno');
   }
-
-
-
-
-
-
 }

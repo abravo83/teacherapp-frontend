@@ -5,11 +5,36 @@
 }
 
 section {
-  width: 100%;
+  width: 100%; 
+  background-color: white;
 }
 
-@media (min-width: 800px) {
-  .flex {
+@media (min-width: 390px) and (max-width: 767px) {
+
+  flex {
+    flex-direction: column;
+  }
+
+  img {
+    width: 50%;  
+}
+
+}
+
+@media (min-width: 768px) and (max-width: 1039px) {
+  flex {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1040px) and (max-width: 1439px) {
+  flex {
+    flex-direction: row;
+  }
+}
+
+@media (min-width: 1440px) {
+  flex {
     flex-direction: row;
   }
 }
@@ -21,7 +46,15 @@ section {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
+  width: 100%;
 }
+
+img {
+  max-width: 100%; 
+  height: auto;     
+  display: block;  
+}
+
 
 .mapa {
   height: auto;
@@ -29,3 +62,4 @@ section {
   border-radius: 10px;
   padding: 10px;
 }
+

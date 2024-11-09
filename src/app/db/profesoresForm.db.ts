@@ -1,6 +1,7 @@
-import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
+import { IRespuestaTeachersForm } from "../interfaces/iRespuestaTeachersForm.interface";
 
-export const PROFESORES: IProfesorCompleto[] = [
+
+export const PROFESORES: IRespuestaTeachersForm[] = [
   {
     usuario: {
       id: 1,

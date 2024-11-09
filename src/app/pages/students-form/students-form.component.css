@@ -10,6 +10,12 @@ input {
   color: var(--color-button2);
   background-color: var(--color-button4);
   border-radius: 8px;
+  display: inline-block;
+  padding: 0.375rem 0.75rem;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5;
+  vertical-align: middle;
 }
 
 .button-primary {
@@ -28,4 +34,22 @@ input {
 .container {
   max-width: 800px;
   width: 90%;
+}
+
+.form__img__profile {
+  width: 200px;
+  height: 200px;
+  cursor: pointer;
+}
+
+.form__last__row {
+  min-height: 250px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.error-box {
+  min-height: 21px;
 }
