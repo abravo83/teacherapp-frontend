@@ -41,14 +41,22 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
-    component: DashboardComponent, canActivate: [authGuard],
+    component: DashboardComponent,
     children: [
       { path: '', pathMatch: 'full', redirectTo: 'home' },
       { path: 'registrar', component: RegisterComponent },
       { path: 'nuevo-profesor', component: TeachersFormComponent },
       { path: 'nuevo-alumno', component: StudentsFormComponent },
-      { path: 'editar-profesor/:id', component: TeachersFormComponent },
-      { path: 'editar-alumno/:id', component: StudentsFormComponent },
+      {
+        path: 'editar-profesor/:id',
+        canActivate: [authGuard],
+        component: TeachersFormComponent,
+      },
+      {
+        path: 'editar-alumno/:id',
+        canActivate: [authGuard],
+        component: StudentsFormComponent,
+      },
     ],
   },
 

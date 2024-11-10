@@ -264,7 +264,7 @@ export class TeachersFormComponent implements OnInit {
     }
 
     try {
-      if (this.tipo === 'Actualizar') {
+      if (this.tipo === 'Actualizar' && datosProfesor.usuario.id) {
         await this.profesoresService.actualizarProfesor(
           formData,
           datosProfesor.usuario.id
