@@ -104,11 +104,20 @@ export class StudentsFormComponent implements OnInit {
   }
 
   async obtenerDatosFormulario() {
-    // Instanciar FormData para tener disponible el método append
+    if (!this.studentForm.valid) {
+      console.log('Formulario no válido', this.studentForm.errors);
+      return;
+    }
+
     const formData = new FormData();
-    const { repitepassword, ...alumnoData } = this.studentForm.value;
-    const datosAlumno: any = {
-      ...alumnoData,
+
+    // Crear objeto datosAlumno compatible con la interfaz Iusuario
+    const datosAlumno: Iusuario = {
+      id: this.studentForm.value.id,
+      nombre: this.studentForm.value.nombre,
+      apellidos: this.studentForm.value.apellidos,
+      email: this.studentForm.value.email,
+      password: this.studentForm.value.password,
       rol: 'alumno',
       activo: true,
     };
@@ -116,12 +125,15 @@ export class StudentsFormComponent implements OnInit {
     // Adjuntar datos del alumno
     formData.append('datos', JSON.stringify(datosAlumno));
 
-    // Adjuntar imagen si existe (Hay que estar atento en el back para extraer la imagen y moverla a una carpeta en /Public)
+    // Adjuntar imagen de perfil si existe
     if (this.studentForm.get('foto')?.value instanceof File) {
-      formData.append('imagen', this.studentForm.get('foto')?.value);
+      formData.append('foto', this.studentForm.get('foto')?.value);
     }
 
-    console.log(formData);
+    console.log('Contenido completo de FormData:');
+    for (let pair of (formData as any).entries()) {
+      console.log(pair[0] + ':', pair[1]);
+    }
 
     try {
       if (this.tipo === 'Actualizar') {

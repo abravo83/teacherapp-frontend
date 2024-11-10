@@ -52,7 +52,10 @@ export class AlumnosService {
     // });
   }
 
-  actualizarAlumno(alumnoDataForm: any, alumnoId: number): Promise<Iusuario> {
+  actualizarAlumno(
+    alumnoDataForm: any,
+    alumnoId: number | undefined
+  ): Promise<Iusuario> {
     return firstValueFrom(
       this.httpClient.put<Iusuario>(
         `${this.BASE_URL}/${alumnoId}`,
