@@ -195,7 +195,7 @@ export class ProfesoresService {
     return profesoresFiltrados;
   }
 
-  //ARTURO
+  //FORMULARIO REGISTRO Y PROFESOR (Arturo y Alberto)
   getProfesorById(id: number): Promise<IRespuestaTeachersForm | undefined> {
     return firstValueFrom(
       this.httpClient.get<IRespuestaTeachersForm>(`${this.BASE_URL}/${id}`)
@@ -250,5 +250,5 @@ export class ProfesoresService {
     //   throw new Error('Profesor no encontrado');
   }
 
-  // -- Fin de la clase del servicio.
+  
 }
