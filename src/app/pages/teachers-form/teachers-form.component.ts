@@ -15,6 +15,7 @@ import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
 import { MATERIAS_PROFESORES } from '../../db/materias_profesores.db';
 import { IMateriaProfesor } from '../../interfaces/imateria-profesor.interfaces';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-teacher-form',
@@ -103,6 +104,7 @@ export class TeachersFormComponent implements OnInit {
         this.tipo = 'Actualizar';
         const profesor: IRespuestaTeachersForm | undefined =
           await this.profesoresService.getProfesorById(Number(params.id));
+
         if (profesor) {
           this.teacherForm.patchValue({
             id: profesor.usuario.id,
@@ -116,6 +118,11 @@ export class TeachersFormComponent implements OnInit {
             meses_experiencia: profesor.profesor.meses_experiencia,
             materias: this.obtenerMateriasProfesor(profesor.usuario.id ?? 0),
           });
+
+          // Si el profesor tiene foto de perfil, mostrarla en la URL de la imagen
+          if (profesor.usuario.foto) {
+            this.profileImgUrl = environment.API_URL + profesor.usuario.foto;
+          }
         }
       }
     });
@@ -188,7 +195,10 @@ export class TeachersFormComponent implements OnInit {
 
     try {
       if (this.tipo === 'Actualizar') {
-        await this.profesoresService.actualizarProfesor(formData);
+        await this.profesoresService.actualizarProfesor(
+          formData,
+          datosProfesor.usuario.id
+        );
         Swal.fire({
           icon: 'success',
           title: 'Éxito',

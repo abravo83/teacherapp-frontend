@@ -12,6 +12,7 @@ import { AlumnosService } from '../../services/alumnos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-students-form',
@@ -34,6 +35,7 @@ export class StudentsFormComponent implements OnInit {
   constructor() {
     this.studentForm = new FormGroup(
       {
+        id: new FormControl(null),
         nombre: new FormControl(null, [
           Validators.required,
           Validators.maxLength(45),
@@ -79,10 +81,15 @@ export class StudentsFormComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
-        const alumno: Iusuario | undefined =
-          await this.alumnosService.getAlumnoById(Number(params.id));
+        const alumno: any | undefined = await this.alumnosService.getAlumnoById(
+          Number(params.id)
+        );
         if (alumno && alumno.rol === 'alumno') {
           this.studentForm.patchValue(alumno);
+          // Si el alumno tiene una foto, establecer la URL de la imagen
+          if (alumno.foto) {
+            this.profileImgUrl = environment.API_URL + alumno.foto;
+          }
         } else {
           Swal.fire({
             icon: 'error',
@@ -106,7 +113,7 @@ export class StudentsFormComponent implements OnInit {
       activo: true,
     };
 
-    // Adjuntar datos del profesor
+    // Adjuntar datos del alumno
     formData.append('datos', JSON.stringify(datosAlumno));
 
     // Adjuntar imagen si existe (Hay que estar atento en el back para extraer la imagen y moverla a una carpeta en /Public)
@@ -118,7 +125,7 @@ export class StudentsFormComponent implements OnInit {
 
     try {
       if (this.tipo === 'Actualizar') {
-        await this.alumnosService.actualizarAlumno(formData);
+        await this.alumnosService.actualizarAlumno(formData, datosAlumno.id);
         Swal.fire({
           icon: 'success',
           title: 'Éxito',
