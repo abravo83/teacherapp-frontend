@@ -1,5 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
+import { environment } from '../../environments/environments';
 import { Iprofesor } from '../interfaces/iprofesor';
 import { DATOS_PROFESORES } from '../db/profesores';
 import { UsuariosService } from './usuarios.service';
@@ -16,7 +19,10 @@ import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.int
 export class ProfesoresService {
   // Inyectables
   usuariosService = inject(UsuariosService);
+  httpClient = inject(HttpClient);
+
   // Variables
+  BASE_URL = `${environment.API_URL}/api/profesores`;
   private arrProfesores: Iprofesor[] = DATOS_PROFESORES;
   private arrUsuarios: Iusuario[] = USUARIOS;
   private arrMateriasProfesores: any[] = MATERIAS_PROFESORES;
@@ -189,44 +195,60 @@ export class ProfesoresService {
     return profesoresFiltrados;
   }
 
-  //ARTURO
+  //FORMULARIO REGISTRO Y PROFESOR (Arturo y Alberto)
   getProfesorById(id: number): Promise<IRespuestaTeachersForm | undefined> {
-    return new Promise((resolve) => {
-      const profesor = PROFESORES.find((prof) => prof.usuario.id === id);
-      resolve(profesor);
-    });
-  }
-
-  async registroProfesor(
-    profesorData: IRespuestaTeachersForm
-  ): Promise<IRespuestaTeachersForm> {
-    const nuevoProfesor: IRespuestaTeachersForm = {
-      usuario: {
-        id: PROFESORES.length + 1,
-        ...profesorData.usuario,
-      },
-      profesor: {
-        ...profesorData.profesor,
-        usuarios_id: PROFESORES.length + 1,
-      },
-      materias: profesorData.materias,
-    };
-    PROFESORES.push(nuevoProfesor);
-    return nuevoProfesor;
-  }
-
-  async actualizarProfesor(
-    profesorData: IRespuestaTeachersForm
-  ): Promise<IRespuestaTeachersForm> {
-    const index = PROFESORES.findIndex(
-      (prof) =>
-        prof.usuario.id === profesorData.usuario.id &&
-        prof.usuario.rol === 'profesor'
+    return firstValueFrom(
+      this.httpClient.get<IRespuestaTeachersForm>(`${this.BASE_URL}/${id}`)
     );
-    if (index !== -1) {
-      PROFESORES[index] = profesorData;
-      return PROFESORES[index];
-    }
-    throw new Error('Profesor no encontrado');
+    // return new Promise((resolve) => {
+    //   const profesor = PROFESORES.find((prof) => prof.usuario.id === id);
+    //   resolve(profesor);
+    // });
   }
+
+  async registroProfesor(formData: FormData): Promise<any> {
+    return firstValueFrom(
+      this.httpClient.post<Iusuario>(`${this.BASE_URL}/registro`, formData)
+    );
+    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
+    // const profesorData = JSON.parse(
+    //   formData.get('profesor') as string
+    // ) as IRespuestaTeachersForm;
+    // const nuevoProfesor: IRespuestaTeachersForm = {
+    //   usuario: {
+    //     id: PROFESORES.length + 1,
+    //     ...profesorData.usuario,
+    //   },
+    //   profesor: {
+    //     ...profesorData.profesor,
+    //     usuarios_id: PROFESORES.length + 1,
+    //   },
+    //   materias: profesorData.materias,
+    // };
+    // PROFESORES.push(nuevoProfesor);
+    // return nuevoProfesor;
+  }
+
+  async actualizarProfesor(formData: FormData, id: number): Promise<any> {
+    return firstValueFrom(
+      this.httpClient.put<Iusuario>(`${this.BASE_URL}/${id}`, formData)
+    );
+
+    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
+    //   const profesorData = JSON.parse(
+    //     formData.get('profesor') as string
+    //   ) as IRespuestaTeachersForm;
+    //   const index = PROFESORES.findIndex(
+    //     (prof) =>
+    //       prof.usuario.id === profesorData.usuario.id &&
+    //       prof.usuario.rol === 'profesor'
+    //   );
+    //   if (index !== -1) {
+    //     PROFESORES[index] = profesorData;
+    //     return PROFESORES[index];
+    //   }
+    //   throw new Error('Profesor no encontrado');
+  }
+
+  
 }

@@ -10,6 +10,7 @@ import { ProfesorDashboardComponent } from './profile/profesor/profesor-dashboar
 import { MyAccountComponent } from './profile/profesor/my-account/my-account.component';
 import { MyStudentsComponent } from './profile/profesor/my-students/my-students.component';
 import { ReviewsComponent } from './profile/profesor/reviews/reviews.component';
+import { authGuard } from './guards/auth.guard';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
@@ -51,8 +52,16 @@ export const routes: Routes = [
       { path: 'registrar', component: RegisterComponent },
       { path: 'nuevo-profesor', component: TeachersFormComponent },
       { path: 'nuevo-alumno', component: StudentsFormComponent },
-      { path: 'editar-profesor/:id', component: TeachersFormComponent },
-      { path: 'editar-alumno/:id', component: StudentsFormComponent },
+      {
+        path: 'editar-profesor/:id',
+        canActivate: [authGuard],
+        component: TeachersFormComponent,
+      },
+      {
+        path: 'editar-alumno/:id',
+        canActivate: [authGuard],
+        component: StudentsFormComponent,
+      },
     ],
   },
 

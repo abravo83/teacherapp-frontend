@@ -4,7 +4,7 @@
 >
   <div class="card container p-5 border-0 shadow-lg bg-light">
     <h3
-      class="btn shadow title w-auto align-self-center text-uppercase text-center"
+      class="shadow title w-auto align-self-center text-uppercase text-center"
     >
       {{ tipo }} tu perfil de profesor
     </h3>
@@ -24,24 +24,20 @@
             <img
               [src]="profileImgUrl"
               alt="Imagen de perfil"
-              class="form__img__profile img-fluid"
+              class="form__img__profile img-fluid rounded-circle"
             />
           </label>
           <input
             class="form-control visually-hidden"
             type="file"
             id="foto"
-            formControlName="foto"
             accept="image/png, image/jpeg, image/webp"
             (change)="obtenerImagen($event)"
+            #fileInput
           />
-          @if(checkControl('foto', 'maxlength')) {
+          @if(checkControl('foto', 'formatoInvalido')) {
           <p class="text-danger">
-            La URL de la foto no debe exceder 255 caracteres
-          </p>
-          } @if(checkControl('foto', 'pattern')) {
-          <p class="text-danger">
-            Debe ser una URL válida de imagen (.png, .jpg, .jpeg, .webp)
+            El archivo debe ser una imagen en formato JPG, PNG o WEBP
           </p>
           }
         </div>
@@ -56,11 +52,13 @@
             formControlName="nombre"
             placeholder="Introduce el nombre"
           />
-          @if(checkControl('nombre', 'required')) {
-          <p class="text-danger">El nombre es obligatorio</p>
-          } @if(checkControl('nombre', 'maxlength')) {
-          <p class="text-danger">El nombre no debe exceder 45 caracteres</p>
-          }
+          <div class="error-box">
+            @if(checkControl('nombre', 'required')) {
+            <p class="text-danger">El nombre es obligatorio</p>
+            } @else if(checkControl('nombre', 'maxlength')) {
+            <p class="text-danger">El nombre no debe exceder 45 caracteres</p>
+            }
+          </div>
         </div>
 
         <div class="my-2 fw-light col-md-6">
@@ -72,13 +70,15 @@
             formControlName="apellidos"
             placeholder="Introduce los apellidos"
           />
-          @if(checkControl('apellidos', 'required')) {
-          <p class="text-danger">Los apellidos son obligatorios</p>
-          } @if(checkControl('apellidos', 'maxlength')) {
-          <p class="text-danger">
-            Los apellidos no deben exceder 150 caracteres
-          </p>
-          }
+          <div class="error-box">
+            @if(checkControl('apellidos', 'required')) {
+            <p class="text-danger">Los apellidos son obligatorios</p>
+            } @else if(checkControl('apellidos', 'maxlength')) {
+            <p class="text-danger">
+              Los apellidos no deben exceder 150 caracteres
+            </p>
+            }
+          </div>
         </div>
       </div>
 
@@ -92,13 +92,15 @@
             formControlName="email"
             placeholder="Introduce el email"
           />
-          @if(checkControl('email', 'required')) {
-          <p class="text-danger">El email es obligatorio</p>
-          } @if(checkControl('email', 'email')) {
-          <p class="text-danger">Formato de email inválido</p>
-          } @if(checkControl('email', 'maxlength')) {
-          <p class="text-danger">El email no debe exceder 60 caracteres</p>
-          }
+          <div class="error-box">
+            @if(checkControl('email', 'required')) {
+            <p class="text-danger">El email es obligatorio</p>
+            } @else if(checkControl('email', 'email')) {
+            <p class="text-danger">Formato de email inválido</p>
+            } @else if(checkControl('email', 'maxlength')) {
+            <p class="text-danger">El email no debe exceder 60 caracteres</p>
+            }
+          </div>
         </div>
 
         <div class="my-2 fw-light col-md-6">
@@ -110,11 +112,13 @@
             formControlName="telefono"
             placeholder="Introduce el teléfono"
           />
-          @if(checkControl('telefono', 'required')) {
-          <p class="text-danger">El teléfono es obligatorio</p>
-          } @if(checkControl('telefono', 'pattern')) {
-          <p class="text-danger">El teléfono debe tener 9 dígitos</p>
-          }
+          <div class="error-box">
+            @if(checkControl('telefono', 'required')) {
+            <p class="text-danger">El teléfono es obligatorio</p>
+            } @else if(checkControl('telefono', 'pattern')) {
+            <p class="text-danger">El teléfono debe tener 9 dígitos</p>
+            }
+          </div>
         </div>
       </div>
 
@@ -128,19 +132,17 @@
             formControlName="password"
             placeholder="Introduce la contraseña"
           />
-          @if(checkControl('password', 'required')) {
-          <p class="text-danger">La contraseña es obligatoria</p>
-          } @if(checkControl('password', 'minlength')) {
-          <p class="text-danger">
-            La contraseña debe tener al menos 8 caracteres
-          </p>
-          } @if(checkControl('password', 'maxlength')) {
-          <p class="text-danger">
-            La contraseña no debe exceder 255 caracteres
-          </p>
-          } @if(checkControl('password', 'pattern')) {
-          <p class="text-danger">Debe incluir una mayúscula y un número</p>
-          }
+          <div class="error-box">
+            @if(checkControl('password', 'required')) {
+            <p class="text-danger">La contraseña es obligatoria</p>
+            } @else if(checkControl('password', 'minlength')) {
+            <p class="text-danger">Debe tener al menos 8 caracteres</p>
+            } @else if(checkControl('password', 'maxlength')) {
+            <p class="text-danger">No debe exceder de 255 caracteres</p>
+            } @else if(checkControl('password', 'pattern')) {
+            <p class="text-danger">Debe incluir una mayúscula y un número</p>
+            }
+          </div>
         </div>
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="repitepassword"
@@ -153,11 +155,13 @@
             formControlName="repitepassword"
             placeholder="Repite la contraseña"
           />
-          @if(checkControl('repitepassword', 'required')) {
-          <p class="text-danger">Debe repetir la contraseña</p>
-          } @if(teacherForm.hasError('checkpassword')) {
-          <p class="text-danger">Las contraseñas no coinciden</p>
-          }
+          <div class="error-box">
+            @if(checkControl('repitepassword', 'required')) {
+            <p class="text-danger">Debe repetir la contraseña</p>
+            } @else if(teacherForm.hasError('checkpassword')) {
+            <p class="text-danger">Las contraseñas no coinciden</p>
+            }
+          </div>
         </div>
       </div>
 
@@ -172,13 +176,15 @@
             formControlName="precio_hora"
             placeholder="Introduce el precio por hora"
           />
-          @if(checkControl('precio_hora', 'required')) {
-          <p class="text-danger">El precio por hora es obligatorio</p>
-          } @if(checkControl('precio_hora', 'min')) {
-          <p class="text-danger">El precio por hora debe ser al menos 0</p>
-          } @if(checkControl('precio_hora', 'max')) {
-          <p class="text-danger">El precio por hora no debe exceder 99.99</p>
-          }
+          <div class="error-box">
+            @if(checkControl('precio_hora', 'required')) {
+            <p class="text-danger">El precio por hora es obligatorio</p>
+            } @else if(checkControl('precio_hora', 'min')) {
+            <p class="text-danger">El precio por hora debe ser al menos 0</p>
+            } @else if(checkControl('precio_hora', 'max')) {
+            <p class="text-danger">El precio por hora no debe exceder 99.99</p>
+            }
+          </div>
         </div>
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="meses_experiencia"
@@ -192,30 +198,43 @@
             formControlName="meses_experiencia"
             placeholder="Introduce los meses de experiencia"
           />
-          @if(checkControl('meses_experiencia', 'required')) {
-          <p class="text-danger">Este campo es obligatorio</p>
-          } @if(checkControl('meses_experiencia', 'min')) {
-          <p class="text-danger">Debe ser un valor mayor o igual a 0</p>
-          }
+          <div class="error-box">
+            @if(checkControl('meses_experiencia', 'required')) {
+            <p class="text-danger">Este campo es obligatorio</p>
+            } @else if(checkControl('meses_experiencia', 'min')) {
+            <p class="text-danger">Debe ser un valor mayor o igual a 0</p>
+            }
+          </div>
         </div>
       </div>
 
       <div class="form__last__row row">
         <div class="my-2 fw-light col-md-6">
-          <label class="form-label" for="localizacion">Localización</label>
+          <label class="form-label" for="localizacion">Direccion</label>
           <input
             class="form-control"
             type="text"
             id="localizacion"
             formControlName="localizacion"
-            placeholder="Introduce la localización"
+            placeholder="Introduce tu Direccion"
+            #txtQuery
+            (input)="queryChanged(txtQuery.value)"
           />
-          @if(checkControl('localizacion', 'maxlength')) {
-          <p class="text-danger">
-            La localización no debe exceder 254 caracteres
-          </p>
+          <ul class="list-group" *ngIf="places.length > 0 && !isLoadingPlaces">
+            <li
+              *ngFor="let place of places"
+              class="list-group-item list-group-item-action pointer"
+              [value]="place.geometry.coordinates"
+              (click)="selectPlace(place)"
+            >
+              <h6>{{ place.properties.full_address }}</h6>
+            </li>
+          </ul>
+          @if(checkControl('localizacion', 'required')) {
+          <small class="text-danger">La direccion es obligatoria</small>
           }
         </div>
+
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="materias">Materias</label>
           <button
@@ -243,11 +262,14 @@
             </div>
             }
           </div>
-          } @if(limiteMateriasExcedido) {
-          <p class="text-danger">Solo puedes seleccionar hasta 3 materias</p>
-          } @if(checkControl('materias', 'required')) {
-          <p class="text-danger">Debe seleccionar al menos una materia</p>
           }
+          <div class="error-box">
+            @if(limiteMateriasExcedido) {
+            <p class="text-danger">Solo puedes seleccionar hasta 3 materias</p>
+            } @if(checkControl('materias', 'required')) {
+            <p class="text-danger">Debe seleccionar al menos una materia</p>
+            }
+          </div>
         </div>
       </div>
 
