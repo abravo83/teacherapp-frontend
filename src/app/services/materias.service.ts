@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
-import { environment } from '../../environments/environment';
+import { environment } from '../../environments/environments';
 import { Imateria } from '../interfaces/imateria';
 
 @Injectable({
@@ -18,7 +18,9 @@ export class MateriasService {
 
   async obtenerMateriasProfesor(profesorId: number): Promise<Imateria[]> {
     return firstValueFrom(
-      this.httpClient.get<Imateria[]>(`${this.BASE_URL}/profesor-materias/${profesorId}`)
+      this.httpClient.get<Imateria[]>(
+        `${this.BASE_URL}/profesor-materias/${profesorId}`
+      )
     );
   }
 }

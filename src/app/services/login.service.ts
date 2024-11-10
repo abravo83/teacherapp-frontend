@@ -5,14 +5,14 @@ import { HttpClient } from '@angular/common/http';
 import { USUARIOS } from '../db/usuarios';
 import { environment } from '../../environments/environments';
 
-type Body = { email: string, password: string };
-type Response = { message: string, token: string };
+type Body = { email: string; password: string };
+type Response = { message: string; token: string };
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class LoginService {
-  private baseUrl: string = `${environment.API_URL}`;
+  private baseUrl: string = `${environment.API_URL}/api`;
   private http = inject(HttpClient);
   arrUsers: Iusuario[] = USUARIOS;
 
@@ -36,7 +36,9 @@ export class LoginService {
     console.log(`${this.baseUrl}/login`);
     console.log(user);
 
-    return firstValueFrom(this.http.post<Response>(`${this.baseUrl}/login`, user))
+    return firstValueFrom(
+      this.http.post<Response>(`${this.baseUrl}/login`, user)
+    );
   }
 
   isLogged(): boolean {
