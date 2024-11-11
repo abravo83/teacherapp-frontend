@@ -15,4 +15,6 @@ export interface Iprofesor {
   validado: boolean;
   direccion?: string;
   sobreMi?: string;
+  materia: string;
+  reviews: string;
 }

@@ -1,95 +1,134 @@
-
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
-section{
-    font-family: "Work Sans", sans-serif;
+section {
+  font-family: "Work Sans", sans-serif;
 }
 
 .study-general {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2em;
-
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2em;
 }
 
 .study-fields {
-    display: flex;
-    flex-direction: row;
-    flex-flow: row nowrap;
-    padding-left: 0;                       
-    margin-bottom: 1em;                        
-    list-style-type: none;
-    list-style-position: inside;
+  display: flex;
+  flex-direction: row;
+  flex-flow: row nowrap;
+  padding-left: 0;
+  margin-bottom: 1em;
+  list-style-type: none;
+  list-style-position: inside;
 }
 
 .studies {
-    display: inline-block;
-    padding-left: 0;
-    color: var(--color-text-secondary);
-    width: 100%; 
-    height: 20%;
-    display: inline;
-    margin: 0 10 0 0;  
-    padding: 0; 
-    gap: 10px;
-} 
+  display: inline-block;
+  padding-left: 0;
+  color: var(--color-text-secondary);
+  width: 100%;
+  height: 20%;
+  display: inline;
+  margin: 0 10 0 0;
+  padding: 0;
+  gap: 10px;
+}
 
 /* meses de experiencia y precio por hora: margin-bottom: 1em;   */
 .experience-prof {
-    display: inline-block;
-    margin-right: 8px;
+  display: inline-block;
+  margin-right: 8px;
 }
 
 .content-experience-prof {
-    margin-bottom: 1em; 
-    display: inline-block;
+  margin-bottom: 1em;
+  display: inline-block;
 }
 
 .price-prof {
-    display: inline-block;
-    /* margin-right: 8px; */
+  display: inline-block;
+  /* margin-right: 8px; */
 }
 
 .content-price-prof {
-    margin-bottom: 1em;
-    display: inline-block;
-    background-color: var(--color-button2);
-    border: 3px transparent;
-    border-radius: 5px;
-    padding-left: 0;                       
-    text-align: left;
-    justify-content: left;
-
+  margin-bottom: 1em;
+  display: inline-block;
+  background-color: var(--color-button2);
+  border: 3px transparent;
+  border-radius: 5px;
+  padding-left: 0;
+  text-align: left;
+  justify-content: left;
 }
 .button-contact {
+  background-color: var(--color-button1);
+  color: var(--color-text-secondary);
+  padding: 0.5em 1em;
+  margin-bottom: 1em;
+  width: 50%;
+  border: none;
+  border-radius: 3px;
+  transition: background-color 0.5s ease, box-shadow 0.5s ease;
+}
+
+.button-contact:hover {
+  box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3);
+}
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .study-general {
+    gap: 10px;
+  }
+
+  .study-fields {
+    flex-direction: column;
+    display: block;
+    padding: 0;
+    margin: 0;
+  }
+
+  .studies {
+    display: block;
+    padding-left: 0;
+    margin-bottom: 3px;
+    width: 100%;
+  }
+
+  .experience-prof {
+    display: inline;
+    margin-right: 3px;
+  }
+
+  .content-experience-prof {
+    margin-bottom: 1em;
+    display: inline;
+    margin-bottom: 1em;
+  }
+
+  .price-prof {
+    margin-top: 1em;
+  }
+
+  .content-price-prof {
+    display: inline;
+    margin-top: 1em;
+  }
+  .button-contact {
     background-color: var(--color-button1);
     color: var(--color-text-secondary);
     padding: 0.5em 1em;
-    margin-bottom: 1em;  
-    width: 50%;
+    margin-top: 1em;
+    width: 100%;
     border: none;
     border-radius: 3px;
     transition: background-color 0.5s ease, box-shadow 0.5s ease;
-    }
-      
-.button-contact:hover {
-    box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3);
-    }
-      
-@media (min-width: 390px) and (max-width: 767px) {
-     /* metemos column para petitesss */
-     /* 100% para el boton de width */
-      
- }
-      
-@media (min-width: 768px) and (max-width: 1039px) {
-        
+  }
 }
-      
-@media (min-width: 1040px) and (max-width: 1439px) {
-     
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 999;
+  overflow: hidden;
 }
-      
-@media (min-width: 1440px) {
-        
-}
-      

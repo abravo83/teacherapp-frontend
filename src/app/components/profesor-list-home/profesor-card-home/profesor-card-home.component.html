@@ -1,3 +1,4 @@
+<div *ngIf="popUpVisible" class="overlay"></div>
 <section class="my2 container profesores-list">
   <div class="card my-2">
 
@@ -19,7 +20,7 @@
 
         <div class="study-general">
           <!-- <h6>Áreas de Conocimiento:</h6> -->
-          @for (item of myProfesor.materias; track $index) {
+          @for (item of myProfesor.materia; track $index) {
           <ul class="study-fields">
             <li class="studies">{{ item }}</li>
           </ul>
@@ -35,9 +36,10 @@
           <div class="content-price-prof"> {{ myProfesor.precio_hora }}€ </div>
         </div>
         <div class="button-home-prof">
-          <button class="button-contact" style="color:var(--color-text-primary); font-weight:500;">Contactar</button>
+          <button class="button-contact" style="color:var(--color-text-primary); font-weight:500;" (click)="mostrarPopUp()">Contactar</button>
         </div>
       </div>
     </div>
   </div>
+<app-pop-up-contactar *ngIf="popUpVisible" [myProfesor]="myProfesor" (cerrarPopUp)="cerrarPopUp()"></app-pop-up-contactar>
 </section>
