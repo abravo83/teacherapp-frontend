@@ -23,18 +23,12 @@ export class AlumnosService {
     );
   }
 
-  // Arturo
+  // Formularios
 
   getAlumnoById(id: number): Promise<Iusuario | undefined> {
     return firstValueFrom(
       this.httpClient.get<Iusuario>(`${this.BASE_URL}/${id}`)
-    );
-    // return new Promise((resolve) => {
-    //   const alumno = USUARIOS.find(
-    //     (user) => user.id === id && user.rol === 'alumno'
-    //   );
-    //   resolve(alumno);
-    // });
+    );    
   }
 
   registroAlumno(alumnoDataForm: any): Promise<Iusuario> {
@@ -44,12 +38,6 @@ export class AlumnosService {
         alumnoDataForm
       )
     );
-
-    // return new Promise((resolve) => {
-    //   alumno.id = USUARIOS.length + 1;
-    //   USUARIOS.push(alumno);
-    //   resolve(alumno);
-    // });
   }
 
   actualizarAlumno(
@@ -62,16 +50,5 @@ export class AlumnosService {
         alumnoDataForm
       )
     );
-    // return new Promise((resolve, reject) => {
-    //   const index = USUARIOS.findIndex(
-    //     (user) => user.id === alumno.id && user.rol === 'alumno'
-    //   );
-    //   if (index !== -1) {
-    //     USUARIOS[index] = { ...USUARIOS[index], ...alumno };
-    //     resolve(USUARIOS[index]);
-    //   } else {
-    //     reject(new Error('Alumno no encontrado o no tiene rol de alumno'));
-    //   }
-    // });
   }
 }
