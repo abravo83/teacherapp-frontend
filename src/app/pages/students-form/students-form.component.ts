@@ -12,6 +12,7 @@ import { AlumnosService } from '../../services/alumnos.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environments';
 
 @Component({
   selector: 'app-students-form',
@@ -34,6 +35,7 @@ export class StudentsFormComponent implements OnInit {
   constructor() {
     this.studentForm = new FormGroup(
       {
+        id: new FormControl(null),
         nombre: new FormControl(null, [
           Validators.required,
           Validators.maxLength(45),
@@ -79,10 +81,15 @@ export class StudentsFormComponent implements OnInit {
     this.activatedRoute.params.subscribe(async (params: any) => {
       if (params.id) {
         this.tipo = 'Actualizar';
-        const alumno: Iusuario | undefined =
-          await this.alumnosService.getAlumnoById(Number(params.id));
+        const alumno: any | undefined = await this.alumnosService.getAlumnoById(
+          Number(params.id)
+        );
         if (alumno && alumno.rol === 'alumno') {
           this.studentForm.patchValue(alumno);
+          // Si el alumno tiene una foto, establecer la URL de la imagen
+          if (alumno.foto) {
+            this.profileImgUrl = environment.API_URL + alumno.foto;
+          }
         } else {
           Swal.fire({
             icon: 'error',
@@ -101,9 +108,9 @@ export class StudentsFormComponent implements OnInit {
       console.log('Formulario no válido', this.studentForm.errors);
       return;
     }
-  
+
     const formData = new FormData();
-  
+
     // Crear objeto datosAlumno compatible con la interfaz Iusuario
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
@@ -114,25 +121,23 @@ export class StudentsFormComponent implements OnInit {
       rol: 'alumno',
       activo: true,
     };
-  
-    console.log('Contenido de datosAlumno antes de enviar:', datosAlumno);
-  
-    // Adjuntar los datos en JSON a formData
+
+    // Adjuntar datos del alumno
     formData.append('datos', JSON.stringify(datosAlumno));
-  
+
     // Adjuntar imagen de perfil si existe
     if (this.studentForm.get('foto')?.value instanceof File) {
       formData.append('foto', this.studentForm.get('foto')?.value);
     }
-  
+
     console.log('Contenido completo de FormData:');
     for (let pair of (formData as any).entries()) {
       console.log(pair[0] + ':', pair[1]);
     }
-  
+
     try {
       if (this.tipo === 'Actualizar') {
-        await this.alumnosService.actualizarAlumno(formData);
+        await this.alumnosService.actualizarAlumno(formData, datosAlumno.id);
         Swal.fire({
           icon: 'success',
           title: 'Éxito',

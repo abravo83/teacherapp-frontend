@@ -1,0 +1,60 @@
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+
+section{
+    font-family: "Work Sans", sans-serif;
+}
+
+.reviews-container {
+    padding: 20px;
+  }
+  
+  .filters {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  
+  .filter-btn {
+    background-color: #FDCB9E;
+    border-color: #CCEABB;
+    border-radius: 9px;
+    padding: 10px;
+    cursor: pointer;
+  }
+  
+  .reviews-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .reviews-table th,
+  .reviews-table td {
+    padding: 10px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .stars {
+    color: #ffa500;
+  }
+  
+  .pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  button {
+    padding: 10px;
+    background-color: #FDCB9E;
+    border-color: #CCEABB;
+    border-radius: 9px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  button:disabled {
+    background-color: #cccccc;
+  }
