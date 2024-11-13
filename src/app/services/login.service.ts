@@ -4,9 +4,14 @@ import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { USUARIOS } from '../db/usuarios';
 import { environment } from '../../environments/environments';
+import { jwtDecode, JwtPayload } from "jwt-decode";
 
 type Body = { email: string; password: string };
 type Response = { message: string; token: string };
+interface CustomPayload extends JwtPayload {
+  usuario_id: number;
+  usuario_rol: string;
+}
 
 @Injectable({
   providedIn: 'root',
@@ -44,5 +49,17 @@ export class LoginService {
   isLogged(): boolean {
     const token = localStorage.getItem('token');
     return token ? true : false;
+  }
+
+  getLoggedUserId(): number {
+    const token = localStorage.getItem('token');
+    const data = jwtDecode<CustomPayload>(token!);
+    return data.usuario_id;
+  }
+
+  getLoggedUserRole(): string {
+    const token = localStorage.getItem('token');
+    const data = jwtDecode<CustomPayload>(token!);
+    return data.usuario_rol;
   }
 }
