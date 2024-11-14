@@ -1,0 +1,25 @@
+<div class="container-homepopup">
+    <div class="introduction-professor">
+        <img *ngIf="myProfesor.foto" class="img-prof" [src]="myProfesor.foto" [alt]="myProfesor.nombre" />
+        <div class="available" [ngClass]="{ 'active': myProfesor.activo, 'inactive': !myProfesor.activo }">
+            {{ myProfesor.activo ? 'Disponible' : 'No disponible' }}
+          </div>    
+        <div class="name-surname">{{ myProfesor.nombre }} {{ myProfesor.apellidos }}</div>
+        <div class="subject" *ngFor="let materia of myProfesor.materia">{{ materia }}</div>
+        <div class="price">Precio por hora: €{{ myProfesor.precio_hora }}</div>
+        <div class="experience">{{ myProfesor.meses_experiencia }} meses de experiencia</div>
+    </div>
+
+    <div class="more-info">
+        <div *ngIf="myProfesor.sobreMi" class="description-professor">
+            Descripción del profesor: {{ myProfesor.sobreMi }}
+        </div>
+        <div *ngIf="myProfesor.reviews" class="reviews">
+            Opiniones de otros usuarios: {{ myProfesor.reviews }}
+        </div>
+       
+        Si quieres contactar con el profesor, <a href ="">¡regístrate!</a>
+        <button class="button-contact" (click)="cerrar()">Cerrar</button>
+    </div>
+</div>
+  

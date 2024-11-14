@@ -195,59 +195,23 @@ export class ProfesoresService {
     return profesoresFiltrados;
   }
 
-  //FORMULARIO REGISTRO Y PROFESOR (Arturo y Alberto)
+  //FORMULARIO REGISTRO Y PROFESOR 
   getProfesorById(id: number): Promise<IRespuestaTeachersForm | undefined> {
     return firstValueFrom(
       this.httpClient.get<IRespuestaTeachersForm>(`${this.BASE_URL}/${id}`)
-    );
-    // return new Promise((resolve) => {
-    //   const profesor = PROFESORES.find((prof) => prof.usuario.id === id);
-    //   resolve(profesor);
-    // });
+    );    
   }
 
   async registroProfesor(formData: FormData): Promise<any> {
     return firstValueFrom(
       this.httpClient.post<Iusuario>(`${this.BASE_URL}/registro`, formData)
     );
-    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
-    // const profesorData = JSON.parse(
-    //   formData.get('profesor') as string
-    // ) as IRespuestaTeachersForm;
-    // const nuevoProfesor: IRespuestaTeachersForm = {
-    //   usuario: {
-    //     id: PROFESORES.length + 1,
-    //     ...profesorData.usuario,
-    //   },
-    //   profesor: {
-    //     ...profesorData.profesor,
-    //     usuarios_id: PROFESORES.length + 1,
-    //   },
-    //   materias: profesorData.materias,
-    // };
-    // PROFESORES.push(nuevoProfesor);
-    // return nuevoProfesor;
   }
 
   async actualizarProfesor(formData: FormData, id: number): Promise<any> {
     return firstValueFrom(
       this.httpClient.put<Iusuario>(`${this.BASE_URL}/${id}`, formData)
     );
-
-    // A la hora de enviar los datos mandamos el formData para que vaya adjunta la imagen.
-    //   const profesorData = JSON.parse(
-    //     formData.get('profesor') as string
-    //   ) as IRespuestaTeachersForm;
-    //   const index = PROFESORES.findIndex(
-    //     (prof) =>
-    //       prof.usuario.id === profesorData.usuario.id &&
-    //       prof.usuario.rol === 'profesor'
-    //   );
-    //   if (index !== -1) {
-    //     PROFESORES[index] = profesorData;
-    //     return PROFESORES[index];
-    //   }
-    //   throw new Error('Profesor no encontrado');
   }
 
   

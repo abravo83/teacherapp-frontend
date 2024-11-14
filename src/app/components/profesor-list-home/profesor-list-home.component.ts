@@ -6,6 +6,8 @@ import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-ho
 import { MapaHomeComponent } from './mapa-home/mapa-home.component';
 import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { environment } from '../../../environments/environments';
+import { PopUpContactarComponent } from './pop-up-contactar/pop-up-contactar.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -17,6 +19,8 @@ import { environment } from '../../../environments/environments';
     GoogleMap,
     MapMarker,
     MapAdvancedMarker,
+    PopUpContactarComponent,
+    CommonModule
   ],
   templateUrl: './profesor-list-home.component.html',
   styleUrl: './profesor-list-home.component.css',
@@ -71,4 +75,6 @@ export class ProfesorListHomeComponent {
       this.usuariosList = this.profesorService.getAll();
     }
   }
-}
+
+    profesorSeleccionado: any = null;  // Variable para almacenar el profesor seleccionado
+  }
