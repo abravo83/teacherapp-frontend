@@ -14,23 +14,58 @@
 
     <div class="d-flex align-items-center justify-content-center">
       <span>
-        @if(login === true && hasnoti()){
+        @if(login === true){
         <ul class="navbar-nav hover-bg">
-          <li class="nav-item">
+          <li class="nav-item dropdown" (click)="toggleNotificaciones()">
             <a
-              class="nav-link position-relative d-lg-none"
+              class="nav-link position-relative d-lg-none dropdown-toggle"
               routerLinkActive="active"
               aria-current="page"
               title="Notificaciones"
             >
+              @if(hasnoti()){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
-                id="count-label"
                 >{{ notiCount }}</span
               >
-              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
-            </a>
+              }
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i
+            ></a>
+            @if(showNotifications){
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center"
+              style="
+                position: absolute;
+                left: -250px;
+                width: -webkit-fill-available;
+              "
+            >
+              @if(notiCount===0){
+              <li class="nav-item p-2 text-center text-black-50">
+                No tienes notificaciones
+              </li>
+              }
+              <li
+                *ngFor="
+                  let notificacion of notificationUnRead();
+                  let i = index;
+                  let last = last
+                "
+                class="nav-item p-3"
+                (click)="readNotifications(notificacion.id)"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black"
+                  style="background: none; text-decoration: none"
+                  [routerLink]="['/profile', '']"
+                  >{{ notificacion.leido }}
+                  {{ notificacion.contenido }}
+                </a>
+              </li>
+            </ul>
+            }
           </li>
         </ul>
         }
@@ -244,11 +279,15 @@
       </div>
 
       } @else if(login === true && role === 'alumno'){
+
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <li class="nav-item ocultarli mx-1">
+          <li
+            class="nav-item ocultarli mx-1 dropdown"
+            (click)="toggleNotificaciones()"
+          >
             <a
-              class="nav-link"
+              class="nav-link dropdown-toggle"
               routerLinkActive="active"
               aria-current="page"
               title="Notificaciones"
@@ -262,6 +301,40 @@
               }
               <i class="fa-regular fa-bell" style="font-size: 22px"></i
             ></a>
+            @if(showNotifications){
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center"
+              style="
+                position: absolute;
+                left: -250px;
+                width: -webkit-fill-available;
+              "
+            >
+              @if(notiCount===0){
+              <li class="nav-item p-2 text-center text-black-50">
+                No tienes notificaciones
+              </li>
+              }
+              <li
+                *ngFor="
+                  let notificacion of notificationUnRead();
+                  let i = index;
+                  let last = last
+                "
+                class="nav-item p-3"
+                (click)="readNotifications(notificacion.id)"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black"
+                  style="background: none"
+                  [routerLink]="['/profile', '']"
+                  >{{ notificacion.leido }}
+                  {{ notificacion.contenido }}
+                </a>
+              </li>
+            </ul>
+            }
           </li>
 
           <li class="nav-item ocultarli mx-1">
