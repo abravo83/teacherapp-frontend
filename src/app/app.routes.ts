@@ -54,11 +54,19 @@ export const routes: Routes = [
       { path: 'nuevo-alumno', component: StudentsFormComponent },
       {
         path: 'editar-profesor/:id',
+        component: TeachersFormComponent,
+      },
+      {
+        path: 'editar-profesor-guarded/:id',
         canActivate: [authGuard],
         component: TeachersFormComponent,
       },
       {
         path: 'editar-alumno/:id',
+        component: StudentsFormComponent,
+      },
+      {
+        path: 'editar-alumno-guarded/:id',
         canActivate: [authGuard],
         component: StudentsFormComponent,
       },

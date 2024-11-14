@@ -127,7 +127,7 @@ export class StudentsFormComponent implements OnInit {
 
     // Adjuntar imagen de perfil si existe
     if (this.studentForm.get('foto')?.value instanceof File) {
-      formData.append('foto', this.studentForm.get('foto')?.value);
+      formData.append('imagen', this.studentForm.get('foto')?.value);
     }
 
     console.log('Contenido completo de FormData:');
