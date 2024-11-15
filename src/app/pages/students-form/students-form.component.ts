@@ -31,6 +31,7 @@ export class StudentsFormComponent implements OnInit {
   studentForm: FormGroup;
   profileImgUrl: string = '/img/no_profile_freepick.webp';
   archivoSeleccionado: File | null = null;
+  mostrarCamposContrasena: boolean = false;
 
   constructor() {
     this.studentForm = new FormGroup(
@@ -49,13 +50,8 @@ export class StudentsFormComponent implements OnInit {
           Validators.email,
           Validators.maxLength(60),
         ]),
-        password: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(255),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
-        ]),
-        repitepassword: new FormControl(null, [Validators.required]),
+        password: new FormControl(null),
+        repitepassword: new FormControl(null),
         foto: new FormControl(null),
       },
       { validators: this.validadorCoincidenciaContraseñas }
@@ -69,6 +65,28 @@ export class StudentsFormComponent implements OnInit {
     const repitepassword = group.get('repitepassword')?.value;
     return password === repitepassword ? null : { checkpassword: true };
   };
+
+  toggleCamposContrasena() {
+    this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
+
+    if (this.mostrarCamposContrasena) {
+      this.studentForm.get('password')?.setValidators([
+        Validators.required,
+        Validators.minLength(8),
+        Validators.maxLength(255),
+        Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
+      ]);
+      this.studentForm.get('repitepassword')?.setValidators([
+        Validators.required,
+      ]);
+    } else {
+      this.studentForm.get('password')?.clearValidators();
+      this.studentForm.get('repitepassword')?.clearValidators();
+    }
+
+    this.studentForm.get('password')?.updateValueAndValidity();
+    this.studentForm.get('repitepassword')?.updateValueAndValidity();
+  }
 
   checkControl(formControlName: string, validador: string) {
     return (
@@ -86,7 +104,6 @@ export class StudentsFormComponent implements OnInit {
         );
         if (alumno && alumno.rol === 'alumno') {
           this.studentForm.patchValue(alumno);
-          // Si el alumno tiene una foto, establecer la URL de la imagen
           if (alumno.foto) {
             this.profileImgUrl = environment.API_URL + alumno.foto;
           }
@@ -100,39 +117,46 @@ export class StudentsFormComponent implements OnInit {
           this.router.navigate(['/home']);
         }
       }
+
+      // Mostrar opción de contraseña solo al actualizar
+      if (this.tipo === 'Actualizar') {
+        this.mostrarCamposContrasena = false; // Opcional al inicio
+      }
     });
   }
 
   async obtenerDatosFormulario() {
     if (!this.studentForm.valid) {
       console.log('Formulario no válido', this.studentForm.errors);
+      Swal.fire({
+        icon: 'error',
+        title: 'Formulario inválido',
+        text: 'Por favor, revisa los campos y corrige los errores.',
+        confirmButtonColor: '#d33',
+      });
       return;
     }
 
     const formData = new FormData();
 
-    // Crear objeto datosAlumno compatible con la interfaz Iusuario
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
       nombre: this.studentForm.value.nombre,
       apellidos: this.studentForm.value.apellidos,
       email: this.studentForm.value.email,
-      password: this.studentForm.value.password,
+      password: this.mostrarCamposContrasena ? this.studentForm.value.password : '',
       rol: 'alumno',
       activo: true,
     };
 
-    // Adjuntar datos del alumno
-    formData.append('datos', JSON.stringify(datosAlumno));
-
-    // Adjuntar imagen de perfil si existe
-    if (this.studentForm.get('foto')?.value instanceof File) {
-      formData.append('imagen', this.studentForm.get('foto')?.value);
+    if (this.mostrarCamposContrasena) {
+      datosAlumno.password = this.studentForm.value.password;
     }
 
-    console.log('Contenido completo de FormData:');
-    for (let pair of (formData as any).entries()) {
-      console.log(pair[0] + ':', pair[1]);
+    formData.append('datos', JSON.stringify(datosAlumno));
+
+    if (this.studentForm.get('foto')?.value instanceof File) {
+      formData.append('imagen', this.studentForm.get('foto')?.value);
     }
 
     try {
@@ -154,10 +178,44 @@ export class StudentsFormComponent implements OnInit {
         });
       }
       this.router.navigate(['/home']);
-    } catch (error) {
-      this.errorForm = error as any;
+    } catch (error: any) {
+      const errorMessage = error?.error?.message || 'Ocurrió un error inesperado.';
+      const errorsList = error?.error?.errors || [];
+
+      // Verificar si el error es un caso de duplicación
+      if (errorMessage.toLowerCase().includes('duplicate')) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Email ya registrado',
+          text: 'El email proporcionado ya está registrado. Por favor, usa otro email o intenta iniciar sesión.',
+          confirmButtonColor: '#d33',
+        });
+        return;
+      }
+
+      if (errorsList.length > 0) {
+        const detailedErrors = errorsList.map(
+          (err: { field: string; message: string }) =>
+            `${err.field}: ${err.message}`
+        ).join('<br>');
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Errores en los datos',
+          html: detailedErrors, // Mostrar errores en formato HTML
+          confirmButtonColor: '#d33',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage,
+          confirmButtonColor: '#d33',
+        });
+      }
     }
   }
+
 
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB
@@ -167,7 +225,6 @@ export class StudentsFormComponent implements OnInit {
     if (input.files && input.files[0]) {
       const archivo = input.files[0];
 
-      // Validar tamaño del archivo
       if (archivo.size > maxFileSize) {
         this.profileImgUrl = '/img/no_profile_freepick.webp';
         this.archivoSeleccionado = null;
@@ -176,13 +233,12 @@ export class StudentsFormComponent implements OnInit {
         Swal.fire({
           icon: 'warning',
           title: 'Imagen demasiado grande.',
-          text: 'La imagen excede el tamaño maximo de 1MB.',
+          text: 'La imagen excede el tamaño máximo de 1MB.',
           confirmButtonColor: '#28a745',
         });
         return;
       }
 
-      // Validar tipo de archivo
       if (!tiposPermitidos.includes(archivo.type)) {
         this.profileImgUrl = '/img/no_profile_freepick.webp';
         this.archivoSeleccionado = null;
@@ -197,13 +253,9 @@ export class StudentsFormComponent implements OnInit {
         return;
       }
 
-      // Almacenar el archivo seleccionado
       this.archivoSeleccionado = archivo;
-
-      // Actualizar el FormControl
       this.studentForm.get('foto')?.setValue(archivo);
 
-      // Crear URL temporal para mostrar la imagen
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {
