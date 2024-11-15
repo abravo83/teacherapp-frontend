@@ -149,8 +149,16 @@ h3 {
     background-color: #F9ECE6;
 }
 
+/* Ancho fijo para columnas "Activo" y "Validado" en Profesores */
+.table td:nth-child(6) {
+    width: 160px;
+}
 
-.table td:nth-child(6),
 .table td:nth-child(7) {
     width: 140px;
+}
+
+/* Ancho fijo para la columna "Activo" en Alumnos */
+.table td:nth-child(3) {
+    width: 160px;
 }
