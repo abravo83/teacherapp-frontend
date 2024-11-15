@@ -3,6 +3,7 @@ import { ProfesoresService } from '../../services/profesores.service';
 import { UsuariosService } from '../../services/usuarios.service';
 import { AlumnosService } from '../../services/alumnos.service';
 import { Iprofesor } from '../../interfaces/iprofesor';
+import { Iusuario } from '../../interfaces/iusuario';
 
 @Component({
   selector: 'app-panel-administrador',
@@ -11,7 +12,7 @@ import { Iprofesor } from '../../interfaces/iprofesor';
 })
 export class PanelAdministradorComponent implements OnInit {
   profesores: Iprofesor[] = [];
-  alumnos: any[] = [];
+  alumnos: Iusuario[] = [];
   respuestaAPI: string = '';
   seccionActual: 'profesores' | 'alumnos' = 'profesores';
 

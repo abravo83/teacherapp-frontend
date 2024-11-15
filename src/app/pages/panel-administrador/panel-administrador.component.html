@@ -114,7 +114,7 @@
                 type="checkbox"
                 class="form-check-input"
                 [checked]="alumno.activo"
-                (change)="cambiarEstadoUsuario(alumno.id, !alumno.activo)"
+                (change)="alumno.id !== undefined && cambiarEstadoUsuario(alumno.id, !alumno.activo)"
               />
               <label class="form-check-label">{{
                 alumno.activo ? "On" : "Off"
