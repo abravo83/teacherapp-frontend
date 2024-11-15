@@ -5,6 +5,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { LogoutComponent } from './pages/logout/logout.component';
 import { TeachersFormComponent } from './pages/teachers-form/teachers-form.component';
+import { PanelAdministradorComponent } from './pages/panel-administrador/panel-administrador.component';
 import { StudentsFormComponent } from './pages/students-form/students-form.component';
 import { ProfesorDashboardComponent } from './profile/profesor/profesor-dashboard/profesor-dashboard.component';
 import { MyAccountComponent } from './profile/profesor/my-account/my-account.component';
@@ -16,6 +17,7 @@ export const routes: Routes = [
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'panel-control', component: PanelAdministradorComponent },
 
   {
     path: 'profile',

@@ -10,7 +10,7 @@ import { Iusuario } from '../interfaces/iusuario';
 import { MATERIAS } from '../db/materias';
 import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
-import { PROFESORES } from '../db/profesoresForm.db';
+
 import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.interface';
 
 @Injectable({
@@ -214,5 +214,14 @@ export class ProfesoresService {
     );
   }
 
+//Panel administrador
+async listarProfesores(): Promise<Iprofesor[]> {
+  return firstValueFrom(this.httpClient.get<Iprofesor[]>(this.BASE_URL));
+}
+
+async validarProfesor(id: number, validado: boolean): Promise<{ message: string }> {
+  const url = `${this.BASE_URL}/validar/${id}`;
+  return firstValueFrom(this.httpClient.put<{ message: string }>(url, { validado }));
+}
   
 }

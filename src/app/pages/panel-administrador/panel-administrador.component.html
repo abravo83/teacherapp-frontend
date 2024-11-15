@@ -1,0 +1,130 @@
+<div class="container my-4">
+  <h2 class="mb-4">Panel de Administración</h2>
+
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a
+        class="nav-link cursor-pointer"
+        [class.active]="seccionActual === 'profesores'"
+        (click)="cambiarSeccion('profesores')"
+        >Profesores</a
+      >
+    </li>
+    <li class="nav-item">
+      <a
+        class="nav-link cursor-pointer"
+        [class.active]="seccionActual === 'alumnos'"
+        (click)="cambiarSeccion('alumnos')"
+        >Alumnos</a
+      >
+    </li>
+  </ul>
+
+  @if (respuestaAPI) {
+  <div
+    class="alert alert-info mt-3 d-flex justify-content-between align-items-center"
+  >
+    <span>{{ respuestaAPI }}</span>
+    <button
+      type="button"
+      class="btn btn-close"
+      (click)="limpiarMensajeAPI()"
+      aria-label="Cerrar"
+    ></button>
+  </div>
+  } @if (seccionActual === 'profesores') {
+  <div class="mt-4">
+    <h3>Profesores</h3>
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Teléfono</th>
+          <th>Precio Hora</th>
+          <th>Localización</th>
+          <th>Activo</th>
+          <th>Validado</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (profesor of profesores; track profesor.id) {
+        <tr>
+          <td>{{ profesor.nombre }} {{ profesor.apellidos }}</td>
+          <td>{{ profesor.email }}</td>
+          <td>{{ profesor.telefono }}</td>
+          <td>{{ profesor.precio_hora }}</td>
+          <td>{{ profesor.localizacion }}</td>
+          <td>
+            <div class="form-check form-switch">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [checked]="profesor.activo"
+                (change)="
+                  profesor.id !== undefined &&
+                    cambiarEstadoUsuario(profesor.id, !profesor.activo)
+                "
+              />
+              <label class="form-check-label">{{
+                profesor.activo ? "On" : "Off"
+              }}</label>
+            </div>
+          </td>
+          <td>
+            <div class="form-check form-switch">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [checked]="profesor.validado"
+                (change)="
+                  profesor.id !== undefined &&
+                    cambiarValidacionProfesor(profesor.id, !profesor.validado)
+                "
+              />
+              <label class="form-check-label">{{
+                profesor.validado ? "On" : "Off"
+              }}</label>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  } @if (seccionActual === 'alumnos') {
+  <div class="mt-4">
+    <h3>Alumnos</h3>
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Nombre</th>
+          <th>Email</th>
+          <th>Activo</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (alumno of alumnos; track alumno.id) {
+        <tr>
+          <td>{{ alumno.nombre }} {{ alumno.apellidos }}</td>
+          <td>{{ alumno.email }}</td>
+          <td>
+            <div class="form-check form-switch">
+              <input
+                type="checkbox"
+                class="form-check-input"
+                [checked]="alumno.activo"
+                (change)="cambiarEstadoUsuario(alumno.id, !alumno.activo)"
+              />
+              <label class="form-check-label">{{
+                alumno.activo ? "On" : "Off"
+              }}</label>
+            </div>
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+  }
+</div>

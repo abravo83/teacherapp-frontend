@@ -51,4 +51,10 @@ export class AlumnosService {
       )
     );
   }
+
+  //Panel administrador
+  //Cuidado con ese any
+  async listarAlumnos(): Promise<Iusuario[]> {
+    return firstValueFrom(this.httpClient.get<Iusuario[]>(this.BASE_URL));
+  }
 }
