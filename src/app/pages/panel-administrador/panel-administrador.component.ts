@@ -28,11 +28,23 @@ export class PanelAdministradorComponent implements OnInit {
 
   async cargarProfesores() {
     try {
-      this.profesores = await this.profesoresService.listarProfesores();
+      const profesores = await this.profesoresService.listarProfesores();
+      this.profesores = profesores.map((profesor) => {
+        if (profesor.localizacion) {
+          try {
+            const localizacionObj = JSON.parse(profesor.localizacion);
+            profesor.localizacion = localizacionObj.address.split(',')[0]; 
+          } catch {            
+            profesor.localizacion = profesor.localizacion; 
+          }
+        }
+        return profesor;
+      });
     } catch (error) {
       console.error('Error al cargar profesores', error);
     }
   }
+  
 
   async cargarAlumnos() {
     try {
