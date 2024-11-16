@@ -108,7 +108,7 @@ export class StudentsFormComponent implements OnInit {
             this.profileImgUrl = environment.API_URL + alumno.foto;
           }
         } else {
-          Swal.fire({
+          await Swal.fire({
             icon: 'error',
             title: 'Error',
             text: 'Usuario no encontrado o no es un alumno',
@@ -116,18 +116,17 @@ export class StudentsFormComponent implements OnInit {
           });
           this.router.navigate(['/home']);
         }
+      } else {
+        this.tipo = 'Registra';
       }
-
-      // Mostrar opción de contraseña solo al actualizar
       if (this.tipo === 'Actualizar') {
-        this.mostrarCamposContrasena = false; // Opcional al inicio
+        this.mostrarCamposContrasena = false;
       }
     });
   }
-
+  
   async obtenerDatosFormulario() {
     if (!this.studentForm.valid) {
-      console.log('Formulario no válido', this.studentForm.errors);
       Swal.fire({
         icon: 'error',
         title: 'Formulario inválido',
@@ -136,9 +135,9 @@ export class StudentsFormComponent implements OnInit {
       });
       return;
     }
-
+  
     const formData = new FormData();
-
+  
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
       nombre: this.studentForm.value.nombre,
@@ -148,41 +147,41 @@ export class StudentsFormComponent implements OnInit {
       rol: 'alumno',
       activo: true,
     };
-
+  
     if (this.mostrarCamposContrasena) {
       datosAlumno.password = this.studentForm.value.password;
     }
-
+  
     formData.append('datos', JSON.stringify(datosAlumno));
-
+  
     if (this.studentForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.studentForm.get('foto')?.value);
     }
-
+  
     try {
       if (this.tipo === 'Actualizar') {
         await this.alumnosService.actualizarAlumno(formData, datosAlumno.id);
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Alumno actualizado exitosamente.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/home']);
       } else {
         await this.alumnosService.registroAlumno(formData);
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Alumno registrado exitosamente.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/login']);
       }
-      this.router.navigate(['/home']);
     } catch (error: any) {
       const errorMessage = error?.error?.message || 'Ocurrió un error inesperado.';
       const errorsList = error?.error?.errors || [];
-
-      // Verificar si el error es un caso de duplicación
+  
       if (errorMessage.toLowerCase().includes('duplicate')) {
         Swal.fire({
           icon: 'warning',
@@ -192,17 +191,17 @@ export class StudentsFormComponent implements OnInit {
         });
         return;
       }
-
+  
       if (errorsList.length > 0) {
         const detailedErrors = errorsList.map(
           (err: { field: string; message: string }) =>
             `${err.field}: ${err.message}`
         ).join('<br>');
-
+  
         Swal.fire({
           icon: 'error',
           title: 'Errores en los datos',
-          html: detailedErrors, // Mostrar errores en formato HTML
+          html: detailedErrors,
           confirmButtonColor: '#d33',
         });
       } else {
@@ -215,6 +214,7 @@ export class StudentsFormComponent implements OnInit {
       }
     }
   }
+  
 
 
   obtenerImagen(event: Event): void {

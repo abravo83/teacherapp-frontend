@@ -114,7 +114,9 @@
         </div>
 
         <div class="my-2 fw-light col-md-6 mb-3">
-          <label class="form-label" for="repitepassword">Repite Contraseña</label>
+          <label class="form-label" for="repitepassword"
+            >Repite Contraseña</label
+          >
           <input
             class="form-control"
             type="password"
@@ -135,7 +137,9 @@
 
       <!-- Email y Botón en Actualización -->
       <div class="row align-items-center">
-        <div class="@if(tipo === 'Registra') col-md-6 mx-auto @else col-md-6 @endif my-2">
+        <div
+          class="@if(tipo === 'Registra') col-md-6 mx-auto @else col-md-6 @endif my-2"
+        >
           <label class="form-label" for="email">Email</label>
           <input
             class="form-control"
@@ -161,7 +165,7 @@
             class="button-secondary"
             (click)="toggleCamposContrasena()"
           >
-            {{ mostrarCamposContrasena ? 'Cancelar' : 'Actualizar Contraseña' }}
+            {{ mostrarCamposContrasena ? "Cancelar" : "Actualizar Contraseña" }}
           </button>
         </div>
         }
@@ -193,7 +197,9 @@
         </div>
 
         <div class="my-2 fw-light col-md-6 mb-3">
-          <label class="form-label" for="repitepassword">Repite Nueva Contraseña</label>
+          <label class="form-label" for="repitepassword"
+            >Repite Nueva Contraseña</label
+          >
           <input
             class="form-control"
             type="password"
@@ -218,7 +224,14 @@
           type="submit"
           [value]="tipo"
           class="button-primary pointer"
-          [disabled]="!studentForm.valid || errorForm.length > 0"
+          [disabled]="
+            !studentForm.valid ||
+            errorForm.length > 0 ||
+            (tipo === 'Registra' &&
+              (!studentForm.get('password')?.value ||
+                !studentForm.get('repitepassword')?.value ||
+                studentForm.hasError('checkpassword')))
+          "
         />
       </div>
     </form>
