@@ -45,7 +45,8 @@ export class TeachersFormComponent implements OnInit {
   errorForm: any[] = [];
   tipo: string = 'Registra';
   teacherForm: FormGroup;
-  materiasList: Imateria[] = []; // Lista de objetos Imateria
+  materiasList: Imateria[] = []; // Inicializar como un array vacío
+
 
   limiteMateriasExcedido = false;
   desplegableAbierto = false;
@@ -150,8 +151,14 @@ export class TeachersFormComponent implements OnInit {
   }
 
   async ngOnInit() {
-    // Carga las materias desde el servicio al iniciar el componente
-    this.materiasList = await this.materiasService.getMaterias();
+
+    try {
+      const materias = await this.materiasService.getMaterias();
+      this.materiasList = Array.isArray(materias) ? materias : []; 
+    } catch (error) {
+      console.error('Error al cargar materias:', error);
+      this.materiasList = []; 
+    }
 
     // Carga de datos para actualización (si existe un id en la ruta)
     this.activatedRoute.params.subscribe(async (params: any) => {
@@ -191,7 +198,7 @@ export class TeachersFormComponent implements OnInit {
 
   async cambiarMateria(event: any) {
     const selectedMaterias = this.teacherForm.value.materias || [];
-    const materiaId = Number(event.target.value); // Convertir a número
+    const materiaId = Number(event.target.value); 
 
     if (event.target.checked) {
       if (selectedMaterias.length < 3) {
@@ -215,15 +222,20 @@ export class TeachersFormComponent implements OnInit {
   async obtenerDatosFormulario() {
     if (!this.teacherForm.valid) {
       console.log('Formulario no válido', this.teacherForm.errors);
+      Swal.fire({
+        icon: 'error',
+        title: 'Formulario inválido',
+        text: 'Por favor, revisa los campos y corrige los errores.',
+        confirmButtonColor: '#d33',
+      });
       return;
     }
-
+  
     const formData = new FormData();
-
+  
     // Verificar materias seleccionadas antes de construir datosProfesor
     console.log('Materias seleccionadas:', this.teacherForm.value.materias);
-
-    // Construir el objeto `IRespuestaTeachersForm` completo
+  
     const datosProfesor: IRespuestaTeachersForm = {
       usuario: {
         id: this.teacherForm.value.id,
@@ -241,54 +253,83 @@ export class TeachersFormComponent implements OnInit {
         meses_experiencia: this.teacherForm.value.meses_experiencia,
         validado: false,
       },
-      materias: this.teacherForm.value.materias.map((materiaId: number) => {
-        const materia = this.materiasList.find(
-          (mat: Imateria) => mat.id === materiaId
-        );
-        return materia!;
-      }),
+      materias: this.teacherForm.value.materias, // Solo IDs
     };
-
-    console.log('Contenido de datosProfesor antes de enviar:', datosProfesor);
-
-    // Adjuntar el objeto `IRespuestaTeachersForm` como JSON en `formData`
+  
     formData.append('datos', JSON.stringify(datosProfesor));
-
+  
     if (this.teacherForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.teacherForm.get('foto')?.value);
     }
-
+  
     console.log('FormData contenido completo:');
     for (let pair of (formData as any).entries()) {
       console.log(pair[0] + ':', pair[1]);
     }
-
+  
     try {
       if (this.tipo === 'Actualizar' && datosProfesor.usuario.id) {
         await this.profesoresService.actualizarProfesor(
           formData,
           datosProfesor.usuario.id
         );
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Profesor actualizado exitosamente.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/home']); // Navegar a 'home' tras cerrar la alerta
       } else {
         await this.profesoresService.registroProfesor(formData);
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Profesor registrado exitosamente.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/login']); // Navegar a 'login' tras cerrar la alerta
       }
-      this.router.navigate(['/home']);
-    } catch (error) {
-      this.errorForm = error as any;
+    } catch (error: any) {
+      const errorMessage = error?.error?.message || 'Ocurrió un error inesperado.';
+      const errorsList = error?.error?.errors || [];
+  
+      // Caso específico: Correo duplicado
+      if (errorMessage.toLowerCase().includes('duplicate')) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Correo ya registrado',
+          text: 'El correo proporcionado ya está registrado. Por favor, utiliza otro correo o inicia sesión.',
+          confirmButtonColor: '#d33',
+        });
+        return;
+      }
+  
+      // Mostrar otros errores si existen
+      if (errorsList.length > 0) {
+        const detailedErrors = errorsList
+          .map((err: { field: string; message: string }) => `${err.field}: ${err.message}`)
+          .join('<br>');
+  
+        Swal.fire({
+          icon: 'error',
+          title: 'Errores en los datos',
+          html: detailedErrors,
+          confirmButtonColor: '#d33',
+        });
+      } else {
+        // Mensaje genérico para otros errores
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage,
+          confirmButtonColor: '#d33',
+        });
+      }
     }
   }
+  
+  
 
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB

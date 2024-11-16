@@ -244,12 +244,13 @@
           >
             Selecciona hasta 3 materias
           </button>
-          @if(desplegableAbierto) {
+          @if(desplegableAbierto) { @if(materiasList && materiasList.length > 0)
+          {
           <div
             class="border p-2 mt-2"
             style="max-height: 150px; overflow-y: auto"
           >
-            @for (materia of materiasList; track $index) {
+            @for (materia of materiasList; track $index) {       
             <div class="form-check">
               <input
                 class="form-check-input"
@@ -262,7 +263,9 @@
             </div>
             }
           </div>
-          }
+          } @else {    
+          <p class="text-muted">No hay materias disponibles.</p>
+          } }
           <div class="error-box">
             @if(limiteMateriasExcedido) {
             <p class="text-danger">Solo puedes seleccionar hasta 3 materias</p>
