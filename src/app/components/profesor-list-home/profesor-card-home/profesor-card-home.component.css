@@ -57,12 +57,15 @@ section {
   text-align: left;
   justify-content: left;
 }
+
 .button-contact {
   background-color: var(--color-button1);
   color: var(--color-text-secondary);
   padding: 0.5em 1em;
   margin-bottom: 1em;
-  width: 50%;
+  margin-left: auto;
+  text-wrap: nowrap;
+  width: 200px;
   border: none;
   border-radius: 3px;
   transition: background-color 0.5s ease, box-shadow 0.5s ease;

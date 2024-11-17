@@ -1,22 +1,41 @@
 <div *ngIf="popUpVisible" class="overlay"></div>
 <section class="my2 container profesores-list">
   <div class="card my-2">
-
-    <div class="card-body d-flex" style="background-color: var(--color-background-secondary); overflow: hidden; position: relative; gap: 2em;">
-      
+    <div
+      class="card-body d-flex align-items-center"
+      style="
+        background-color: var(--color-background-secondary);
+        overflow: hidden;
+        position: relative;
+        gap: 2em;
+      "
+    >
       <img
-        class="img-prof"
+        class="img-prof rounded-circle"
         [src]="myProfesor.foto"
         [alt]="myProfesor.nombre"
-        style=" max-width: 30%; height: 30%; display: block; object-fit: cover; "
+        style="
+          height: 120px;
+          aspect-ratio: 1/1;
+          display: block;
+          object-fit: cover;
+        "
       />
 
-      <div class="info-prof-container" style="max-width: 60%;"> 
-        <h5 class="name-prof" style="color: var(--color-text-primary);">
-          {{ myProfesor.nombre }} {{ myProfesor.apellidos }} 
-          <img src="https://cdn3.emoji.gg/emojis/1178-verified.png" alt="Check Icon" style="display: inline; width: 20px; height: 20px; vertical-align: middle;"> 
-      </h5>
-      
+      <div class="info-prof-container" style="max-width: 60%">
+        <h5 class="name-prof" style="color: var(--color-text-primary)">
+          {{ myProfesor.nombre }} {{ myProfesor.apellidos }}
+          <img
+            src="https://cdn3.emoji.gg/emojis/1178-verified.png"
+            alt="Check Icon"
+            style="
+              display: inline;
+              width: 20px;
+              height: 20px;
+              vertical-align: middle;
+            "
+          />
+        </h5>
 
         <div class="study-general">
           <!-- <h6>Áreas de Conocimiento:</h6> -->
@@ -26,20 +45,32 @@
           </ul>
           }
         </div>
-        <div class= "experience">
-          <h6 class="experience-prof">Meses de experiencia: </h6>
-          <div class="content-experience-prof"> {{ myProfesor.meses_experiencia }} </div>
+        <div class="experience">
+          <h6 class="experience-prof">Meses de experiencia:</h6>
+          <div class="content-experience-prof">
+            {{ myProfesor.meses_experiencia }}
+          </div>
         </div>
         <div class="price">
           <!-- Precio por hora: dentro del h6 -->
-          <h6 class="price-prof"> </h6>
-          <div class="content-price-prof"> {{ myProfesor.precio_hora }}€ </div>
+          <h6 class="price-prof"></h6>
+          <div class="content-price-prof">{{ myProfesor.precio_hora }}€</div>
         </div>
-        <div class="button-home-prof">
-          <button class="button-contact" style="color:var(--color-text-primary); font-weight:500;" (click)="mostrarPopUp()">Contactar</button>
-        </div>
+      </div>
+      <div class="button-home-prof flex-grow-1 text-end px-4">
+        <button
+          class="button-contact"
+          style="color: var(--color-text-primary); font-weight: 500"
+          (click)="mostrarPopUp()"
+        >
+          Más información
+        </button>
       </div>
     </div>
   </div>
-<app-pop-up-contactar *ngIf="popUpVisible" [myProfesor]="myProfesor" (cerrarPopUp)="cerrarPopUp()"></app-pop-up-contactar>
+  <app-pop-up-contactar
+    *ngIf="popUpVisible"
+    [myProfesor]="myProfesor"
+    (cerrarPopUp)="cerrarPopUp()"
+  ></app-pop-up-contactar>
 </section>
