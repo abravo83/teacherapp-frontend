@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
 import { UsuariosService } from '../../../services/usuarios.service';
 import { NavbarComponent } from '../../../components/navbar/navbar.component';
 import { FooterComponent } from '../../../components/footer/footer.component';
-import { SidebarMenuComponent } from '../../../components/sidebar-menu/sidebar-menu.component';
 import { WelcomeMessageComponent } from '../../../components/welcome-message/welcome-message.component';
-import { RouterModule } from '@angular/router';
+import { SidebarMenuComponent } from '../../../components/sidebar-menu/sidebar-menu.component';
 
 @Component({
   selector: 'app-profesor-dashboard',
