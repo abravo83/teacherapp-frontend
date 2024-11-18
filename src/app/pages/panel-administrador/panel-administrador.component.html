@@ -43,6 +43,8 @@
           <th>Teléfono</th>
           <th>Precio Hora</th>
           <th>Localización</th>
+          <th>Foto</th>
+          <th>Materias</th>
           <th>Activo</th>
           <th>Validado</th>
         </tr>
@@ -56,6 +58,24 @@
           <td>{{ profesor.precio_hora }}</td>
           <td>{{ profesor.localizacion }}</td>
           <td>
+            @if (profesor.foto) {
+            <a
+              href="javascript:void(0);"
+              (click)="abrirFoto(profesor.foto)"
+              class="foto-link"
+            >
+              Ver Foto
+            </a>
+            } @else { No disponible }
+          </td>
+          <td>
+            @if (profesor.id !== undefined && materiasPorProfesor &&
+            materiasPorProfesor[profesor.id].length > 0) {
+            {{ materiasPorProfesor[profesor.id].join(", ") }}
+            } @else { No asignadas }
+          </td>
+
+          <td>
             <div class="form-check form-switch">
               <input
                 type="checkbox"
@@ -66,9 +86,9 @@
                     cambiarEstadoUsuario(profesor.id, !profesor.activo)
                 "
               />
-              <label class="form-check-label">{{
-                profesor.activo ? "On" : "Off"
-              }}</label>
+              <label class="form-check-label">
+                {{ profesor.activo ? "On" : "Off" }}
+              </label>
             </div>
           </td>
           <td>
@@ -82,9 +102,9 @@
                     cambiarValidacionProfesor(profesor.id, !profesor.validado)
                 "
               />
-              <label class="form-check-label">{{
-                profesor.validado ? "On" : "Off"
-              }}</label>
+              <label class="form-check-label">
+                {{ profesor.validado ? "On" : "Off" }}
+              </label>
             </div>
           </td>
         </tr>
@@ -100,6 +120,7 @@
         <tr>
           <th>Nombre</th>
           <th>Email</th>
+          <th>Foto</th>
           <th>Activo</th>
         </tr>
       </thead>
@@ -109,16 +130,30 @@
           <td>{{ alumno.nombre }} {{ alumno.apellidos }}</td>
           <td>{{ alumno.email }}</td>
           <td>
+            @if (alumno.foto) {
+            <a
+              href="javascript:void(0);"
+              (click)="abrirFoto(alumno.foto)"
+              class="foto-link"
+            >
+              Ver Foto
+            </a>
+            } @else { No disponible }
+          </td>
+          <td>
             <div class="form-check form-switch">
               <input
                 type="checkbox"
                 class="form-check-input"
                 [checked]="alumno.activo"
-                (change)="alumno.id !== undefined && cambiarEstadoUsuario(alumno.id, !alumno.activo)"
+                (change)="
+                  alumno.id !== undefined &&
+                    cambiarEstadoUsuario(alumno.id, !alumno.activo)
+                "
               />
-              <label class="form-check-label">{{
-                alumno.activo ? "On" : "Off"
-              }}</label>
+              <label class="form-check-label">
+                {{ alumno.activo ? "On" : "Off" }}
+              </label>
             </div>
           </td>
         </tr>
@@ -127,4 +162,19 @@
     </table>
   </div>
   }
+
+  <div
+    class="modal-backdrop"
+    [hidden]="!mostrarModalFoto"
+    (click)="cerrarModalFoto()"
+  >
+    <div class="modal-content" (click)="$event.stopPropagation()">
+      <button class="modal-close" (click)="cerrarModalFoto()">×</button>
+      <img
+        [src]="fotoSeleccionada"
+        alt="Foto Seleccionada"
+        class="modal-image"
+      />
+    </div>
+  </div>
 </div>
