@@ -129,15 +129,15 @@
       </div>
 
       <div class="row">
-        @if(mostrarCamposContrasena) {
+        @if(tipo === 'Registra' || mostrarCamposContrasena) {
         <div class="my-2 fw-light col-md-6">
-          <label class="form-label" for="password">Nueva Contraseña</label>
+          <label class="form-label" for="password">Contraseña</label>
           <input
             class="form-control"
             type="password"
             id="password"
             formControlName="password"
-            placeholder="Introduce la nueva contraseña"
+            placeholder="Introduce la contraseña"
           />
           <div class="error-box">
             @if(checkControl('password', 'required')) {
@@ -153,14 +153,14 @@
         </div>
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="repitepassword"
-            >Repite Nueva Contraseña</label
+            >Repite Contraseña</label
           >
           <input
             class="form-control"
             type="password"
             id="repitepassword"
             formControlName="repitepassword"
-            placeholder="Repite la nueva contraseña"
+            placeholder="Repite la contraseña"
           />
           <div class="error-box">
             @if(checkControl('repitepassword', 'required')) {
@@ -229,23 +229,21 @@
             (input)="queryChanged(txtQuery.value)"
           />
           <ul class="list-group">
-            @if(places.length > 0 && !isLoadingPlaces) {
-              @for(place of places; track $index) {
-                <li
-                  class="list-group-item list-group-item-action pointer"
-                  [value]="place.geometry.coordinates"
-                  (click)="selectPlace(place)"
-                >
-                  <h6>{{ place.properties.full_address }}</h6>
-                </li>
-              }
-            }
+            @if(places.length > 0 && !isLoadingPlaces) { @for(place of places;
+            track $index) {
+            <li
+              class="list-group-item list-group-item-action pointer"
+              [value]="place.geometry.coordinates"
+              (click)="selectPlace(place)"
+            >
+              <h6>{{ place.properties.full_address }}</h6>
+            </li>
+            } }
           </ul>
           @if(checkControl('localizacion', 'required')) {
-            <small class="text-danger">La direccion es obligatoria</small>
+          <small class="text-danger">La direccion es obligatoria</small>
           }
         </div>
-        
 
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="materias">Materias</label>

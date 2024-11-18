@@ -184,7 +184,7 @@ export class TeachersFormComponent implements OnInit {
           await this.profesoresService.getProfesorById(Number(params.id));
 
         if (profesor) {
-            this.teacherForm.patchValue({
+          this.teacherForm.patchValue({
             id: profesor.usuario.id,
             nombre: profesor.usuario.nombre,
             apellidos: profesor.usuario.apellidos,
@@ -202,6 +202,10 @@ export class TeachersFormComponent implements OnInit {
             this.profileImgUrl = environment.API_URL + profesor.usuario.foto;
           }
         }
+      } else {
+        // Modo Registro
+        this.tipo = 'Registra';
+        this.mostrarCamposContrasena = true;
       }
     });
   }
