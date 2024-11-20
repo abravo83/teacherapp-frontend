@@ -9,8 +9,15 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, ProfesorCardHomeComponent, ProfesorListHomeComponent, NavbarComponent, FooterComponent],
+  imports: [
+    RouterLink, 
+    ProfesorCardHomeComponent, 
+    ProfesorListHomeComponent,
+    NavbarComponent,
+    FooterComponent,
+  ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {}
+export class HomeComponent {
+}

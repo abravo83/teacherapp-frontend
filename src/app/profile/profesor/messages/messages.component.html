@@ -1,1 +1,61 @@
-<p>messages works!</p>
+<div class="container mt-4">
+    <div class="row">
+      <!-- Lista de Alumnos -->
+      <div class="col-md-3">
+        <div class="list-group">
+          <h5>Alumnos</h5>
+          <input type="text" class="form-control mb-3" placeholder="Buscar..." />
+  
+          <div
+            *ngFor="let alumno of alumnos"
+            class="list-group-item list-group-item-action d-flex align-items-center"
+            (click)="seleccionarAlumno(alumno)"
+          >
+            <img
+              [src]="alumno.foto || 'ruta/avatar-default.png'"
+              alt="Avatar"
+              class="rounded-circle me-2"
+              style="width: 40px; height: 40px;"
+            />
+            <div>
+              <h6 class="mb-0">{{ alumno.nombre }} {{ alumno.apellidos }}</h6>
+              <small *ngIf="tieneMensajesNoLeidos(alumno.id!)" class="text-danger">
+                Tienes mensajes no leídos
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <!-- Área de Chat -->
+      <div class="col-md-9">
+        <div *ngIf="alumnoSeleccionado; else noAlumnoSeleccionado">
+          <h5>Conversación con {{ alumnoSeleccionado.nombre }}</h5>
+          <div class="chat-window">
+            <div *ngFor="let mensaje of mensajes" class="chat-message" [ngClass]="{'sent': mensaje.emisor_id === usuarioId}">
+              <div class="message-content">
+                <p>{{ mensaje.contenido }}</p>
+                <small>{{ mensaje.emisor_id === usuarioId ? 'Tú' : alumnoSeleccionado.nombre }}</small>
+              </div>
+            </div>
+          </div>
+  
+          <form [formGroup]="chatForm" (ngSubmit)="enviarMensaje()">
+            <div class="input-group">
+              <input
+                type="text"
+                class="form-control"
+                formControlName="contenido"
+                placeholder="Escribe un mensaje..."
+              />
+              <button class="btn btn-primary" type="submit">Enviar</button>
+            </div>
+          </form>
+        </div>
+  
+        <ng-template #noAlumnoSeleccionado>
+          <p class="text-muted">Selecciona un alumno para ver la conversación</p>
+        </ng-template>
+      </div>
+    </div>
+  </div>

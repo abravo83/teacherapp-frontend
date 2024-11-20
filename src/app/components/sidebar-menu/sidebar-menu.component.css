@@ -1,40 +1,32 @@
-:host {
-    position: fixed;
-    top: 80px; 
-    left: 0;
-    width: 250px;
-    height: calc(100vh - 80px); 
-    background-color: var(--color-background-main);
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-    display: flex;
-    flex-direction: column;
-    z-index: 1000;
-    padding-top: 20px; 
-  }
-  
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0;
-  }
-  
-  li {
-    width: 100%;
-  }
-  
-  a {
-    display: block;
-    padding: 15px;
-    color: var(--color-text-secondary);
-    text-decoration: none;
-    font-weight: 500;
-  }
-  
-  a:hover {
-    background-color: var(--color-button3);
-  }
-  
-  a.active {
-    background-color: var(--color-button2);
-    color: var(--color-text-main);
-  }
+@import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+nav{
+    font-family: "Work Sans", sans-serif;
+}
+
+a, a:hover{
+  text-decoration: none;
+}
+.button-primary {
+  background-color: var(--color-button1);
+}
+.button-secondary {
+  background-color: var(--color-button2);
+  border-radius: 3px;
+}
+.button-secondary:hover {
+  box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3); /* Sombra cuando el cursor está sobre el botón */
+}
+
+ul {
+  list-style-type: none; /* Opcional: elimina los puntos de la lista si usas <ul> */
+  padding: 0;
+}
+
+li {
+  margin-bottom: 10px; /* Añade espacio entre los botones */
+}
+
+button {
+  width: 100%; /* Hace que cada botón ocupe el ancho completo del contenedor */
+  display: block; /* Fuerza a los botones a comportarse como elementos de bloque */
+}

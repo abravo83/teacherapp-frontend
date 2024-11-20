@@ -1,13 +1,16 @@
-<app-navbar></app-navbar>
+<app-navbar class="navbar-fixed"></app-navbar>
 
-<div class="dashboard-container">
+<div class="dashboard-layout d-flex">
+
   <app-sidebar-menu></app-sidebar-menu>
 
+  <div class="content-area flex-grow-1 p-4">
+   
+      <app-welcome-message [nombreUsuario]="nombreUsuario"></app-welcome-message>
 
-  <section class="dashboard-content">
-    <app-welcome-message [role]="'Profesor'"></app-welcome-message>
-    <router-outlet></router-outlet>
-  </section>
+      <router-outlet></router-outlet>
+  </div>
 </div>
-
 <app-footer></app-footer>
+
+
