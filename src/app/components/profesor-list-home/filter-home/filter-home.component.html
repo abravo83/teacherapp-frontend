@@ -1,24 +1,45 @@
-<h2>El <strong>profesor perfecto</strong> más cerca de ti</h2>
-
 <div class="container-home-nav">
   <div class="nav-home">
     <ul>
       <li>
-        <button (click)="toggleFilters()" style="cursor: pointer;" class="b-filters">Filtros</button>
-      <!-- </li>
-      <li> -->
-        <form *ngIf="showFilters" #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
+        <button
+          (click)="toggleFilters()"
+          style="cursor: pointer"
+          class="b-filters"
+        >
+          Filtros
+        </button>
+        <form
+          *ngIf="showFilters"
+          #filterForm="ngForm"
+          (ngSubmit)="selectMateria(filterForm.value)"
+        >
           <div class="d-flex justify-content-between">
             <div class="text-center">
               <h5>Materias</h5>
-              <select (change)="selectMateria(filterForm.value)" class="form-select" name="materiaId" ngModel>
+              <select
+                (change)="selectMateria(filterForm.value)"
+                class="form-select"
+                name="materiaId"
+                ngModel
+              >
                 <option value="0">Todas las materias</option>
-                <option *ngFor="let materia of materiaList" [value]="materia.id">{{ materia.nombre }}</option>
+                <option
+                  *ngFor="let materia of materiaList"
+                  [value]="materia.id"
+                >
+                  {{ materia.nombre }}
+                </option>
               </select>
             </div>
             <div class="text-center">
               <h5>Experiencia</h5>
-              <select (change)="selectMateria(filterForm.value)" class="form-select" name="experiencia" ngModel>
+              <select
+                (change)="selectMateria(filterForm.value)"
+                class="form-select"
+                name="experiencia"
+                ngModel
+              >
                 <option value="0,10000000">Todo</option>
                 <option value="0,12">Hasta 1 año</option>
                 <option value="13,24">Entre 1 y 2 años</option>
@@ -29,7 +50,12 @@
             </div>
             <div class="text-center">
               <h5>Precio</h5>
-              <select (change)="selectMateria(filterForm.value)" class="form-select" name="precio" ngModel>
+              <select
+                (change)="selectMateria(filterForm.value)"
+                class="form-select"
+                name="precio"
+                ngModel
+              >
                 <option value="0,10000000">Todo</option>
                 <option value="10,50">Entre 10 y 50 dólares</option>
                 <option value="51,75">Entre 51 y 75 dólares</option>
@@ -41,7 +67,8 @@
         </form>
       </li>
       <li>
-        <button class="b-lastmonths" style="cursor: pointer;">Últimos meses
+        <button class="b-lastmonths" style="cursor: pointer">
+          Últimos meses
         </button>
       </li>
     </ul>

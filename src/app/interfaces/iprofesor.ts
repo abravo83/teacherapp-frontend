@@ -14,10 +14,7 @@ export interface Iprofesor {
   meses_experiencia: number;
   validado: boolean;
   direccion?: string;
-  ciudad?: string;
-  provincia?: string;
-  codigoPostal?: string;
-  pais?: string;
-  zonaHoraria?: string;
   sobreMi?: string;
+  materia: string;
+  reviews: string;
 }

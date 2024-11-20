@@ -6,26 +6,52 @@
 
 section {
   width: 100%;
+  background-color: white;
+}
+
+.profesor-list-home {
+  margin-top: 10px;
+  height: 100%;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+  width: 100%;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.img-prof {
+  width: 120px;
+  max-width: 30vw;
+  overflow: hidden;
+  display: block;
+  object-fit: cover;
+}
+
+.mapa {
+  height: 250px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+@media (min-width: 390px) and (max-width: 767px) {
+  flex {
+    flex-direction: column;
+  }
+
+  img {
+    width: 50%;
+  }
 }
 
 @media (min-width: 800px) {
   .flex {
     flex-direction: row;
   }
-}
-
-.profesor-list-home {
-  margin-top: 10px;
-  height: 55vh;
-  overflow-y: auto;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
-}
-
-.mapa {
-  height: auto;
-  border: 1px solid #ccc;
-  border-radius: 10px;
-  padding: 10px;
 }

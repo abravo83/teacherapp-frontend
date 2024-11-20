@@ -1,4 +1,7 @@
 /* Estilos generales app, guardadas en custom properties */
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css');
+
+
 :root {
   --color-text-main: #020202;
   --color-text-secondary: #3f3f44;
@@ -8,6 +11,7 @@
   --color-button1: #fdcb9e;
   --color-button2: #cceabb;
   --color-button3: #fcf5ee;
+  --color-highlight: #f2f9ee;
   --color-link-verde: #cceabb;
   --color-chat-recibido: #f1f1f1;
   --color-chat-enviado: #3f3f44;

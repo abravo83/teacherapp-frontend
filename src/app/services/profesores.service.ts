@@ -1,5 +1,8 @@
 import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
+import { environment } from '../../environments/environments';
 import { Iprofesor } from '../interfaces/iprofesor';
 import { DATOS_PROFESORES } from '../db/profesores';
 import { UsuariosService } from './usuarios.service';
@@ -7,8 +10,8 @@ import { Iusuario } from '../interfaces/iusuario';
 import { MATERIAS } from '../db/materias';
 import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
-import { PROFESORES } from '../db/profesoresForm.db';
-import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
+
+import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -16,7 +19,10 @@ import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
 export class ProfesoresService {
   // Inyectables
   usuariosService = inject(UsuariosService);
+  httpClient = inject(HttpClient);
+
   // Variables
+  BASE_URL = `${environment.API_URL}/api/profesores`;
   private arrProfesores: Iprofesor[] = DATOS_PROFESORES;
   private arrUsuarios: Iusuario[] = USUARIOS;
   private arrMateriasProfesores: any[] = MATERIAS_PROFESORES;
@@ -189,44 +195,33 @@ export class ProfesoresService {
     return profesoresFiltrados;
   }
 
-  //ARTURO
-  getProfesorById(id: number): Promise<IProfesorCompleto | undefined> {
-    return new Promise((resolve) => {
-      const profesor = PROFESORES.find((prof) => prof.usuario.id === id);
-      resolve(profesor);
-    });
+  //FORMULARIO REGISTRO Y PROFESOR 
+  getProfesorById(id: number): Promise<IRespuestaTeachersForm | undefined> {
+    return firstValueFrom(
+      this.httpClient.get<IRespuestaTeachersForm>(`${this.BASE_URL}/${id}`)
+    );    
   }
 
-  async registroProfesor(
-    profesorData: IProfesorCompleto
-  ): Promise<IProfesorCompleto> {
-    const nuevoProfesor: IProfesorCompleto = {
-      usuario: {
-        id: PROFESORES.length + 1,
-        ...profesorData.usuario,
-      },
-      profesor: {
-        ...profesorData.profesor,
-        usuarios_id: PROFESORES.length + 1,
-      },
-      materias: profesorData.materias,
-    };
-    PROFESORES.push(nuevoProfesor);
-    return nuevoProfesor;
-  }
-
-  async actualizarProfesor(
-    profesorData: IProfesorCompleto
-  ): Promise<IProfesorCompleto> {
-    const index = PROFESORES.findIndex(
-      (prof) =>
-        prof.usuario.id === profesorData.usuario.id &&
-        prof.usuario.rol === 'profesor'
+  async registroProfesor(formData: FormData): Promise<any> {
+    return firstValueFrom(
+      this.httpClient.post<Iusuario>(`${this.BASE_URL}/registro`, formData)
     );
-    if (index !== -1) {
-      PROFESORES[index] = profesorData;
-      return PROFESORES[index];
-    }
-    throw new Error('Profesor no encontrado');
   }
+
+  async actualizarProfesor(formData: FormData, id: number): Promise<any> {
+    return firstValueFrom(
+      this.httpClient.put<Iusuario>(`${this.BASE_URL}/${id}`, formData)
+    );
+  }
+
+//Panel administrador
+async listarProfesores(): Promise<Iprofesor[]> {
+  return firstValueFrom(this.httpClient.get<Iprofesor[]>(this.BASE_URL));
+}
+
+async validarProfesor(id: number, validado: boolean): Promise<{ message: string }> {
+  const url = `${this.BASE_URL}/validar/${id}`;
+  return firstValueFrom(this.httpClient.put<{ message: string }>(url, { validado }));
+}
+  
 }

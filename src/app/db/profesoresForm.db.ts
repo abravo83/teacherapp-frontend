@@ -1,6 +1,6 @@
-import { IProfesorCompleto } from '../interfaces/iprofesor-completo.interface';
+import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.interface';
 
-export const PROFESORES: IProfesorCompleto[] = [
+export const PROFESORES: IRespuestaTeachersForm[] = [
   {
     usuario: {
       id: 1,
@@ -23,8 +23,8 @@ export const PROFESORES: IProfesorCompleto[] = [
     },
     materias: [
       { id: 1, nombre: 'Matemáticas' },
-      { id: 2, nombre: 'Física' }
-    ]
+      { id: 2, nombre: 'Física' },
+    ],
   },
   {
     usuario: {
@@ -48,8 +48,8 @@ export const PROFESORES: IProfesorCompleto[] = [
     },
     materias: [
       { id: 3, nombre: 'Química' },
-      { id: 4, nombre: 'Biología' }
-    ]
+      { id: 4, nombre: 'Biología' },
+    ],
   },
   {
     usuario: {
@@ -73,7 +73,7 @@ export const PROFESORES: IProfesorCompleto[] = [
     },
     materias: [
       { id: 5, nombre: 'Literatura' },
-      { id: 6, nombre: 'Historia' }
-    ]
-  }
+      { id: 6, nombre: 'Historia' },
+    ],
+  },
 ];

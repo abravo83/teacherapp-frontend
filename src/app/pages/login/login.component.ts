@@ -7,10 +7,7 @@ import { FooterComponent } from '../../components/footer/footer.component';
 import { Iusuario } from '../../interfaces/iusuario';
 import { CommonModule } from '@angular/common';
 
-type response = {
-  success: string;
-  token: string;
-}
+type Response = { message: string, token: string };
 
 @Component({
   selector: 'app-login',
@@ -37,14 +34,19 @@ export class LoginComponent {
   async getLoginData(formValue: Iusuario, form: any) {
     console.log("En funcion");
     try {
-      let response: response = await this.loginService.login(formValue);
-      if (response.success === "true") {
+      this.error = false;
+      console.log(formValue);
+      let response: Response = await this.loginService.login(formValue);
+      console.log(response);
+      console.log(response.message);
+      if (response.message === "Login correcto") {
         localStorage.setItem('token', response.token);
         this.router.navigate(['/dashboard']);
       }
-    } catch ({ message }: any) {
+    } catch ({ error }: any) {
+      console.log(error);
       this.error = true;
-      this.msg = message;
+      this.msg = error.message;
       
       form.reset()
     }
@@ -52,21 +54,20 @@ export class LoginComponent {
 
 
   
-// Simulamos la lógica para enviar el correo
-
-
+//Desarrollo lógica de la alerta
 toggleAlert() {
     this.showAlert = !this.showAlert;
 }
 
-// Simulamos la lógica para enviar el correo
 sendEmail() {
     const email = this.email;
 
     // Método para validar el formato del correo electrónico
     const validarFormato = (email: string): boolean => {
-        const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/; // Expresión regular para validar el formato del correo
-        return re.test(email); // Retorna verdadero si el formato es válido
+        const re = /.+@.+\..+/; 
+        email = email.trim();
+        console.log(email);
+        return re.test(email); 
     };
 
     // Método para validar el dominio del correo electrónico
@@ -77,7 +78,7 @@ sendEmail() {
 
     // Validar el formato del correo electrónico
     if (!validarFormato(email)) {
-        alert('El formato del correo electrónico es incorrecto. Asegúrate de que incluya un "@" y no dejes espacios');
+        alert('El formato del correo electrónico es incorrecto. Asegúrate de que incluya un "@" y no dejes espacios.');
         return;
     }
 

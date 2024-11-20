@@ -1,1 +1,50 @@
-<p>my-students works!</p>
+<div class="container mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <h2>Mis Alumnos</h2>
+      <form [formGroup]="filterForm" class="d-flex gap-3">
+        <select formControlName="estado" class="form-select" (change)="applyFilters()">
+          <option value="">Todos los estados</option>
+          <option value="Alumno en curso">Alumno en curso</option>
+          <option value="Ex alumno">Ex alumno</option>
+        </select>
+        <select formControlName="fecha" class="form-select" (change)="applyFilters()">
+          <option value="">Todas las fechas</option>
+          <option value="Ultimos 3 meses">Últimos 3 meses</option>
+          <option value="Ultimos 6 meses">Últimos 6 meses</option>
+          <option value="Ultimos 12 meses">Últimos 12 meses</option>
+        </select>
+      </form>
+    </div>
+  
+    <table class="table table-bordered">
+      <thead class="table-light">
+        <tr>
+          <th>Alumno</th>
+          <th>Estado</th>
+          <th>Fecha de Inscripción</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let alumno of alumnos">
+          <td class="d-flex align-items-center">
+            <img [src]="alumno.foto || 'ruta/foto-por-defecto.jpg'" alt="Foto Alumno" class="rounded-circle me-3" style="width: 40px; height: 40px;">
+            <div>
+              <p class="mb-0">{{ alumno.nombre }} {{ alumno.apellidos }}</p>
+              <small class="text-muted">{{ alumno.clase }}</small>
+            </div>
+          </td>
+          <td>
+            <span class="badge" [ngClass]="{'bg-success': alumno.activo, 'bg-secondary': !alumno.activo}">
+              {{ alumno.activo ? 'Alumno en curso' : 'Ex alumno' }}
+            </span>
+            <button class="btn btn-link p-0" (click)="toggleEstado(alumno)">Cambiar</button>
+          </td>
+          <td>{{ alumno.fechaInscripcion | date: 'dd/MM/yyyy' }}</td>
+          <td>
+            <button class="btn btn-sm btn-primary" (click)="validarAlumno(alumno)">Validar</button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
