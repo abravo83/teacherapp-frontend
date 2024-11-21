@@ -161,12 +161,12 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 100vw;
+    width: 90vw;
     height: 100vh;
-    max-height: 80%; /* Limita la altura para evitar desbordes */
+    max-height: 80%;
     background-color: white;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    padding: 1em; /* Reduce un poco el padding para pantallas pequeñas */
+    padding: 1em; 
     border-radius: 8px;
     z-index: 1000;
     display: flex;
