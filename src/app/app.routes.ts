@@ -12,6 +12,7 @@ import { MyAccountComponent } from './profile/profesor/my-account/my-account.com
 import { MyStudentsComponent } from './profile/profesor/my-students/my-students.component';
 import { ReviewsComponent } from './profile/profesor/reviews/reviews.component';
 import { authGuard } from './guards/auth.guard';
+import { MessagesComponent } from './profile/profesor/messages/messages.component';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
@@ -25,13 +26,7 @@ export const routes: Routes = [
     children: [
       { path: 'my-account', component: MyAccountComponent },
       { path: 'my-students', component: MyStudentsComponent },
-      {
-        path: 'messages',
-        loadComponent: () =>
-          import('./profile/profesor/messages/messages.component').then(
-            (m) => m.MessagesComponent
-          ),
-      },
+      { path: 'messages', component: MessagesComponent },
       { path: 'reviews', component: ReviewsComponent },
       { path: '', redirectTo: 'my-account', pathMatch: 'full' },
     ],
