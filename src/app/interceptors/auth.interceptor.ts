@@ -9,7 +9,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
     },
   });
 
-  // Excepcion1: POST de registro (Van sin token y son formData)
+  // Excepcion1: POST de registro y listado de usuarios para HOME (Van sin token y son formData)
   if (
     (req.method === 'POST' && req.url.includes('/api/profesores/registro')) ||
     (req.method === 'POST' && req.url.includes('/api/alumnos/registro')) ||
