@@ -1,5 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-navbar',
@@ -9,7 +10,8 @@ import { RouterLink } from '@angular/router';
   styleUrl: './navbar.component.css'
 })
 export class NavbarComponent {
-  login: boolean = false;
+  loginService = inject(LoginService);
+  login: boolean = this.loginService.isLogged();
   role:string = 'alumno';
   notiCount: number = 1
   
