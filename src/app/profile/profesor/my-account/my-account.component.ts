@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -10,26 +10,52 @@ import {
 import { Iusuario } from '../../../interfaces/iusuario';
 import { Iprofesor } from '../../../interfaces/iprofesor';
 import { IMateriaProfesor } from '../../../interfaces/imateria-profesor.interfaces';
-import { USUARIOS } from '../../../db/usuarios';
 import { DATOS_PROFESORES } from '../../../db/profesores';
 import { MATERIAS_PROFESORES } from '../../../db/materias_profesores.db';
 import { MATERIAS } from '../../../db/materias.db';
-import { CommonModule, DatePipe } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { LoginService } from '../../../services/login.service';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { StudentsFormComponent } from '../../../pages/students-form/students-form.component';
+import { TeachersFormComponent } from '../../../pages/teachers-form/teachers-form.component';
 
 @Component({
   selector: 'app-my-account',
   templateUrl: './my-account.component.html',
   styleUrl: './my-account.component.css',
   standalone: true,
-  imports: [DatePipe, FormsModule, ReactiveFormsModule, CommonModule],
+  imports: [
+    FormsModule,
+    ReactiveFormsModule,
+    CommonModule,
+    StudentsFormComponent,
+    TeachersFormComponent,
+  ],
 })
 export class MyAccountComponent implements OnInit {
-  myAccountForm: FormGroup;
-  fotoUrl: string | null = null; // Añadimos esta propiedad para la foto
-  usuarioId = 1; // Este ID se puede obtener dinámicamente del sistema de autenticación
-  modoEdicion: boolean = false; // Única variable para controlar el modo edición
+  // !La zona privada es común para todos los perfiles (profesor o alumno)
 
+  // Inyectables
+  loginService = inject(LoginService);
+  usuariosService = inject(UsuariosService);
+
+  // Variables
+  usuarioLogueado: Iusuario = {
+    nombre: '',
+    apellidos: '',
+    email: '',
+    password: '',
+    rol: '',
+    activo: false,
+  };
+  fotoUrl: string | null = null;
+  usuarioId = 1; // Este ID obtener del serv login
+  modoEdicion: boolean = false; // Controlar del modo edición
+
+  myAccountForm: FormGroup;
+
+  // Constructor
   constructor(private fb: FormBuilder, private router: Router) {
     this.myAccountForm = this.fb.group({
       usuario: this.fb.group({
@@ -50,22 +76,36 @@ export class MyAccountComponent implements OnInit {
     });
   }
 
-  ngOnInit(): void {
-    // Cargar datos de usuario y profesor
-    const usuarioData: Iusuario | undefined = USUARIOS.find(
-      (user) => user.id === this.usuarioId
-    );
-    console.log('Datos de usuario:', usuarioData);
+  async ngOnInit(): Promise<void> {
+    const usuarioId = this.loginService.getLoggedUserId();
 
-    // Verifica si el usuario es profesor
-    if (usuarioData?.rol !== 'profesor') {
-      console.error('Acceso denegado: El usuario no es profesor.');
-      this.router.navigate(['/']); // Redirige si el rol no es correcto
-      return;
+    if (this.usuariosService.arrUsuarios.length) {
+      this.usuarioLogueado = this.getUsuarioLogueado(
+        usuarioId,
+        this.usuariosService.arrUsuarios
+      );
+    } else {
+      this.usuariosService.arrUsuarios =
+        await this.usuariosService.getAllUsers();
+      this.usuarioLogueado = this.getUsuarioLogueado(
+        usuarioId,
+        this.usuariosService.arrUsuarios
+      );
     }
 
+    // Volcamos los datos del usuario logueado
+    const usuarioData: Iusuario = this.usuarioLogueado;
+
     // Cargar datos del usuario en el formulario
-    this.myAccountForm.get('usuario')?.patchValue(usuarioData);
+    this.myAccountForm.get('usuario.nombre')?.patchValue(usuarioData.nombre);
+    this.myAccountForm
+      .get('usuario.apellidos')
+      ?.patchValue(usuarioData.apellidos);
+    this.myAccountForm.get('usuario.email')?.patchValue(usuarioData.email);
+    this.myAccountForm
+      .get('usuario.password')
+      ?.patchValue(usuarioData.password);
+    this.myAccountForm.get('usuario.foto')?.patchValue(usuarioData.foto);
 
     const profesorData = DATOS_PROFESORES.find(
       (profesor) => profesor.usuarios_id === this.usuarioId
@@ -94,6 +134,12 @@ export class MyAccountComponent implements OnInit {
       this.myAccountForm.get('usuario')?.disable();
       this.myAccountForm.get('profesor')?.disable();
     }
+  }
+
+  getUsuarioLogueado(idUsuario: number, arrayUsuarios: Iusuario[]): Iusuario {
+    return (
+      arrayUsuarios.find((user) => user.id === idUsuario) || ({} as Iusuario)
+    );
   }
 
   get materias(): FormArray {

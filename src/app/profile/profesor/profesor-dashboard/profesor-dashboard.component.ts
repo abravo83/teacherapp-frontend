@@ -25,8 +25,8 @@ export class ProfesorDashboardComponent implements OnInit {
 
   constructor(private usuariosService: UsuariosService) {}
 
-  ngOnInit(): void {
-    const usuario = this.usuariosService.getUsuarioActual();
+  async ngOnInit(): Promise<void> {
+    const usuario = await this.usuariosService.getUsuarioActual();
     this.nombreUsuario = usuario?.nombre || 'Usuario'; // Si no hay usuario, muestra 'Usuario' por defecto
   }
 }

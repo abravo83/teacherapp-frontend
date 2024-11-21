@@ -1,22 +1,28 @@
 <div class="container mt-4">
-
   <!--Encabezado con botón de edición-->
-  <div class="d-flex justify-content-center mb-4">
-    <h2>Mi Cuenta</h2> 
-    <button class="btn button-secondary" (click)="activarEdicion()">
-      {{modoEdicion ? 'Guardad Cambios' : 'Editar'}}
-    </button>
+  <div class="d-flex justify-content-center">
+    <h2>Mi Cuenta</h2>
+    <!-- <button class="btn button-secondary" (click)="activarEdicion()">
+      {{ modoEdicion ? "Guardad Cambios" : "Editar" }}
+    </button> -->
   </div>
 
+  <div class="form__outer_div__container">
+    @if(usuarioLogueado.rol === 'alumno') {
+    <app-students-form></app-students-form>
+    } @if(usuarioLogueado.rol === 'profesor') {
+    <app-teacher-form></app-teacher-form>
+    }
+  </div>
 
   <!-- Foto de Perfil -->
-  <div class="d-flex justify-content-center mb-4">
+  <!-- <div class="d-flex justify-content-center mb-4">
     <div>
       <img
         [src]="fotoUrl || 'ruta/por-defecto.jpg'"
         class="img-thumbnail"
         alt="Foto de perfil"
-        style="width: 150px; height: 150px; object-fit: cover;"
+        style="width: 150px; height: 150px; object-fit: cover"
       />
       <input
         type="file"
@@ -25,122 +31,127 @@
         class="form-control mt-2"
       />
     </div>
-  </div>
+  </div> -->
 
-  <form [formGroup]="myAccountForm" (ngSubmit)="guardarCambios()">
-<!-- Información General -->
-<div class="card mb-4">
-  <div class="card-header">
-    <h5>General</h5>
-  </div>
-  <div class="card-body row" formGroupName="usuario">
-    <div class="my-2 fw-light col-md-6">
-      <label for="nombre" class="form-label">Nombre</label>
-      <input
-        id="nombre"
-        type="text"
-        formControlName="nombre"
-        class="form-control"
-        placeholder="Introduce el nombre"
-      />
-      <div *ngIf="checkControl('nombre', 'required')" class="text-danger">
-        El nombre es obligatorio
+  <!-- <form [formGroup]="myAccountForm" (ngSubmit)="guardarCambios()"> -->
+  <!-- Información General -->
+  <!-- <div class="card mb-4">
+      <div class="card-header">
+        <h5>General</h5>
       </div>
-      <div *ngIf="checkControl('nombre', 'maxlength')" class="text-danger">
-        El nombre no debe exceder 45 caracteres
+      <div class="card-body row" formGroupName="usuario">
+        <div class="my-2 fw-light col-md-6">
+          <label for="nombre" class="form-label">Nombre</label>
+          <input
+            id="nombre"
+            type="text"
+            formControlName="nombre"
+            class="form-control"
+            placeholder="Introduce el nombre"
+          />
+          <div *ngIf="checkControl('nombre', 'required')" class="text-danger">
+            El nombre es obligatorio
+          </div>
+          <div *ngIf="checkControl('nombre', 'maxlength')" class="text-danger">
+            El nombre no debe exceder 45 caracteres
+          </div>
+        </div>
+
+        <div class="my-2 fw-light col-md-6">
+          <label for="apellidos" class="form-label">Apellidos</label>
+          <input
+            id="apellidos"
+            type="text"
+            formControlName="apellidos"
+            class="form-control"
+            placeholder="Introduce los apellidos"
+          />
+        </div>
+
+        <div class="my-2 fw-light col-md-6">
+          <label for="email" class="form-label">Email</label>
+          <input
+            id="email"
+            type="email"
+            formControlName="email"
+            class="form-control"
+            placeholder="Introduce el email"
+          />
+        </div>
+
+        <div class="my-2 fw-light col-md-6">
+          <label for="telefono" class="form-label">Teléfono</label>
+          <input
+            id="telefono"
+            type="tel"
+            formControlName="telefono"
+            class="form-control"
+            placeholder="Introduce el teléfono"
+          />
+        </div>
       </div>
-    </div>
+    </div> -->
 
-    <div class="my-2 fw-light col-md-6">
-      <label for="apellidos" class="form-label">Apellidos</label>
-      <input
-        id="apellidos"
-        type="text"
-        formControlName="apellidos"
-        class="form-control"
-        placeholder="Introduce los apellidos"
-      />
-    </div>
-
-    <div class="my-2 fw-light col-md-6">
-      <label for="email" class="form-label">Email</label>
-      <input
-        id="email"
-        type="email"
-        formControlName="email"
-        class="form-control"
-        placeholder="Introduce el email"
-      />
-    </div>
-
-    <div class="my-2 fw-light col-md-6">
-      <label for="telefono" class="form-label">Teléfono</label>
-      <input
-        id="telefono"
-        type="tel"
-        formControlName="telefono"
-        class="form-control"
-        placeholder="Introduce el teléfono"
-      />
-    </div>
-  </div>
-</div>
-
-<!-- Información del Profesor -->
-<div class="card mb-4">
-  <div class="card-header">
-    <h5>Información del Profesor</h5>
-  </div>
-  <div class="card-body row" formGroupName="profesor">
-    <div class="my-2 fw-light col-md-6">
-      <label for="precio_hora" class="form-label">Precio por Hora</label>
-      <input
-        id="precio_hora"
-        type="number"
-        formControlName="precio_hora"
-        class="form-control"
-        placeholder="Introduce el precio por hora"
-      />
-    </div>
-
-    <div class="my-2 fw-light col-md-6">
-      <label for="localizacion" class="form-label">Localización</label>
-      <input
-        id="localizacion"
-        type="text"
-        formControlName="localizacion"
-        class="form-control"
-        placeholder="Introduce la localización"
-      />
-    </div>
-
-    <div class="my-2 fw-light col-md-6">
-      <label for="meses_experiencia" class="form-label">Meses de Experiencia</label>
-      <input
-        id="meses_experiencia"
-        type="number"
-        formControlName="meses_experiencia"
-        class="form-control"
-        placeholder="Introduce los meses de experiencia"
-      />
-    </div>
-
-    <div class="my-2 fw-light col-md-6">
-      <label class="form-label">Materias</label>
-      <div formArrayName="materias" *ngFor="let materia of materias.controls; let i = index">
-        <input
-          [formControlName]="i"
-          type="text"
-          class="form-control mt-1"
-          placeholder="Materia {{ i + 1 }}"
-        />
+  <!-- Información del Profesor -->
+  <!-- <div class="card mb-4">
+      <div class="card-header">
+        <h5>Información del Profesor</h5>
       </div>
-    </div>
-  </div>
-</div>
+      <div class="card-body row" formGroupName="profesor">
+        <div class="my-2 fw-light col-md-6">
+          <label for="precio_hora" class="form-label">Precio por Hora</label>
+          <input
+            id="precio_hora"
+            type="number"
+            formControlName="precio_hora"
+            class="form-control"
+            placeholder="Introduce el precio por hora"
+          />
+        </div>
 
-    <!-- Información Adicional -->
-    <div class="card mb-4">
+        <div class="my-2 fw-light col-md-6">
+          <label for="localizacion" class="form-label">Localización</label>
+          <input
+            id="localizacion"
+            type="text"
+            formControlName="localizacion"
+            class="form-control"
+            placeholder="Introduce la localización"
+          />
+        </div>
+
+        <div class="my-2 fw-light col-md-6">
+          <label for="meses_experiencia" class="form-label"
+            >Meses de Experiencia</label
+          >
+          <input
+            id="meses_experiencia"
+            type="number"
+            formControlName="meses_experiencia"
+            class="form-control"
+            placeholder="Introduce los meses de experiencia"
+          />
+        </div>
+
+        <div class="my-2 fw-light col-md-6">
+          <label class="form-label">Materias</label>
+          <div
+            formArrayName="materias"
+            *ngFor="let materia of materias.controls; let i = index"
+          >
+            <input
+              [formControlName]="i"
+              type="text"
+              class="form-control mt-1"
+              placeholder="Materia {{ i + 1 }}"
+            />
+          </div>
+        </div>
+      </div>
+    </div> -->
+
+  <!-- Información Adicional -->
+  <!-- <div class="card mb-4">
       <div class="card-header">
         <h5>Información Adicional</h5>
       </div>
@@ -156,10 +167,10 @@
           />
         </div>
       </div>
-    </div>
+    </div> -->
 
-    <!-- Sobre mí -->
-    <div class="card mb-4">
+  <!-- Sobre mí -->
+  <!-- <div class="card mb-4">
       <div class="card-header">
         <h5>Sobre mí</h5>
       </div>
@@ -171,10 +182,10 @@
           placeholder="Describe algo sobre ti"
         ></textarea>
       </div>
-    </div>
+    </div> -->
 
-    <!-- Botón de Guardar Cambios -->
-    <div class="mt-4 mb-5 text-center">
+  <!-- Botón de Guardar Cambios -->
+  <!-- <div class="mt-4 mb-5 text-center">
       <button
         type="submit"
         class="button-primary pointer"
@@ -182,6 +193,6 @@
       >
         Guardar Cambios
       </button>
-    </div>
-  </form>
+    </div> -->
+  <!-- </form> -->
 </div>
