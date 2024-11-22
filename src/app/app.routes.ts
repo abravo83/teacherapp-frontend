@@ -27,7 +27,7 @@ export const routes: Routes = [
 
   {
     path: 'dashboard',
-    component: DashboardComponent,
+    component: ProfesorDashboardComponent,
     canActivate: [authGuard],
     canActivateChild: [childrenGuard],
     children: [
@@ -35,10 +35,7 @@ export const routes: Routes = [
       { path: 'my-students', component: MyStudentsComponent },
       {
         path: 'messages',
-        loadComponent: () =>
-          import('./profile/profesor/messages/messages.component').then(
-            (m) => m.MessagesComponent
-          ),
+        component: MessagesComponent,
       },
       { path: 'reviews', component: ReviewsComponent },
       { path: '', redirectTo: 'my-account', pathMatch: 'full' },
@@ -48,7 +45,7 @@ export const routes: Routes = [
       },
       {
         path: 'editar-profesor-guarded/:id',
-        canActivate:[checkIdGuard],
+        canActivate: [checkIdGuard],
         component: TeachersFormComponent,
       },
       {
@@ -57,10 +54,9 @@ export const routes: Routes = [
       },
       {
         path: 'editar-alumno-guarded/:id',
-        canActivate:[checkIdGuard],
+        canActivate: [checkIdGuard],
         component: StudentsFormComponent,
       },
-      
     ],
   },
 
