@@ -30,7 +30,7 @@ export class UsuariosService {
     return firstValueFrom(this.httpClient.get<Iusuario[]>(`${this.BASE_URL}`));
   }
 
-  getUsuarioActual(): Promise<Iusuario | undefined> {
+  getUsuarioActual(): Promise<Iusuario> {
     const idUsuario = this.loginService.getLoggedUserId();
     return firstValueFrom(
       this.httpClient.get<Iusuario>(`${this.BASE_URL}/${idUsuario}`)

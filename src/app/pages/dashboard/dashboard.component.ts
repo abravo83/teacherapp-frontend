@@ -1,13 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
+import { RouterModule } from '@angular/router';
+
+import { Iusuario } from '../../interfaces/iusuario';
+import { UsuariosService } from '../../services/usuarios.service';
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
-import { RouterOutlet } from '@angular/router';
+import { SidebarMenuComponent } from '../../components/sidebar-menu/sidebar-menu.component';
+import { WelcomeMessageComponent } from '../../components/welcome-message/welcome-message.component';
 
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [NavbarComponent, FooterComponent, RouterOutlet],
+  imports: [
+    NavbarComponent,
+    FooterComponent,
+    SidebarMenuComponent,
+    WelcomeMessageComponent,
+    RouterModule,
+  ],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
-export class DashboardComponent {}
+export class DashboardComponent {
+  usuario!: Iusuario;
+  nombreUsuario: string = '';
+
+  usuariosService = inject(UsuariosService);
+
+  constructor() {}
+
+  async ngOnInit(): Promise<void> {
+    this.usuario = await this.usuariosService.getUsuarioActual();
+    this.nombreUsuario = this.usuario?.nombre || 'Usuario'; // Si no hay usuario, muestra 'Usuario' por defecto
+  }
+}

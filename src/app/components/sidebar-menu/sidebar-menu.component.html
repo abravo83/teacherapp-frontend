@@ -1,4 +1,5 @@
 <ul>
+  @if(usuario.rol === 'profesor'){
   <li>
     <button
       [routerLink]="['/dashboard/my-students']"
@@ -7,6 +8,19 @@
       Mis Alumnos
     </button>
   </li>
+  }
+
+  <!-- Aquí el botón para Mis Profesores -->
+  @if(usuario.rol === 'alumno'){
+  <li>
+    <button
+      [routerLink]="['/dashboard/my-students']"
+      class="btn button-secondary w-100"
+    >
+      Mis Profesores
+    </button>
+  </li>
+  }
 
   <li>
     <button

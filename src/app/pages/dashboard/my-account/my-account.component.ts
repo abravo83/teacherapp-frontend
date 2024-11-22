@@ -17,8 +17,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { LoginService } from '../../../services/login.service';
 import { UsuariosService } from '../../../services/usuarios.service';
-import { StudentsFormComponent } from '../../../pages/students-form/students-form.component';
-import { TeachersFormComponent } from '../../../pages/teachers-form/teachers-form.component';
+import { StudentsFormComponent } from '../../students-form/students-form.component';
+import { TeachersFormComponent } from '../../teachers-form/teachers-form.component';
 
 @Component({
   selector: 'app-my-account',
