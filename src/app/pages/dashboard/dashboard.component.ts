@@ -1,5 +1,5 @@
 import { Component, inject, OnInit } from '@angular/core';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 
 import { Iusuario } from '../../interfaces/iusuario';
 import { UsuariosService } from '../../services/usuarios.service';
@@ -25,12 +25,18 @@ export class DashboardComponent {
   usuario!: Iusuario;
   nombreUsuario: string = '';
 
+  router = inject(Router);
   usuariosService = inject(UsuariosService);
 
   constructor() {}
 
   async ngOnInit(): Promise<void> {
-    this.usuario = await this.usuariosService.getUsuarioActual();
-    this.nombreUsuario = this.usuario?.nombre || 'Usuario'; // Si no hay usuario, muestra 'Usuario' por defecto
+    try {
+      this.usuario = await this.usuariosService.getUsuarioActual();
+      this.nombreUsuario = this.usuario?.nombre || 'Usuario'; // Si no hay usuario, muestra 'Usuario' por defecto
+    } catch (error) {
+      console.error('Error al obtener el usuario actual:', error);
+      this.router.navigate(['/']);
+    }
   }
 }
