@@ -75,12 +75,11 @@
         <div *ngIf="myProfesor.reviews" class="reviews">
             Opiniones de otros usuarios: {{ myProfesor.reviews }}
         </div> -->
-       
+    <!-- </div> -->
     <div class="buttons">
         <button class="button-close" (click)="cerrar()">Cerrar</button>
 
-        <button class="button-register"><a routerLink="/dashboard/nuevo-alumno">Contactar con el profesor</a></button>
+        <button class="button-register" id="button-register" (click)="redirect()"> Para contactar con el profesor, <strong>regístrate</strong></button>
     </div>
-    <!-- </div> -->
 </div>
   
