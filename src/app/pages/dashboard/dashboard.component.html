@@ -1,12 +1,16 @@
-<div>
-  <header class="mb-5">
-    <app-navbar></app-navbar>
-  </header>
-  <main>
-    <router-outlet />
-  </main>
+<app-navbar class="navbar-fixed"></app-navbar>
 
-  <footer class="mt-5">
-    <app-footer></app-footer>
-  </footer>
+<div class="dashboard-layout d-flex">
+  @if(usuario && !isAdmin){
+  <app-sidebar-menu [usuario]="usuario"></app-sidebar-menu>
+  }
+
+  <div class="content-area flex-grow-1 p-4">
+    @if(nombreUsuario){
+    <app-welcome-message [nombreUsuario]="nombreUsuario"></app-welcome-message>
+    }
+
+    <router-outlet></router-outlet>
+  </div>
 </div>
+<app-footer></app-footer>

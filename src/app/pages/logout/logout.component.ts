@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { Router } from '@angular/router';
+
 import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 
@@ -9,4 +11,11 @@ import { FooterComponent } from '../../components/footer/footer.component';
   templateUrl: './logout.component.html',
   styleUrl: './logout.component.css',
 })
-export class LogoutComponent {}
+export class LogoutComponent {
+  router = inject(Router);
+
+  ngOnInit(): void {
+    localStorage.clear();
+    this.router.navigate(['/home']);
+  }
+}

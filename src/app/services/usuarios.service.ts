@@ -4,24 +4,39 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environments';
 import { firstValueFrom } from 'rxjs';
 import { Iusuario } from '../interfaces/iusuario';
-import { USUARIOS } from '../db/usuarios';
-
-
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class UsuariosService {
-  arrUsuarios: Iusuario[] = USUARIOS;
+  arrUsuarios: Iusuario[] = [];
   private usuarioActualId = 1;
 
   httpClient = inject(HttpClient);
+  loginService = inject(LoginService);
+
   BASE_URL = `${environment.API_URL}/api/usuarios`;
 
-  constructor() {}
+  constructor() {
+    this.initComponent();
+  }
 
-  getUsuarioActual(): Iusuario | undefined {
-    return this.arrUsuarios.find((user) => user.id === this.usuarioActualId);
+  async initComponent() {
+    this.arrUsuarios = await this.getAllUsers();
+  }
+
+  getAllUsers(): Promise<Iusuario[]> {
+    return firstValueFrom(this.httpClient.get<Iusuario[]>(`${this.BASE_URL}`));
+  }
+
+  getUsuarioActual(): Promise<Iusuario> {
+    const idUsuario = this.loginService.getLoggedUserId();
+    return firstValueFrom(
+      this.httpClient.get<Iusuario>(`${this.BASE_URL}/${idUsuario}`)
+    );
+
+    // return this.arrUsuarios.find((user) => user.id === this.usuarioActualId);
   }
 
   // Método para activar o desactivar un usuario
