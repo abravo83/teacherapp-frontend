@@ -45,19 +45,22 @@ export class PanelAdministradorComponent implements OnInit {
             validado: Boolean(profesor.validado),
             activo: Boolean(profesor.activo),
           };
-
+  
+          // Handle localizacion
           if (profesorConvertido.localizacion) {
             try {
-              const localizacionObj = JSON.parse(
-                profesorConvertido.localizacion
-              );
+              const localizacionObj = JSON.parse(profesorConvertido.localizacion);
               profesorConvertido.localizacion =
                 localizacionObj.address.split(',')[0];
             } catch {
               profesorConvertido.localizacion = profesorConvertido.localizacion;
             }
+          } else {
+            // If localizacion is missing
+            profesorConvertido.localizacion = "No disponible";
           }
-
+  
+          // Handle photo path transformation
           if (
             profesorConvertido.foto &&
             profesorConvertido.foto.startsWith('/img/profiles/')
@@ -66,11 +69,11 @@ export class PanelAdministradorComponent implements OnInit {
           } else {
             profesorConvertido.foto = undefined;
           }
-
+  
           return profesorConvertido;
         }
       );
-
+  
       for (const profesor of this.profesores) {
         try {
           if (profesor.id !== undefined) {
@@ -95,6 +98,7 @@ export class PanelAdministradorComponent implements OnInit {
       console.error('Error al cargar profesores:', error);
     }
   }
+  
 
   async cargarAlumnos() {
     try {
