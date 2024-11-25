@@ -69,11 +69,12 @@
             } @else { No disponible }
           </td>
           <td>
-            @if (profesor.id !== undefined && materiasPorProfesor &&
-            materiasPorProfesor[profesor.id].length > 0) {
-            {{ materiasPorProfesor[profesor.id].join(", ") }}
-            } @else { No asignadas }
+            {{ profesor.id !== undefined && materiasPorProfesor[profesor.id] && materiasPorProfesor[profesor.id].length > 0
+              ? materiasPorProfesor[profesor.id].join(", ")
+              : "No asignadas" }}
           </td>
+          
+          
 
           <td>
             <div class="form-check form-switch">
