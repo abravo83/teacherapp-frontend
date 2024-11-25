@@ -15,6 +15,7 @@ import { MessagesComponent } from './pages/dashboard/messages/messages.component
 import { childrenGuard } from './guards/children.guard';
 import { checkIdGuard } from './guards/check-id.guard';
 import { MyClassesComponent } from './pages/dashboard/my-classes/my-classes.component';
+import { checkAdminGuard } from './guards/check-admin.guard';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
@@ -33,6 +34,7 @@ export const routes: Routes = [
       { path: 'my-account', component: MyAccountComponent },
       { path: 'my-students', component: MyStudentsComponent },
       { path: 'my-classes', component: MyClassesComponent },
+      { path: 'admin', canActivate: [checkAdminGuard], component: PanelAdministradorComponent },
       {
         path: 'messages',
         component: MessagesComponent,

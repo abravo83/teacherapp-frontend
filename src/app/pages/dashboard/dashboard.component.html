@@ -1,7 +1,7 @@
 <app-navbar class="navbar-fixed"></app-navbar>
 
 <div class="dashboard-layout d-flex">
-  @if(usuario){
+  @if(usuario && !isAdmin){
   <app-sidebar-menu [usuario]="usuario"></app-sidebar-menu>
   }
 

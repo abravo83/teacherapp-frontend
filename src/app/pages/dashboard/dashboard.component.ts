@@ -7,6 +7,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 import { FooterComponent } from '../../components/footer/footer.component';
 import { SidebarMenuComponent } from '../../components/sidebar-menu/sidebar-menu.component';
 import { WelcomeMessageComponent } from '../../components/welcome-message/welcome-message.component';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -27,6 +28,8 @@ export class DashboardComponent {
 
   router = inject(Router);
   usuariosService = inject(UsuariosService);
+  loginService = inject(LoginService);
+  isAdmin: Boolean = (this.loginService.getLoggedUserRole() === 'administrador');
 
   constructor() {}
 
