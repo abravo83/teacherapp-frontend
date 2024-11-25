@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { USUARIOS } from '../../../db/usuarios';
@@ -8,6 +8,10 @@ import { MATERIAS_PROFESORES } from '../../../db/materias_profesores.db';
 import { Iopinion } from '../../../interfaces/iopinion';
 import { IMateriaProfesor } from '../../../interfaces/imateria-profesor.interfaces';
 import { DatePipe } from '@angular/common';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { Iusuario } from '../../../interfaces/iusuario';
+import { OpinionesService } from '../../../services/opiniones.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-reviews',
@@ -17,6 +21,11 @@ import { DatePipe } from '@angular/common';
   styleUrls: ['./reviews.component.css'],
 })
 export class ReviewsComponent implements OnInit {
+  router = inject(Router);
+  usuariosService = inject(UsuariosService);
+  opinionesService = inject(OpinionesService);
+
+  usuario!: Iusuario;
   opiniones: Iopinion[] = [];
   opinionesFiltradas: Iopinion[] = [];
   currentPage: number = 1;
@@ -24,28 +33,39 @@ export class ReviewsComponent implements OnInit {
   totalItems: number = 0;
   filtroTiempo: string = '12m';
 
-  ngOnInit(): void {
-    const profesor = USUARIOS.find(
-      (user) => user.rol === 'profesor' && user.activo
-    );
-    if (profesor) {
-      const profesorId = profesor.id;
-
-      const materiasIds = MATERIAS_PROFESORES.filter(
-        (mp: IMateriaProfesor) => mp.usuarios_id === profesorId
-      ).map((mp) => mp.materias_id);
-
-      this.opiniones = OPINIONES.filter((opinion: Iopinion) =>
-        materiasIds.includes(opinion.materia_id)
-      ).map((opinion) => ({
-        ...opinion,
-        fecha: new Date(opinion.fecha),
-      }));
-
+  async ngOnInit(): Promise<void> {
+    try {
+      this.usuario = await this.usuariosService.getUsuarioActual();
+      this.opiniones = await this.opinionesService.getOpinionesByUser(
+        this.usuario
+      );
       this.filtrarOpiniones();
-    } else {
-      console.log('Profesor no encontrado. Verifica tus datos');
+    } catch (error) {
+      console.error('Error iniciar el componente:', error);
+      this.router.navigate(['/dashboard']);
     }
+
+    // const profesor = USUARIOS.find(
+    //   (user) => user.rol === 'profesor' && user.activo
+    // );
+    // if (profesor) {
+    //   const profesorId = profesor.id;
+
+    //   const materiasIds = MATERIAS_PROFESORES.filter(
+    //     (mp: IMateriaProfesor) => mp.usuarios_id === profesorId
+    //   ).map((mp) => mp.materias_id);
+
+    //   this.opiniones = OPINIONES.filter((opinion: Iopinion) =>
+    //     materiasIds.includes(opinion.materia_id)
+    //   ).map((opinion) => ({
+    //     ...opinion,
+    //     fecha: new Date(opinion.fecha),
+    //   }));
+
+    //   this.filtrarOpiniones();
+    // } else {
+    //   console.log('Profesor no encontrado. Verifica tus datos');
+    // }
   }
 
   getNombreAlumno(estudianteId: number): string {

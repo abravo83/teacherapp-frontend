@@ -1,4 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import {
   FormControl,
   FormGroup,
@@ -7,12 +10,11 @@ import {
   AbstractControl,
   ReactiveFormsModule,
 } from '@angular/forms';
+
+import { environment } from '../../../environments/environments';
 import { Iusuario } from '../../interfaces/iusuario';
 import { AlumnosService } from '../../services/alumnos.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
-import { environment } from '../../../environments/environments';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-students-form',
@@ -23,8 +25,9 @@ import { environment } from '../../../environments/environments';
 })
 export class StudentsFormComponent implements OnInit {
   alumnosService = inject(AlumnosService);
-  router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
+  loginService = inject(LoginService);
+  router = inject(Router);
 
   errorForm: any[] = [];
   tipo: string = 'Registra';
@@ -70,15 +73,17 @@ export class StudentsFormComponent implements OnInit {
     this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
 
     if (this.mostrarCamposContrasena) {
-      this.studentForm.get('password')?.setValidators([
-        Validators.required,
-        Validators.minLength(8),
-        Validators.maxLength(255),
-        Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
-      ]);
-      this.studentForm.get('repitepassword')?.setValidators([
-        Validators.required,
-      ]);
+      this.studentForm
+        .get('password')
+        ?.setValidators([
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(255),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
+        ]);
+      this.studentForm
+        .get('repitepassword')
+        ?.setValidators([Validators.required]);
     } else {
       this.studentForm.get('password')?.clearValidators();
       this.studentForm.get('repitepassword')?.clearValidators();
@@ -95,36 +100,34 @@ export class StudentsFormComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.activatedRoute.params.subscribe(async (params: any) => {
-      if (params.id) {
-        this.tipo = 'Actualizar';
-        const alumno: any | undefined = await this.alumnosService.getAlumnoById(
-          Number(params.id)
-        );
-        if (alumno && alumno.rol === 'alumno') {
-          this.studentForm.patchValue(alumno);
-          if (alumno.foto) {
-            this.profileImgUrl = environment.API_URL + alumno.foto;
-          }
-        } else {
-          await Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Usuario no encontrado o no es un alumno',
-            confirmButtonColor: '#d33',
-          });
-          this.router.navigate(['/home']);
+  async ngOnInit() {
+    if (this.loginService.isLogged()) {
+      this.tipo = 'Actualizar';
+      const alumno: any | undefined = await this.alumnosService.getAlumnoById(
+        Number(this.loginService.getLoggedUserId())
+      );
+      if (alumno && alumno.rol === 'alumno') {
+        this.studentForm.patchValue(alumno);
+        if (alumno.foto) {
+          this.profileImgUrl = environment.API_URL + alumno.foto;
         }
       } else {
-        this.tipo = 'Registra';
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Usuario no encontrado o no es un alumno',
+          confirmButtonColor: '#d33',
+        });
+        this.router.navigate(['/home']);
       }
-      if (this.tipo === 'Actualizar') {
-        this.mostrarCamposContrasena = false;
-      }
-    });
+    } else {
+      this.tipo = 'Registra';
+    }
+    if (this.tipo === 'Actualizar') {
+      this.mostrarCamposContrasena = false;
+    }
   }
-  
+
   async obtenerDatosFormulario() {
     if (!this.studentForm.valid) {
       Swal.fire({
@@ -135,29 +138,31 @@ export class StudentsFormComponent implements OnInit {
       });
       return;
     }
-  
+
     const formData = new FormData();
-  
+
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
       nombre: this.studentForm.value.nombre,
       apellidos: this.studentForm.value.apellidos,
       email: this.studentForm.value.email,
-      password: this.mostrarCamposContrasena ? this.studentForm.value.password : '',
+      password: this.mostrarCamposContrasena
+        ? this.studentForm.value.password
+        : '',
       rol: 'alumno',
       activo: true,
     };
-  
+
     if (this.mostrarCamposContrasena) {
       datosAlumno.password = this.studentForm.value.password;
     }
-  
+
     formData.append('datos', JSON.stringify(datosAlumno));
-  
+
     if (this.studentForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.studentForm.get('foto')?.value);
     }
-  
+
     try {
       if (this.tipo === 'Actualizar') {
         await this.alumnosService.actualizarAlumno(formData, datosAlumno.id);
@@ -179,9 +184,10 @@ export class StudentsFormComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     } catch (error: any) {
-      const errorMessage = error?.error?.message || 'Ocurrió un error inesperado.';
+      const errorMessage =
+        error?.error?.message || 'Ocurrió un error inesperado.';
       const errorsList = error?.error?.errors || [];
-  
+
       if (errorMessage.toLowerCase().includes('duplicate')) {
         Swal.fire({
           icon: 'warning',
@@ -191,13 +197,15 @@ export class StudentsFormComponent implements OnInit {
         });
         return;
       }
-  
+
       if (errorsList.length > 0) {
-        const detailedErrors = errorsList.map(
-          (err: { field: string; message: string }) =>
-            `${err.field}: ${err.message}`
-        ).join('<br>');
-  
+        const detailedErrors = errorsList
+          .map(
+            (err: { field: string; message: string }) =>
+              `${err.field}: ${err.message}`
+          )
+          .join('<br>');
+
         Swal.fire({
           icon: 'error',
           title: 'Errores en los datos',
@@ -214,8 +222,6 @@ export class StudentsFormComponent implements OnInit {
       }
     }
   }
-  
-
 
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB

@@ -1,25 +1,85 @@
 <div class="container-homepopup">
     <div class="introduction-professor">
-        <img *ngIf="myProfesor.foto" class="img-prof" [src]="myProfesor.foto" [alt]="myProfesor.nombre" />
         <div class="available" [ngClass]="{ 'active': myProfesor.activo, 'inactive': !myProfesor.activo }">
-            {{ myProfesor.activo ? 'Disponible' : 'No disponible' }}
+            {{ myProfesor.activo ? 'DISPONIBLE' : 'NO DISPONIBLE' }}
           </div>    
-        <div class="name-surname">{{ myProfesor.nombre }} {{ myProfesor.apellidos }}</div>
-        <div class="subject" *ngFor="let materia of myProfesor.materia">{{ materia }}</div>
-        <div class="price">Precio por hora: €{{ myProfesor.precio_hora }}</div>
-        <div class="experience">{{ myProfesor.meses_experiencia }} meses de experiencia</div>
-    </div>
+        <div class="section-img-info">
+            <img *ngIf="myProfesor.foto" class="img-prof" [src]="myProfesor.foto" [alt]="myProfesor.nombre" />
+            <div class="info">
+                <h1>{{ myProfesor.nombre }} {{ myProfesor.apellidos }}                 <img class="verified"
+                    src="https://cdn3.emoji.gg/emojis/1178-verified.png"
+                    alt="Check Icon"
+                    style="
+                    display: inline;
+                    width: 20px;
+                    height: 20px;
+                    /* vertical-align: middle; */
+                    "
+                /></h1>
+                <div class="subject" *ngFor="let materia of myProfesor.materia">Profesor de {{ materia }}</div>
+                <div class="price">Precio por hora: {{ myProfesor.precio_hora }}€</div>
+                <div class="experience">{{ myProfesor.meses_experiencia }} meses de experiencia</div>
+            </div>
+            </div>
+        </div>
 
+        <div class="section">
+            <h2>
+             Sobre mí
+            </h2>
+            <p>
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius arcu eget tincidunt lobortis. Nam placerat neque sed risus mollis, id mollis nisi sodales. Vestibulum dapibus quam id mauris tincidunt, laoreet auctor dui faucibus.
+            </p>
+            <p>
+             Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius arcu eget tincidunt lobortis. Nam placerat neque sed risus mollis, id mollis nisi sodales. Vestibulum dapibus quam id mauris tincidunt, laoreet auctor dui faucibus.
+            </p>
+           </div>
+           <div class="section">
+            <h2>
+             Opiniones
+            </h2>
+            <div class="opinion">
+             <div class="opinion-header">
+              <img alt="Foto de perfil de Miguel Ángel Amigo Cid" height="40" src="https://replicate.delivery/xezq/v97XjxRilMYwChX6TxffzozyqHtnV3cveQEItiLHbqQuePNPB/out-0.png" width="40"/>
+              <div>
+               <div class="opinion-name">
+                Miguel Ángel Amigo Cid
+               </div>
+               <span class="rating">
+                <i class="fas fa-star" style="color:var(--color-button1);">
+                </i>
+                <i class="fas fa-star" style="color:var(--color-button1);">
+                </i>
+                <i class="fas fa-star" style="color:var(--color-button1);">
+                </i>
+                <i class="fas fa-star" style="color:var(--color-button1);">
+                </i>
+                <i class="fas fa-star">
+                </i>
+               </span>
+               <span class="opinion-time">
+                hace 15 minutos
+               </span>
+              </div>
+             </div>
+             <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius arcu eget tincidunt lobortis. Nam placerat neque sed risus mollis, id mollis nisi sodales.
+             </p>
+            </div>
+
+<!-- 
     <div class="more-info">
         <div *ngIf="myProfesor.sobreMi" class="description-professor">
             Descripción del profesor: {{ myProfesor.sobreMi }}
         </div>
         <div *ngIf="myProfesor.reviews" class="reviews">
             Opiniones de otros usuarios: {{ myProfesor.reviews }}
-        </div>
-       
-        Si quieres contactar con el profesor, <a href ="">¡regístrate!</a>
-        <button class="button-contact" (click)="cerrar()">Cerrar</button>
+        </div> -->
+    <!-- </div> -->
+    <div class="buttons">
+        <button class="button-close" (click)="cerrar()">Cerrar</button>
+
+        <button class="button-register" id="button-register" (click)="redirect()">¡Regístrate para contactar!</button>
     </div>
 </div>
   

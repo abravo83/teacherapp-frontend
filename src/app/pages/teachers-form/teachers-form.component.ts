@@ -7,16 +7,18 @@ import {
   AbstractControl,
   ReactiveFormsModule,
 } from '@angular/forms';
-import { IRespuestaTeachersForm } from '../../interfaces/iRespuestaTeachersForm.interface';
-import { Imateria } from '../../interfaces/imateria';
-import { ProfesoresService } from '../../services/profesores.service';
-import { MateriasService } from '../../services/materias.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import Swal from 'sweetalert2';
-import { environment } from '../../../environments/environments';
 import { GooglemapsService } from '../../services/googlemaps.service';
+
+import { environment } from '../../../environments/environments';
+import { IRespuestaTeachersForm } from '../../interfaces/iRespuestaTeachersForm.interface';
 import { Feature } from '../../interfaces/icoordinates';
+import { Imateria } from '../../interfaces/imateria';
+import { ProfesoresService } from '../../services/profesores.service';
+import { MateriasService } from '../../services/materias.service';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-teacher-form',
@@ -29,6 +31,7 @@ export class TeachersFormComponent implements OnInit {
   profesoresService = inject(ProfesoresService);
   CoordenadaService = inject(GooglemapsService);
   materiasService = inject(MateriasService);
+  loginService = inject(LoginService);
 
   router = inject(Router);
 
@@ -177,37 +180,36 @@ export class TeachersFormComponent implements OnInit {
       this.materiasList = [];
     }
 
-    this.activatedRoute.params.subscribe(async (params: any) => {
-      if (params.id) {
-        this.tipo = 'Actualizar';
-        const profesor: IRespuestaTeachersForm | undefined =
-          await this.profesoresService.getProfesorById(Number(params.id));
+    if (this.loginService.isLogged()) {
+      this.tipo = 'Actualizar';
+      const userId = this.loginService.getLoggedUserId();
+      const profesor: IRespuestaTeachersForm | undefined =
+        await this.profesoresService.getProfesorById(userId);
 
-        if (profesor) {
-          this.teacherForm.patchValue({
-            id: profesor.usuario.id,
-            nombre: profesor.usuario.nombre,
-            apellidos: profesor.usuario.apellidos,
-            email: profesor.usuario.email,
-            foto: profesor.usuario.foto,
-            telefono: profesor.profesor.telefono,
-            precio_hora: profesor.profesor.precio_hora,
-            localizacion: profesor.profesor.localizacion,
-            meses_experiencia: profesor.profesor.meses_experiencia,
-          });
+      if (profesor) {
+        this.teacherForm.patchValue({
+          id: profesor.usuario.id,
+          nombre: profesor.usuario.nombre,
+          apellidos: profesor.usuario.apellidos,
+          email: profesor.usuario.email,
+          foto: profesor.usuario.foto,
+          telefono: profesor.profesor.telefono,
+          precio_hora: profesor.profesor.precio_hora,
+          localizacion: profesor.profesor.localizacion,
+          meses_experiencia: profesor.profesor.meses_experiencia,
+        });
 
-          this.teacherForm.get('materias')?.setValue(profesor.materias);
+        this.teacherForm.get('materias')?.setValue(profesor.materias);
 
-          if (profesor.usuario.foto) {
-            this.profileImgUrl = environment.API_URL + profesor.usuario.foto;
-          }
+        if (profesor.usuario.foto) {
+          this.profileImgUrl = environment.API_URL + profesor.usuario.foto;
         }
-      } else {
-        // Modo Registro
-        this.tipo = 'Registra';
-        this.mostrarCamposContrasena = true;
       }
-    });
+    } else {
+      // Modo Registro
+      this.tipo = 'Registra';
+      this.mostrarCamposContrasena = true;
+    }
   }
 
   alternarDesplegable() {

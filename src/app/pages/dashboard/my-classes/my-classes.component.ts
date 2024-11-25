@@ -1,9 +1,13 @@
 import { Component, ViewEncapsulation } from '@angular/core';
 import { Observable } from 'rxjs';
+import { CommonModule, DatePipe } from '@angular/common';
+
 import { TeacherDataService } from '../../../services/teacher-data.service';
 
 @Component({
   selector: 'app-my-classes',
+  standalone: true,
+  imports: [DatePipe, CommonModule],
   templateUrl: './my-classes.component.html',
   styleUrl: './my-classes.component.css',
   encapsulation: ViewEncapsulation.None,

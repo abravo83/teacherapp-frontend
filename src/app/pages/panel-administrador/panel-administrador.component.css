@@ -221,3 +221,65 @@ h3 {
     color: #E0B589;
     text-decoration: none;
 }
+
+.d-flex {
+    display: flex;
+}
+
+.gap-3 {
+    gap: 1rem;
+}
+
+.align-items-center {
+    align-items: center;
+}
+
+.filter-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-select {
+    width: auto;
+    min-width: 150px;
+    padding: 0.5rem 1rem;
+    font-size: 0.9rem;
+    border: 1px solid #E0B589;
+    border-radius: 0.25rem;
+    background-color: #FFFFFF;
+    color: #4A4A4A;
+    font-family: "Work Sans", sans-serif;
+    appearance: none;
+}
+
+
+.filter-select:hover {
+    border-color: #CCEABB;
+}
+
+.filter-select:focus {
+    outline: none;
+    border-color: #CCEABB;
+    box-shadow: 0 0 0 2px rgba(204, 234, 187, 0.5);
+}
+
+
+.filter-select option {
+    padding: 0.5rem;
+    background-color: #FFFFFF;
+    color: #4A4A4A;
+}
+
+
+.filter-select option:hover {
+    background-color: #CCEABB;
+    color: #FFFFFF;
+}
+
+
+.filter-container .form-label {
+    margin-bottom: 0.25rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #4A4A4A;
+}

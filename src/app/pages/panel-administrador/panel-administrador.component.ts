@@ -14,7 +14,9 @@ import { Iusuario } from '../../interfaces/iusuario';
 })
 export class PanelAdministradorComponent implements OnInit {
   profesores: Iprofesor[] = [];
+  profesoresFiltrados: Iprofesor[] = [];
   alumnos: Iusuario[] = [];
+  alumnosFiltrados: Iusuario[] = [];
   respuestaAPI: string = '';
   materiasPorProfesor: { [profesorId: number]: string[] } = {};
   seccionActual: 'profesores' | 'alumnos' = 'profesores';
@@ -36,23 +38,42 @@ export class PanelAdministradorComponent implements OnInit {
   async cargarProfesores() {
     try {
       const profesores = await this.profesoresService.listarProfesores();
-      this.profesores = profesores.map((profesor) => {
-        if (profesor.localizacion) {
-          try {
-            const localizacionObj = JSON.parse(profesor.localizacion);
-            profesor.localizacion = localizacionObj.address.split(',')[0];
-          } catch {
-            profesor.localizacion = profesor.localizacion;
+      this.profesores = this.profesoresFiltrados = profesores.map(
+        (profesor) => {
+          const profesorConvertido: Iprofesor = {
+            ...profesor,
+            validado: Boolean(profesor.validado),
+            activo: Boolean(profesor.activo),
+          };
+  
+          // Handle localizacion
+          if (profesorConvertido.localizacion) {
+            try {
+              const localizacionObj = JSON.parse(profesorConvertido.localizacion);
+              profesorConvertido.localizacion =
+                localizacionObj.address.split(',')[0];
+            } catch {
+              profesorConvertido.localizacion = profesorConvertido.localizacion;
+            }
+          } else {
+            // If localizacion is missing
+            profesorConvertido.localizacion = "No disponible";
           }
+  
+          // Handle photo path transformation
+          if (
+            profesorConvertido.foto &&
+            profesorConvertido.foto.startsWith('/img/profiles/')
+          ) {
+            profesorConvertido.foto = `${environment.API_URL}${profesorConvertido.foto}`;
+          } else {
+            profesorConvertido.foto = undefined;
+          }
+  
+          return profesorConvertido;
         }
-        if (profesor.foto && profesor.foto.startsWith('/img/profiles/')) {
-          profesor.foto = `${environment.API_URL}${profesor.foto}`;
-        } else {
-          profesor.foto = undefined;
-        }
-        return profesor;
-      });
-
+      );
+  
       for (const profesor of this.profesores) {
         try {
           if (profesor.id !== undefined) {
@@ -77,17 +98,27 @@ export class PanelAdministradorComponent implements OnInit {
       console.error('Error al cargar profesores:', error);
     }
   }
+  
 
   async cargarAlumnos() {
     try {
       const alumnos = await this.alumnosService.listarAlumnos();
-      this.alumnos = alumnos.map((alumno) => {
-        if (alumno.foto && alumno.foto.startsWith('/img/profiles/')) {
-          alumno.foto = `${environment.API_URL}${alumno.foto}`;
+      this.alumnos = this.alumnosFiltrados = alumnos.map((alumno) => {
+        const alumnoConvertido: Iusuario = {
+          ...alumno,
+          activo: Boolean(alumno.activo),
+        };
+
+        if (
+          alumnoConvertido.foto &&
+          alumnoConvertido.foto.startsWith('/img/profiles/')
+        ) {
+          alumnoConvertido.foto = `${environment.API_URL}${alumnoConvertido.foto}`;
         } else {
-          alumno.foto = undefined;
+          alumnoConvertido.foto = undefined;
         }
-        return alumno;
+
+        return alumnoConvertido;
       });
     } catch (error) {
       console.error('Error al cargar alumnos:', error);
@@ -146,5 +177,44 @@ export class PanelAdministradorComponent implements OnInit {
 
   limpiarMensajeAPI() {
     this.respuestaAPI = '';
+  }
+
+  filtrarProfesores(event: Event) {
+    const filtro = (event.target as HTMLSelectElement).value;
+
+    if (filtro === 'validados') {
+      this.profesoresFiltrados = this.profesores.filter(
+        (profesor) => profesor.validado === true
+      );
+    } else if (filtro === 'noValidados') {
+      this.profesoresFiltrados = this.profesores.filter(
+        (profesor) => profesor.validado === false
+      );
+    } else if (filtro === 'activos') {
+      this.profesoresFiltrados = this.profesores.filter(
+        (profesor) => profesor.activo === true
+      );
+    } else if (filtro === 'noActivos') {
+      this.profesoresFiltrados = this.profesores.filter(
+        (profesor) => profesor.activo === false
+      );
+    } else {
+      this.profesoresFiltrados = this.profesores;
+    }
+  }
+
+  filtrarAlumnos(event: Event) {
+    const filtro = (event.target as HTMLSelectElement).value;
+    if (filtro === 'activos') {
+      this.alumnosFiltrados = this.alumnos.filter(
+        (alumno) => alumno.activo === true
+      );
+    } else if (filtro === 'noActivos') {
+      this.alumnosFiltrados = this.alumnos.filter(
+        (alumno) => alumno.activo === false
+      );
+    } else {
+      this.alumnosFiltrados = this.alumnos;
+    }
   }
 }
