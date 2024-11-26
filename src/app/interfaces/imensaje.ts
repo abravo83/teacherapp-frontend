@@ -6,3 +6,8 @@ export interface Imensaje {
   contenido: string;
   leido: boolean;
 }
+
+export interface MensajeConEmisor extends Imensaje {
+  nombre_emisor: string;
+  apellidos_emisor: string;
+}
