@@ -1,17 +1,19 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
+import { LoginService } from '../services/login.service';
 import Swal from 'sweetalert2';
 
-export const authGuard: CanActivateFn = (route, state) => {
+export const checkAdminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
-  if (!localStorage.getItem('token')) {
+  const loginService = inject(LoginService);
+  if (loginService.getLoggedUserRole() != 'administrador') {
     Swal.fire({
       icon: 'error',
       title: 'Error',
-      text: 'Debes estar autenticado',
+      text: 'Acceso no permitido',
       confirmButtonColor: '#d33',
     });
-    router.navigateByUrl('/login');
+    router.navigateByUrl('/');
     return false;
   }
   return true;

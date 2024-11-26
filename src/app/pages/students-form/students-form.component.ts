@@ -1,4 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
+import Swal from 'sweetalert2';
 import {
   FormControl,
   FormGroup,
@@ -7,12 +10,11 @@ import {
   AbstractControl,
   ReactiveFormsModule,
 } from '@angular/forms';
+
+import { environment } from '../../../environments/environments';
 import { Iusuario } from '../../interfaces/iusuario';
 import { AlumnosService } from '../../services/alumnos.service';
-import { ActivatedRoute, Router } from '@angular/router';
-import { CommonModule } from '@angular/common';
-import Swal from 'sweetalert2';
-import { environment } from '../../../environments/environments';
+import { LoginService } from '../../services/login.service';
 
 @Component({
   selector: 'app-students-form',
@@ -23,14 +25,16 @@ import { environment } from '../../../environments/environments';
 })
 export class StudentsFormComponent implements OnInit {
   alumnosService = inject(AlumnosService);
-  router = inject(Router);
   activatedRoute = inject(ActivatedRoute);
+  loginService = inject(LoginService);
+  router = inject(Router);
 
   errorForm: any[] = [];
   tipo: string = 'Registra';
   studentForm: FormGroup;
   profileImgUrl: string = '/img/no_profile_freepick.webp';
   archivoSeleccionado: File | null = null;
+  mostrarCamposContrasena: boolean = false;
 
   constructor() {
     this.studentForm = new FormGroup(
@@ -49,13 +53,8 @@ export class StudentsFormComponent implements OnInit {
           Validators.email,
           Validators.maxLength(60),
         ]),
-        password: new FormControl(null, [
-          Validators.required,
-          Validators.minLength(8),
-          Validators.maxLength(255),
-          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
-        ]),
-        repitepassword: new FormControl(null, [Validators.required]),
+        password: new FormControl(null),
+        repitepassword: new FormControl(null),
         foto: new FormControl(null),
       },
       { validators: this.validadorCoincidenciaContraseñas }
@@ -70,6 +69,30 @@ export class StudentsFormComponent implements OnInit {
     return password === repitepassword ? null : { checkpassword: true };
   };
 
+  toggleCamposContrasena() {
+    this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
+
+    if (this.mostrarCamposContrasena) {
+      this.studentForm
+        .get('password')
+        ?.setValidators([
+          Validators.required,
+          Validators.minLength(8),
+          Validators.maxLength(255),
+          Validators.pattern(/^(?=.*[A-Z])(?=.*\d).{8,}$/),
+        ]);
+      this.studentForm
+        .get('repitepassword')
+        ?.setValidators([Validators.required]);
+    } else {
+      this.studentForm.get('password')?.clearValidators();
+      this.studentForm.get('repitepassword')?.clearValidators();
+    }
+
+    this.studentForm.get('password')?.updateValueAndValidity();
+    this.studentForm.get('repitepassword')?.updateValueAndValidity();
+  }
+
   checkControl(formControlName: string, validador: string) {
     return (
       this.studentForm.get(formControlName)?.hasError(validador) &&
@@ -77,85 +100,127 @@ export class StudentsFormComponent implements OnInit {
     );
   }
 
-  ngOnInit() {
-    this.activatedRoute.params.subscribe(async (params: any) => {
-      if (params.id) {
-        this.tipo = 'Actualizar';
-        const alumno: any | undefined = await this.alumnosService.getAlumnoById(
-          Number(params.id)
-        );
-        if (alumno && alumno.rol === 'alumno') {
-          this.studentForm.patchValue(alumno);
-          // Si el alumno tiene una foto, establecer la URL de la imagen
-          if (alumno.foto) {
-            this.profileImgUrl = environment.API_URL + alumno.foto;
-          }
-        } else {
-          Swal.fire({
-            icon: 'error',
-            title: 'Error',
-            text: 'Usuario no encontrado o no es un alumno',
-            confirmButtonColor: '#d33',
-          });
-          this.router.navigate(['/home']);
+  async ngOnInit() {
+    if (this.loginService.isLogged()) {
+      this.tipo = 'Actualizar';
+      const alumno: any | undefined = await this.alumnosService.getAlumnoById(
+        Number(this.loginService.getLoggedUserId())
+      );
+      if (alumno && alumno.rol === 'alumno') {
+        this.studentForm.patchValue(alumno);
+        if (alumno.foto) {
+          this.profileImgUrl = environment.API_URL + alumno.foto;
         }
+      } else {
+        await Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'Usuario no encontrado o no es un alumno',
+          confirmButtonColor: '#d33',
+        });
+        this.router.navigate(['/home']);
       }
-    });
+    } else {
+      this.tipo = 'Registra';
+    }
+    if (this.tipo === 'Actualizar') {
+      this.mostrarCamposContrasena = false;
+    }
   }
 
   async obtenerDatosFormulario() {
     if (!this.studentForm.valid) {
-      console.log('Formulario no válido', this.studentForm.errors);
+      Swal.fire({
+        icon: 'error',
+        title: 'Formulario inválido',
+        text: 'Por favor, revisa los campos y corrige los errores.',
+        confirmButtonColor: '#d33',
+      });
       return;
     }
 
     const formData = new FormData();
 
-    // Crear objeto datosAlumno compatible con la interfaz Iusuario
+    let passwordToSend: string | undefined = undefined;
+
+    if (this.tipo === 'Registra') {
+      passwordToSend = this.studentForm.value.password;
+    } else if (this.tipo === 'Actualizar' && this.mostrarCamposContrasena) {
+      passwordToSend = this.studentForm.value.password;
+    }
+
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
       nombre: this.studentForm.value.nombre,
       apellidos: this.studentForm.value.apellidos,
       email: this.studentForm.value.email,
-      password: this.studentForm.value.password,
+      password: passwordToSend || '',
       rol: 'alumno',
       activo: true,
     };
-
-    // Adjuntar datos del alumno
-    formData.append('datos', JSON.stringify(datosAlumno));
-
-    // Adjuntar imagen de perfil si existe
     if (this.studentForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.studentForm.get('foto')?.value);
     }
 
-    console.log('Contenido completo de FormData:');
-    for (let pair of (formData as any).entries()) {
-      console.log(pair[0] + ':', pair[1]);
-    }
+    formData.append('datos', JSON.stringify(datosAlumno));
 
     try {
       if (this.tipo === 'Actualizar') {
         await this.alumnosService.actualizarAlumno(formData, datosAlumno.id);
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Alumno actualizado exitosamente.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/home']);
       } else {
         await this.alumnosService.registroAlumno(formData);
-        Swal.fire({
+        await Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Alumno registrado exitosamente.',
           confirmButtonColor: '#28a745',
         });
+        this.router.navigate(['/login']);
       }
-      this.router.navigate(['/home']);
-    } catch (error) {
-      this.errorForm = error as any;
+    } catch (error: any) {
+      const errorMessage =
+        error?.error?.message || 'Ocurrió un error inesperado.';
+      const errorsList = error?.error?.errors || [];
+
+      if (errorMessage.toLowerCase().includes('duplicate')) {
+        Swal.fire({
+          icon: 'warning',
+          title: 'Email ya registrado',
+          text: 'El email proporcionado ya está registrado. Por favor, usa otro email o intenta iniciar sesión.',
+          confirmButtonColor: '#d33',
+        });
+        return;
+      }
+
+      if (errorsList.length > 0) {
+        const detailedErrors = errorsList
+          .map(
+            (err: { field: string; message: string }) =>
+              `${err.field}: ${err.message}`
+          )
+          .join('<br>');
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Errores en los datos',
+          html: detailedErrors,
+          confirmButtonColor: '#d33',
+        });
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: errorMessage,
+          confirmButtonColor: '#d33',
+        });
+      }
     }
   }
 
@@ -167,7 +232,6 @@ export class StudentsFormComponent implements OnInit {
     if (input.files && input.files[0]) {
       const archivo = input.files[0];
 
-      // Validar tamaño del archivo
       if (archivo.size > maxFileSize) {
         this.profileImgUrl = '/img/no_profile_freepick.webp';
         this.archivoSeleccionado = null;
@@ -176,13 +240,12 @@ export class StudentsFormComponent implements OnInit {
         Swal.fire({
           icon: 'warning',
           title: 'Imagen demasiado grande.',
-          text: 'La imagen excede el tamaño maximo de 1MB.',
+          text: 'La imagen excede el tamaño máximo de 1MB.',
           confirmButtonColor: '#28a745',
         });
         return;
       }
 
-      // Validar tipo de archivo
       if (!tiposPermitidos.includes(archivo.type)) {
         this.profileImgUrl = '/img/no_profile_freepick.webp';
         this.archivoSeleccionado = null;
@@ -197,13 +260,9 @@ export class StudentsFormComponent implements OnInit {
         return;
       }
 
-      // Almacenar el archivo seleccionado
       this.archivoSeleccionado = archivo;
-
-      // Actualizar el FormControl
       this.studentForm.get('foto')?.setValue(archivo);
 
-      // Crear URL temporal para mostrar la imagen
       const reader = new FileReader();
       reader.onload = (e) => {
         if (e.target?.result) {

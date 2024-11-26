@@ -51,4 +51,9 @@ export class AlumnosService {
       )
     );
   }
+
+
+  async listarAlumnos(): Promise<Iusuario[]> {
+    return firstValueFrom(this.httpClient.get<Iusuario[]>(this.BASE_URL));
+  }
 }

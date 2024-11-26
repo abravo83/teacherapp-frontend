@@ -1,30 +1,51 @@
 <ul>
+  @if(usuario.rol === 'profesor'){
   <li>
-    <button [routerLink]="['/profile/my-students']" class="btn button-secondary w-100">
+    <button
+      [routerLink]="['/dashboard/my-students']"
+      class="btn button-secondary w-100"
+    >
       Mis Alumnos
     </button>
   </li>
+  }
+
+  <!-- Aquí el botón para Mis Profesores -->
+  @if(usuario.rol === 'alumno'){
+  <li>
+    <button
+      [routerLink]="['/dashboard/my-students']"
+      class="btn button-secondary w-100"
+    >
+      Mis Profesores
+    </button>
+  </li>
+  }
 
   <li>
-    <button [routerLink]="['/profile/messages']" class="btn button-secondary w-100">
+    <button
+      [routerLink]="['/dashboard/messages']"
+      class="btn button-secondary w-100"
+    >
       Mensajes
     </button>
   </li>
 
   <li>
-    <button [routerLink]="['/profile/my-account']" class="btn button-secondary w-100">
+    <button
+      [routerLink]="['/dashboard/my-account']"
+      class="btn button-secondary w-100"
+    >
       Mi Cuenta
     </button>
   </li>
 
   <li>
-    <button [routerLink]="['/profile/reviews']" class="btn button-secondary w-100">
+    <button
+      [routerLink]="['/dashboard/reviews']"
+      class="btn button-secondary w-100"
+    >
       Reseñas
     </button>
   </li>
-
 </ul>
-
-
-
-
