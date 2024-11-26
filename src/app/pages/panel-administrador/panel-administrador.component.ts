@@ -23,6 +23,12 @@ export class PanelAdministradorComponent implements OnInit {
   fotoSeleccionada: string | null = null;
   mostrarModalFoto: boolean = false;
 
+  profesoresPaginados: Iprofesor[] = [];
+  alumnosPaginados: Iusuario[] = [];
+  paginaActual: number = 1;
+  registrosPorPagina: number = 10;
+  totalPaginas: number = 1;
+
   constructor(
     private profesoresService: ProfesoresService,
     private usuariosService: UsuariosService,
@@ -35,43 +41,59 @@ export class PanelAdministradorComponent implements OnInit {
     this.cargarAlumnos();
   }
 
+  actualizarPaginacion(): void {
+    const inicio = (this.paginaActual - 1) * this.registrosPorPagina;
+    const fin = inicio + this.registrosPorPagina;
+  
+    if (this.seccionActual === 'profesores') {
+      this.totalPaginas = Math.ceil(this.profesoresFiltrados.length / this.registrosPorPagina);
+      this.profesoresPaginados = this.profesoresFiltrados.slice(inicio, fin);
+    } else if (this.seccionActual === 'alumnos') {
+      this.totalPaginas = Math.ceil(this.alumnosFiltrados.length / this.registrosPorPagina);
+      this.alumnosPaginados = this.alumnosFiltrados.slice(inicio, fin);
+    }
+  }
+  
+  cambiarPagina(direccion: number): void {
+    this.paginaActual += direccion;
+    this.actualizarPaginacion();
+  }
+
   async cargarProfesores() {
     try {
       const profesores = await this.profesoresService.listarProfesores();
-      this.profesores = this.profesoresFiltrados = profesores.map(
-        (profesor) => {
-          const profesorConvertido: Iprofesor = {
-            ...profesor,
-            validado: Boolean(profesor.validado),
-            activo: Boolean(profesor.activo),
-          };
-
-          if (profesorConvertido.localizacion) {
-            try {
-              const localizacionObj = JSON.parse(
-                profesorConvertido.localizacion
-              );
-              profesorConvertido.localizacion =
-                localizacionObj.address.split(',')[0];
-            } catch {
-              profesorConvertido.localizacion = profesorConvertido.localizacion;
-            }
-          } else {
-            profesorConvertido.localizacion = 'No disponible';
+      this.profesores = profesores.map((profesor) => {
+        const profesorConvertido: Iprofesor = {
+          ...profesor,
+          validado: Boolean(profesor.validado),
+          activo: Boolean(profesor.activo),
+        };
+  
+        if (profesorConvertido.localizacion) {
+          try {
+            const localizacionObj = JSON.parse(profesorConvertido.localizacion);
+            profesorConvertido.localizacion =
+              localizacionObj.address.split(',')[0];
+          } catch {
+            profesorConvertido.localizacion = profesorConvertido.localizacion;
           }
-          if (
-            profesorConvertido.foto &&
-            profesorConvertido.foto.startsWith('/img/profiles/')
-          ) {
-            profesorConvertido.foto = `${environment.API_URL}${profesorConvertido.foto}`;
-          } else {
-            profesorConvertido.foto = undefined;
-          }
-
-          return profesorConvertido;
+        } else {
+          profesorConvertido.localizacion = 'No disponible';
         }
-      );
-
+  
+        if (
+          profesorConvertido.foto &&
+          profesorConvertido.foto.startsWith('/img/profiles/')
+        ) {
+          profesorConvertido.foto = `${environment.API_URL}${profesorConvertido.foto}`;
+        } else {
+          profesorConvertido.foto = undefined;
+        }
+  
+        return profesorConvertido;
+      });
+  
+      this.profesoresFiltrados = [...this.profesores]; // Aseguramos que los filtrados son todos inicialmente
       for (const profesor of this.profesores) {
         try {
           if (profesor.id !== undefined) {
@@ -81,10 +103,6 @@ export class PanelAdministradorComponent implements OnInit {
             this.materiasPorProfesor[profesor.id] = materias.map(
               (m) => m.nombre
             );
-          } else {
-            if (profesor.id !== undefined) {
-              this.materiasPorProfesor[profesor.id] = [];
-            }
           }
         } catch {
           if (profesor.id !== undefined) {
@@ -92,20 +110,23 @@ export class PanelAdministradorComponent implements OnInit {
           }
         }
       }
+  
+      this.actualizarPaginacion(); // Aplica la paginación inicial
     } catch (error) {
       console.error('Error al cargar profesores:', error);
     }
   }
+  
 
   async cargarAlumnos() {
     try {
       const alumnos = await this.alumnosService.listarAlumnos();
-      this.alumnos = this.alumnosFiltrados = alumnos.map((alumno) => {
+      this.alumnos = alumnos.map((alumno) => {
         const alumnoConvertido: Iusuario = {
           ...alumno,
           activo: Boolean(alumno.activo),
         };
-
+  
         if (
           alumnoConvertido.foto &&
           alumnoConvertido.foto.startsWith('/img/profiles/')
@@ -114,13 +135,17 @@ export class PanelAdministradorComponent implements OnInit {
         } else {
           alumnoConvertido.foto = undefined;
         }
-
+  
         return alumnoConvertido;
       });
+  
+      this.alumnosFiltrados = [...this.alumnos]; // Aseguramos que los filtrados son todos inicialmente
+      this.actualizarPaginacion(); // Aplica la paginación inicial
     } catch (error) {
       console.error('Error al cargar alumnos:', error);
     }
   }
+  
 
   abrirFoto(foto: string) {
     if (
@@ -170,6 +195,8 @@ export class PanelAdministradorComponent implements OnInit {
   cambiarSeccion(seccion: 'profesores' | 'alumnos') {
     this.seccionActual = seccion;
     this.respuestaAPI = '';
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
   }
 
   limpiarMensajeAPI() {
@@ -198,6 +225,7 @@ export class PanelAdministradorComponent implements OnInit {
     this.profesoresFiltrados = filtrados.filter((profesor) =>
       profesor.email.toLowerCase().includes(query)
     );
+    this.actualizarPaginacion();
   }
 
   filtrarAlumnos(event: Event) {
@@ -218,6 +246,8 @@ export class PanelAdministradorComponent implements OnInit {
     this.alumnosFiltrados = filtrados.filter((alumno) =>
       alumno.email.toLowerCase().includes(query)
     );
+
+    this.actualizarPaginacion();
   }
 
   buscarProfesor(event: Event): void {
@@ -225,6 +255,8 @@ export class PanelAdministradorComponent implements OnInit {
     this.profesoresFiltrados = this.profesores.filter((profesor) =>
       profesor.email.toLowerCase().includes(query)
     );
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
   }
 
   buscarAlumno(event: Event): void {
@@ -232,5 +264,7 @@ export class PanelAdministradorComponent implements OnInit {
     this.alumnosFiltrados = this.alumnos.filter((alumno) =>
       alumno.email.toLowerCase().includes(query)
     );
+    this.paginaActual = 1;
+    this.actualizarPaginacion();
   }
 }

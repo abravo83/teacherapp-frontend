@@ -278,3 +278,41 @@ h3 {
 .filter-select::placeholder {
     color: #A0A0A0;
 }
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .pagination-button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    color: #4a4a4a;
+    border: 1px solid #e0b589;
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .pagination-button:disabled {
+    color: #a0a0a0;
+    border-color: #e0b589;
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #fdcb9e;
+    color: #ffffff;
+    border-color: #e0b589;
+  }
+  
+  .pagination-info {
+    font-size: 0.9rem;
+    color: #4a4a4a;
+  }
+  

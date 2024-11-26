@@ -87,7 +87,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (profesor of profesoresFiltrados; track profesor.id) {
+        @for (profesor of profesoresPaginados; track profesor.id) {
         <tr>
           <td>{{ profesor.nombre }} {{ profesor.apellidos }}</td>
           <td>{{ profesor.email }}</td>
@@ -149,6 +149,26 @@
         }
       </tbody>
     </table>
+
+    <div class="pagination-container">
+      <button
+        class="pagination-button"
+        [disabled]="paginaActual === 1"
+        (click)="cambiarPagina(-1)"
+      >
+        ◀
+      </button>
+      <span class="pagination-info"
+        >Página {{ paginaActual }} de {{ totalPaginas }}</span
+      >
+      <button
+        class="pagination-button"
+        [disabled]="paginaActual === totalPaginas"
+        (click)="cambiarPagina(1)"
+      >
+        ▶
+      </button>
+    </div>
   </div>
 
   } @if (seccionActual === 'alumnos') {
@@ -191,7 +211,7 @@
         </tr>
       </thead>
       <tbody>
-        @for (alumno of alumnosFiltrados; track alumno.id) {
+        @for (alumno of alumnosPaginados; track alumno.id) {
         <tr>
           <td>{{ alumno.nombre }} {{ alumno.apellidos }}</td>
           <td>{{ alumno.email }}</td>
@@ -225,6 +245,26 @@
         }
       </tbody>
     </table>
+
+    <div class="pagination-container">
+      <button
+        class="pagination-button"
+        [disabled]="paginaActual === 1"
+        (click)="cambiarPagina(-1)"
+      >
+        ◀
+      </button>
+      <span class="pagination-info"
+        >Página {{ paginaActual }} de {{ totalPaginas }}</span
+      >
+      <button
+        class="pagination-button"
+        [disabled]="paginaActual === totalPaginas"
+        (click)="cambiarPagina(1)"
+      >
+        ▶
+      </button>
+    </div>
   </div>
 
   }
