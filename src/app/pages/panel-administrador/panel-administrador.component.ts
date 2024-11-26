@@ -9,6 +9,7 @@ import { Iusuario } from '../../interfaces/iusuario';
 
 @Component({
   selector: 'app-panel-administrador',
+  standalone: true,
   templateUrl: './panel-administrador.component.html',
   styleUrls: ['./panel-administrador.component.css'],
 })

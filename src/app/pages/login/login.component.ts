@@ -41,11 +41,11 @@ export class LoginComponent {
       console.log(response.message);
       if (response.message === "Login correcto") {
           localStorage.setItem('token', response.token);
-          if (this.loginService.getLoggedUserRole() === 'administrador') {
-            this.router.navigate(['/dashboard', 'admin']);
-          } else {
+        //   if (this.loginService.getLoggedUserRole() === 'administrador') {
+        //     this.router.navigate(['/dashboard', 'admin']);
+        //   } else {
               this.router.navigate(['/dashboard']);
-          }
+        //   }
       }
     } catch ({ error }: any) {
       console.log(error);
