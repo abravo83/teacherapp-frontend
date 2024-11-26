@@ -141,27 +141,28 @@ export class StudentsFormComponent implements OnInit {
 
     const formData = new FormData();
 
+    let passwordToSend: string | undefined = undefined;
+
+    if (this.tipo === 'Registra') {
+      passwordToSend = this.studentForm.value.password;
+    } else if (this.tipo === 'Actualizar' && this.mostrarCamposContrasena) {
+      passwordToSend = this.studentForm.value.password;
+    }
+
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
       nombre: this.studentForm.value.nombre,
       apellidos: this.studentForm.value.apellidos,
       email: this.studentForm.value.email,
-      password: this.mostrarCamposContrasena
-        ? this.studentForm.value.password
-        : '',
+      password: passwordToSend || '',
       rol: 'alumno',
       activo: true,
     };
-
-    if (this.mostrarCamposContrasena) {
-      datosAlumno.password = this.studentForm.value.password;
-    }
-
-    formData.append('datos', JSON.stringify(datosAlumno));
-
     if (this.studentForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.studentForm.get('foto')?.value);
     }
+
+    formData.append('datos', JSON.stringify(datosAlumno));
 
     try {
       if (this.tipo === 'Actualizar') {
