@@ -2,6 +2,10 @@
 
 .container {
     font-family: "Work Sans", sans-serif;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
 }
 
 h2,
@@ -284,7 +288,7 @@ h3 {
     justify-content: center;
     align-items: center;
     gap: 0.5rem;
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
   
   .pagination-button {
@@ -316,3 +320,48 @@ h3 {
     color: #4a4a4a;
   }
   
+
+  @media (min-width: 995px) and (max-width: 1199px) {
+    .table {
+        font-size: 0.65rem;
+    }
+
+    .table th, .table td {
+        padding: 0.35rem;
+    }
+
+    .table th:nth-child(4),
+    .table th:nth-child(8),
+    .table td:nth-child(4),
+    .table td:nth-child(8) {
+        width: 90px;
+    }
+
+    .table td {
+        font-size: 0.65rem;
+    }
+}
+
+@media (max-width: 994px) {
+
+    .table {
+        font-size: 0.55rem;
+    }
+
+    .table th, .table td {
+        padding: 0.25rem;
+    }
+
+    .table th:nth-child(4),
+    .table th:nth-child(8),
+    .table td:nth-child(4),
+    .table td:nth-child(8) {
+        width: 70px;
+    }
+
+    .table td {
+        font-size: 0.55rem;
+    }
+}
+
+
