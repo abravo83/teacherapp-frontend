@@ -25,6 +25,7 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent },
   { path: 'nuevo-profesor', component: TeachersFormComponent },
   { path: 'nuevo-alumno', component: StudentsFormComponent },
+  { path: 'admin', canActivate: [checkAdminGuard], component: PanelAdministradorComponent },
   {
     path: 'dashboard',
     component: DashboardComponent,
@@ -34,7 +35,7 @@ export const routes: Routes = [
       { path: 'my-account', component: MyAccountComponent },
       { path: 'my-students', component: MyStudentsComponent },
       { path: 'my-classes', component: MyClassesComponent },
-      { path: 'admin', canActivate: [checkAdminGuard], component: PanelAdministradorComponent },
+       
       {
         path: 'messages',
         component: MessagesComponent,
