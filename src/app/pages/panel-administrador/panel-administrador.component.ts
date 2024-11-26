@@ -45,22 +45,20 @@ export class PanelAdministradorComponent implements OnInit {
             validado: Boolean(profesor.validado),
             activo: Boolean(profesor.activo),
           };
-  
-          // Handle localizacion
+
           if (profesorConvertido.localizacion) {
             try {
-              const localizacionObj = JSON.parse(profesorConvertido.localizacion);
+              const localizacionObj = JSON.parse(
+                profesorConvertido.localizacion
+              );
               profesorConvertido.localizacion =
                 localizacionObj.address.split(',')[0];
             } catch {
               profesorConvertido.localizacion = profesorConvertido.localizacion;
             }
           } else {
-            // If localizacion is missing
-            profesorConvertido.localizacion = "No disponible";
+            profesorConvertido.localizacion = 'No disponible';
           }
-  
-          // Handle photo path transformation
           if (
             profesorConvertido.foto &&
             profesorConvertido.foto.startsWith('/img/profiles/')
@@ -69,11 +67,11 @@ export class PanelAdministradorComponent implements OnInit {
           } else {
             profesorConvertido.foto = undefined;
           }
-  
+
           return profesorConvertido;
         }
       );
-  
+
       for (const profesor of this.profesores) {
         try {
           if (profesor.id !== undefined) {
@@ -98,7 +96,6 @@ export class PanelAdministradorComponent implements OnInit {
       console.error('Error al cargar profesores:', error);
     }
   }
-  
 
   async cargarAlumnos() {
     try {
@@ -182,39 +179,58 @@ export class PanelAdministradorComponent implements OnInit {
   filtrarProfesores(event: Event) {
     const filtro = (event.target as HTMLSelectElement).value;
 
+    let filtrados = this.profesores;
+
     if (filtro === 'validados') {
-      this.profesoresFiltrados = this.profesores.filter(
-        (profesor) => profesor.validado === true
-      );
+      filtrados = filtrados.filter((profesor) => profesor.validado === true);
     } else if (filtro === 'noValidados') {
-      this.profesoresFiltrados = this.profesores.filter(
-        (profesor) => profesor.validado === false
-      );
+      filtrados = filtrados.filter((profesor) => profesor.validado === false);
     } else if (filtro === 'activos') {
-      this.profesoresFiltrados = this.profesores.filter(
-        (profesor) => profesor.activo === true
-      );
+      filtrados = filtrados.filter((profesor) => profesor.activo === true);
     } else if (filtro === 'noActivos') {
-      this.profesoresFiltrados = this.profesores.filter(
-        (profesor) => profesor.activo === false
-      );
-    } else {
-      this.profesoresFiltrados = this.profesores;
+      filtrados = filtrados.filter((profesor) => profesor.activo === false);
     }
+
+    const query =
+      (
+        document.getElementById('buscarProfesor') as HTMLInputElement
+      )?.value.toLowerCase() || '';
+    this.profesoresFiltrados = filtrados.filter((profesor) =>
+      profesor.email.toLowerCase().includes(query)
+    );
   }
 
   filtrarAlumnos(event: Event) {
     const filtro = (event.target as HTMLSelectElement).value;
+
+    let filtrados = this.alumnos;
+
     if (filtro === 'activos') {
-      this.alumnosFiltrados = this.alumnos.filter(
-        (alumno) => alumno.activo === true
-      );
+      filtrados = filtrados.filter((alumno) => alumno.activo === true);
     } else if (filtro === 'noActivos') {
-      this.alumnosFiltrados = this.alumnos.filter(
-        (alumno) => alumno.activo === false
-      );
-    } else {
-      this.alumnosFiltrados = this.alumnos;
+      filtrados = filtrados.filter((alumno) => alumno.activo === false);
     }
+
+    const query =
+      (
+        document.getElementById('buscarAlumno') as HTMLInputElement
+      )?.value.toLowerCase() || '';
+    this.alumnosFiltrados = filtrados.filter((alumno) =>
+      alumno.email.toLowerCase().includes(query)
+    );
+  }
+
+  buscarProfesor(event: Event): void {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    this.profesoresFiltrados = this.profesores.filter((profesor) =>
+      profesor.email.toLowerCase().includes(query)
+    );
+  }
+
+  buscarAlumno(event: Event): void {
+    const query = (event.target as HTMLInputElement).value.toLowerCase();
+    this.alumnosFiltrados = this.alumnos.filter((alumno) =>
+      alumno.email.toLowerCase().includes(query)
+    );
   }
 }

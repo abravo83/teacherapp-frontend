@@ -149,14 +149,12 @@ h3 {
     background-color: #F9ECE6;
 }
 
-/* Ancho fijo para la columna "Activo" en Profesores */
 .table th:nth-child(8),
 .table td:nth-child(8) {
     width: 150px;
     text-align: center;
 }
 
-/* Ancho fijo para la columna "Activo" en Alumnos */
 .table th:nth-child(4),
 .table td:nth-child(4) {
     width: 150px;
@@ -252,7 +250,6 @@ h3 {
     appearance: none;
 }
 
-
 .filter-select:hover {
     border-color: #CCEABB;
 }
@@ -263,23 +260,21 @@ h3 {
     box-shadow: 0 0 0 2px rgba(204, 234, 187, 0.5);
 }
 
-
 .filter-select option {
     padding: 0.5rem;
     background-color: #FFFFFF;
     color: #4A4A4A;
 }
 
-
 .filter-select option:hover {
     background-color: #CCEABB;
     color: #FFFFFF;
 }
 
+.filter-select[type="text"] {
+    appearance: none;
+}
 
-.filter-container .form-label {
-    margin-bottom: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #4A4A4A;
+.filter-select::placeholder {
+    color: #A0A0A0;
 }
