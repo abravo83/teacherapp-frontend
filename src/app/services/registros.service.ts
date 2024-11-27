@@ -1,11 +1,12 @@
 import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+
 import { environment } from '../../environments/environments';
-import { UsuariosService } from './usuarios.service';
 import { Iusuario } from '../interfaces/iusuario';
-import { LoginService } from './login.service';
-import { firstValueFrom, Observable } from 'rxjs';
 import { Iregistros } from '../interfaces/iregistros';
+import { UsuariosService } from './usuarios.service';
+import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root',
