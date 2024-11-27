@@ -103,7 +103,7 @@ export class TeachersFormComponent implements OnInit {
 
   toggleCamposContrasena() {
     this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
-
+  
     if (this.mostrarCamposContrasena) {
       this.teacherForm
         .get('password')
@@ -117,13 +117,15 @@ export class TeachersFormComponent implements OnInit {
         .get('repitepassword')
         ?.setValidators([Validators.required]);
     } else {
+      // Contraseña opcional si no está activada
       this.teacherForm.get('password')?.clearValidators();
       this.teacherForm.get('repitepassword')?.clearValidators();
     }
-
+  
     this.teacherForm.get('password')?.updateValueAndValidity();
     this.teacherForm.get('repitepassword')?.updateValueAndValidity();
   }
+  
 
   /* direccion a longitud y latitud */
   queryChanged(value: string): void {
@@ -179,14 +181,26 @@ export class TeachersFormComponent implements OnInit {
       console.error('Error al cargar materias:', error);
       this.materiasList = [];
     }
-
+  
     if (this.loginService.isLogged()) {
       this.tipo = 'Actualizar';
       const userId = this.loginService.getLoggedUserId();
       const profesor: IRespuestaTeachersForm | undefined =
         await this.profesoresService.getProfesorById(userId);
-
+  
       if (profesor) {
+        let direccionCompleta = '';
+        if (profesor.profesor.localizacion) {
+          try {
+            const localizacion = JSON.parse(profesor.profesor.localizacion);
+            const partesDireccion: string[] = localizacion.address.split(',').map((part: string) => part.trim());
+            direccionCompleta = partesDireccion.slice(1).join(', ');
+          } catch (error) {
+            console.error('Error al parsear la localización:', error);
+            direccionCompleta = profesor.profesor.localizacion;
+          }
+        }
+  
         this.teacherForm.patchValue({
           id: profesor.usuario.id,
           nombre: profesor.usuario.nombre,
@@ -195,23 +209,29 @@ export class TeachersFormComponent implements OnInit {
           foto: profesor.usuario.foto,
           telefono: profesor.profesor.telefono,
           precio_hora: profesor.profesor.precio_hora,
-          localizacion: profesor.profesor.localizacion,
+          localizacion: direccionCompleta,
           meses_experiencia: profesor.profesor.meses_experiencia,
         });
-
+  
         this.teacherForm.get('materias')?.setValue(profesor.materias);
-
+  
         if (profesor.usuario.foto) {
           this.profileImgUrl = environment.API_URL + profesor.usuario.foto;
         }
+  
+        // Contraseña opcional por defecto al actualizar
+        this.teacherForm.get('password')?.clearValidators();
+        this.teacherForm.get('repitepassword')?.clearValidators();
+        this.teacherForm.get('password')?.updateValueAndValidity();
+        this.teacherForm.get('repitepassword')?.updateValueAndValidity();
       }
     } else {
-      // Modo Registro
       this.tipo = 'Registra';
       this.mostrarCamposContrasena = true;
     }
   }
-
+  
+  
   alternarDesplegable() {
     this.desplegableAbierto = !this.desplegableAbierto;
   }
@@ -241,7 +261,6 @@ export class TeachersFormComponent implements OnInit {
 
   async obtenerDatosFormulario() {
     if (!this.teacherForm.valid) {
-      console.log('Formulario no válido', this.teacherForm.errors);
       Swal.fire({
         icon: 'error',
         title: 'Formulario inválido',
@@ -250,16 +269,21 @@ export class TeachersFormComponent implements OnInit {
       });
       return;
     }
-
+  
     const formData = new FormData();
-
+  
+    let passwordToSend = null;
+    if (this.tipo === 'Registra' || this.mostrarCamposContrasena) {
+      passwordToSend = this.teacherForm.value.password;
+    }
+  
     const datosProfesor: IRespuestaTeachersForm = {
       usuario: {
         id: this.teacherForm.value.id,
         nombre: this.teacherForm.value.nombre,
         apellidos: this.teacherForm.value.apellidos,
         email: this.teacherForm.value.email,
-        password: this.teacherForm.value.password,
+        password: passwordToSend,
         rol: 'profesor',
         activo: true,
       },
@@ -272,25 +296,20 @@ export class TeachersFormComponent implements OnInit {
       },
       materias: this.teacherForm.value.materias,
     };
-
+  
     formData.append('datos', JSON.stringify(datosProfesor));
-
+  
     if (this.teacherForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.teacherForm.get('foto')?.value);
     }
-
-    console.log('FormData contenido completo:');
-    for (let pair of (formData as any).entries()) {
-      console.log(pair[0] + ':', pair[1]);
-    }
-
+  
     try {
       if (this.tipo === 'Actualizar' && datosProfesor.usuario.id) {
         await this.profesoresService.actualizarProfesor(
           formData,
           datosProfesor.usuario.id
         );
-        await Swal.fire({
+        Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Profesor actualizado exitosamente.',
@@ -299,7 +318,7 @@ export class TeachersFormComponent implements OnInit {
         this.router.navigate(['/home']);
       } else {
         await this.profesoresService.registroProfesor(formData);
-        await Swal.fire({
+        Swal.fire({
           icon: 'success',
           title: 'Éxito',
           text: 'Profesor registrado exitosamente.',
@@ -308,47 +327,16 @@ export class TeachersFormComponent implements OnInit {
         this.router.navigate(['/login']);
       }
     } catch (error: any) {
-      const errorMessage =
-        error?.error?.message || 'Ocurrió un error inesperado.';
-      const errorsList = error?.error?.errors || [];
-
-      // Caso específico: Correo duplicado
-      if (errorMessage.toLowerCase().includes('duplicate')) {
-        Swal.fire({
-          icon: 'warning',
-          title: 'Correo ya registrado',
-          text: 'El correo proporcionado ya está registrado. Por favor, utiliza otro correo o inicia sesión.',
-          confirmButtonColor: '#d33',
-        });
-        return;
-      }
-
-      // Mostrar otros errores si existen
-      if (errorsList.length > 0) {
-        const detailedErrors = errorsList
-          .map(
-            (err: { field: string; message: string }) =>
-              `${err.field}: ${err.message}`
-          )
-          .join('<br>');
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Errores en los datos',
-          html: detailedErrors,
-          confirmButtonColor: '#d33',
-        });
-      } else {
-        // Mensaje genérico para otros errores
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: errorMessage,
-          confirmButtonColor: '#d33',
-        });
-      }
+      console.error(error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: error?.error?.message || 'Ocurrió un error inesperado.',
+        confirmButtonColor: '#d33',
+      });
     }
   }
+  
 
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB
