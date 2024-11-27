@@ -2,18 +2,7 @@
   <div class="nav-home">
     <ul>
       <li>
-        <button
-          (click)="toggleFilters()"
-          style="cursor: pointer"
-          class="b-filters"
-        >
-          Filtros
-        </button>
-        <form
-          *ngIf="showFilters"
-          #filterForm="ngForm"
-          (ngSubmit)="selectMateria(filterForm.value)"
-        >
+        <form #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
           <div class="d-flex justify-content-between">
             <div class="text-center">
               <h5>Materias</h5>

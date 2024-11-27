@@ -20,7 +20,7 @@ import { CommonModule } from '@angular/common';
     MapMarker,
     MapAdvancedMarker,
     PopUpContactarComponent,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './profesor-list-home.component.html',
   styleUrl: './profesor-list-home.component.css',
@@ -28,10 +28,12 @@ import { CommonModule } from '@angular/common';
 export class ProfesorListHomeComponent {
   profesorService = inject(ProfesoresService);
   usuariosList: any[] = [];
+  profesoresList: Iprofesor[] = [];
+  coordenadasList: any[] = [];
   myposition = signal<any>('');
   isGoogleMapsLoaded = false;
 
-  ngOnInit() {
+  async ngOnInit() {
     // Cargar el script de Google Maps dinámicamente
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.token}`;
@@ -50,6 +52,18 @@ export class ProfesorListHomeComponent {
     };
 
     this.usuariosList = this.profesorService.getAll();
+    this.profesoresList = await this.profesorService.getAllProfesores();
+
+    const result = this.profesoresList.map((item) => {
+      const localizacion = JSON.parse(item.localizacion);
+      return {
+        id: item.id,
+        coordenadas: `${localizacion.lat},${localizacion.lng}`,
+      };
+    });
+
+    this.coordenadasList = result;
+    console.log(this.coordenadasList);
   }
 
   private initializeMap() {
@@ -75,6 +89,5 @@ export class ProfesorListHomeComponent {
       this.usuariosList = this.profesorService.getAll();
     }
   }
-
-    profesorSeleccionado: any = null;  // Variable para almacenar el profesor seleccionado
-  }
+  profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
+}

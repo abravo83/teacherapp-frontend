@@ -21,8 +21,8 @@ export class FilterHomeComponent {
 
   @Output() filtro_emitido: EventEmitter<[any, any, any]> = new EventEmitter();
 
-  ngOnInit() {
-    this.materiaList = this.profesoresService.getAllMaterias();
+  async ngOnInit() {
+    this.materiaList = await this.profesoresService.getAllMaterias();
   }
   toggleFilters() {
     this.showFilters = !this.showFilters;

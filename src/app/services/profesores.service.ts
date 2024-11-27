@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { firstValueFrom } from 'rxjs';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 import { environment } from '../../environments/environments';
 import { Iprofesor } from '../interfaces/iprofesor';
@@ -12,6 +12,7 @@ import { USUARIOS } from '../db/usuarios';
 import { MATERIAS_PROFESORES } from '../db/materias_profesores';
 
 import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.interface';
+import { Imateria } from '../interfaces/imateria';
 
 @Injectable({
   providedIn: 'root',
@@ -23,13 +24,14 @@ export class ProfesoresService {
 
   // Variables
   BASE_URL = `${environment.API_URL}/api/profesores`;
+  BASE_URL_MAT = `${environment.API_URL}/api/materias`;
   private arrProfesores: Iprofesor[] = DATOS_PROFESORES;
   private arrUsuarios: Iusuario[] = USUARIOS;
   private arrMateriasProfesores: any[] = MATERIAS_PROFESORES;
-  private arrMaterias: any[] = MATERIAS;
+  private arrMaterias: any[] = [];
   private arrinfoProf2: any[] = [];
 
-  //GetAll obtener todos los profesores
+  //HOME
 
   getAll(rol: string = 'profesor') {
     // Filtrar los usuarios por rol de profesor
@@ -75,40 +77,10 @@ export class ProfesoresService {
 
     return resultado;
   }
-  //getter para obtener todas las  materias
+
   getAllMaterias() {
-    return this.arrMaterias;
+    return lastValueFrom(this.httpClient.get<Imateria[]>(this.BASE_URL_MAT));
   }
-  //
-
-  // filterByMaterias(materiaId: number) {
-  //   // Filtrar los usuarios_id que tienen la materiaId deseada
-  //   const usuariosFiltrados = MATERIAS_PROFESORES.filter(
-  //     (mp) => mp.Materias_id === materiaId
-  //   ).map((mp) => mp.usuarios_id);
-
-  //   // Obtener el array de usuarios con sus datos completos
-  //   return USUARIOS.filter((usuario) =>
-  //     usuariosFiltrados.includes(usuario.id)
-  //   ).map((usuario) => {
-  //     // Obtener datos adicionales del profesor
-  //     const profesorDatos = DATOS_PROFESORES.find(
-  //       (dp) => dp.usuarios_id === usuario.id
-  //     );
-  //     // Obtener las materias que enseña el profesor
-  //     const materias = MATERIAS_PROFESORES.filter(
-  //       (mp) => mp.usuarios_id === usuario.id
-  //     )
-  //       .map((mp) => MATERIAS.find((m) => m.id === mp.Materias_id)?.nombre)
-  //       .filter(Boolean) as string[];
-
-  //     return {
-  //       ...usuario,
-  //       ...profesorDatos,
-  //       materias,
-  //     };
-  //   });
-  // }
 
   filterByMaterias(
     materiaId: number,
@@ -195,11 +167,15 @@ export class ProfesoresService {
     return profesoresFiltrados;
   }
 
-  //FORMULARIO REGISTRO Y PROFESOR 
+  getAllProfesores() {
+    return lastValueFrom(this.httpClient.get<Iprofesor[]>(this.BASE_URL));
+  }
+
+  //FORMULARIO REGISTRO Y PROFESOR
   getProfesorById(id: number): Promise<IRespuestaTeachersForm | undefined> {
     return firstValueFrom(
       this.httpClient.get<IRespuestaTeachersForm>(`${this.BASE_URL}/${id}`)
-    );    
+    );
   }
 
   async registroProfesor(formData: FormData): Promise<any> {
@@ -214,14 +190,18 @@ export class ProfesoresService {
     );
   }
 
-//Panel administrador
-async listarProfesores(): Promise<Iprofesor[]> {
-  return firstValueFrom(this.httpClient.get<Iprofesor[]>(this.BASE_URL));
-}
+  //Panel administrador
+  async listarProfesores(): Promise<Iprofesor[]> {
+    return firstValueFrom(this.httpClient.get<Iprofesor[]>(this.BASE_URL));
+  }
 
-async validarProfesor(id: number, validado: boolean): Promise<{ message: string }> {
-  const url = `${this.BASE_URL}/validar/${id}`;
-  return firstValueFrom(this.httpClient.put<{ message: string }>(url, { validado }));
-}
-  
+  async validarProfesor(
+    id: number,
+    validado: boolean
+  ): Promise<{ message: string }> {
+    const url = `${this.BASE_URL}/validar/${id}`;
+    return firstValueFrom(
+      this.httpClient.put<{ message: string }>(url, { validado })
+    );
+  }
 }
