@@ -1,6 +1,7 @@
 <div class="container my-4">
   <h2 class="mb-4">Panel de Administración</h2>
-
+  
+  <!-- Secciones -->
   <ul class="nav nav-tabs">
     <li class="nav-item">
       <a
@@ -20,6 +21,7 @@
     </li>
   </ul>
 
+<!-- Respuesta API -->
   @if (respuestaAPI) {
   <div
     class="alert alert-info mt-3 d-flex justify-content-between align-items-center"
@@ -33,6 +35,8 @@
     ></button>
   </div>
   } @if (seccionActual === 'profesores') {
+
+<!-- Sección profesores -->
   <div class="mt-4">
     <h3>Profesores</h3>
     <div class="d-flex gap-3 align-items-center mb-3">
@@ -173,6 +177,8 @@
 
   } @if (seccionActual === 'alumnos') {
   <div class="mt-4">
+
+  <!-- Sección alumnos -->
     <h3>Alumnos</h3>
     <div class="d-flex gap-3 align-items-center mb-3">
       <div class="filter-container">
@@ -246,6 +252,7 @@
       </tbody>
     </table>
 
+    <!-- Paginación -->
     <div class="pagination-container">
       <button
         class="pagination-button"
@@ -268,7 +275,7 @@
   </div>
 
   }
-
+  <!-- Modal -->
   <div
     class="modal-backdrop"
     [hidden]="!mostrarModalFoto"

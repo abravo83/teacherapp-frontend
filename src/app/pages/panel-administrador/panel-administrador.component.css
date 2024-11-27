@@ -39,8 +39,8 @@ h3 {
 .alert-info,
 .alert-danger {
     position: absolute;
-    top: 2rem;
-    left: 50%;
+    top: 8rem;
+    left: 65%;
     transform: translateX(-50%);
     z-index: 1000;
     padding: 1rem 2rem;

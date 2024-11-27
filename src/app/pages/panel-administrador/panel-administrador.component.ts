@@ -37,11 +37,12 @@ export class PanelAdministradorComponent implements OnInit {
     private materiasService: MateriasService
   ) {}
 
+   //Inicializa el estado del componente y carga los datos
   ngOnInit(): void {
     this.cargarProfesores();
     this.cargarAlumnos();
   }
-
+   // Actualiza la paginación en función de la sección y los filtros actuales
   actualizarPaginacion(): void {
     const inicio = (this.paginaActual - 1) * this.registrosPorPagina;
     const fin = inicio + this.registrosPorPagina;
@@ -54,12 +55,12 @@ export class PanelAdministradorComponent implements OnInit {
       this.alumnosPaginados = this.alumnosFiltrados.slice(inicio, fin);
     }
   }
-  
+   // Cambia la página para la paginación
   cambiarPagina(direccion: number): void {
     this.paginaActual += direccion;
     this.actualizarPaginacion();
   }
-
+// Carga y transforma los datos de los profesores desde la API
   async cargarProfesores() {
     try {
       const profesores = await this.profesoresService.listarProfesores();
@@ -94,7 +95,7 @@ export class PanelAdministradorComponent implements OnInit {
         return profesorConvertido;
       });
   
-      this.profesoresFiltrados = [...this.profesores]; // Aseguramos que los filtrados son todos inicialmente
+      this.profesoresFiltrados = [...this.profesores]; 
       for (const profesor of this.profesores) {
         try {
           if (profesor.id !== undefined) {
@@ -112,13 +113,12 @@ export class PanelAdministradorComponent implements OnInit {
         }
       }
   
-      this.actualizarPaginacion(); // Aplica la paginación inicial
+      this.actualizarPaginacion(); 
     } catch (error) {
       console.error('Error al cargar profesores:', error);
     }
-  }
-  
-
+  }  
+ // Carga y transforma los datos de los alumnos desde la API
   async cargarAlumnos() {
     try {
       const alumnos = await this.alumnosService.listarAlumnos();
@@ -140,14 +140,13 @@ export class PanelAdministradorComponent implements OnInit {
         return alumnoConvertido;
       });
   
-      this.alumnosFiltrados = [...this.alumnos]; // Aseguramos que los filtrados son todos inicialmente
-      this.actualizarPaginacion(); // Aplica la paginación inicial
+      this.alumnosFiltrados = [...this.alumnos]; 
+      this.actualizarPaginacion(); 
     } catch (error) {
       console.error('Error al cargar alumnos:', error);
     }
-  }
-  
-
+  }  
+// Abre una foto en el modal para mostrarla
   abrirFoto(foto: string) {
     if (
       foto.startsWith(`${environment.API_URL}/img/profiles/`) ||
@@ -161,12 +160,12 @@ export class PanelAdministradorComponent implements OnInit {
       console.warn('Foto no válida o de prueba');
     }
   }
-
+// Cierra el modal de visualización de fotos
   cerrarModalFoto() {
     this.fotoSeleccionada = null;
     this.mostrarModalFoto = false;
   }
-
+// Cambia el estado activo/inactivo de un usuario
   async cambiarEstadoUsuario(id: number, activo: boolean) {
     try {
       const response = await this.usuariosService.activarUsuario(id, activo);
@@ -178,7 +177,7 @@ export class PanelAdministradorComponent implements OnInit {
       this.cargarAlumnos();
     } catch {}
   }
-
+// Cambia el estado de validación de un profesor
   async cambiarValidacionProfesor(id: number, validado: boolean) {
     try {
       const response = await this.profesoresService.validarProfesor(
@@ -192,18 +191,18 @@ export class PanelAdministradorComponent implements OnInit {
       this.cargarProfesores();
     } catch {}
   }
-
+ // Cambia la sección visible entre profesores y alumnos
   cambiarSeccion(seccion: 'profesores' | 'alumnos') {
     this.seccionActual = seccion;
     this.respuestaAPI = '';
     this.paginaActual = 1;
     this.actualizarPaginacion();
   }
-
+// Limpia el mensaje de respuesta de la API
   limpiarMensajeAPI() {
     this.respuestaAPI = '';
   }
-
+ // Filtra la lista de profesores en función del filtro seleccionado
   filtrarProfesores(event: Event) {
     const filtro = (event.target as HTMLSelectElement).value;
 
@@ -228,7 +227,7 @@ export class PanelAdministradorComponent implements OnInit {
     );
     this.actualizarPaginacion();
   }
-
+// Filtra la lista de alumnos en función del filtro seleccionado
   filtrarAlumnos(event: Event) {
     const filtro = (event.target as HTMLSelectElement).value;
 
@@ -250,7 +249,7 @@ export class PanelAdministradorComponent implements OnInit {
 
     this.actualizarPaginacion();
   }
-
+// Busca profesores en la lista según el texto introducido
   buscarProfesor(event: Event): void {
     const query = (event.target as HTMLInputElement).value.toLowerCase();
     this.profesoresFiltrados = this.profesores.filter((profesor) =>
@@ -259,7 +258,7 @@ export class PanelAdministradorComponent implements OnInit {
     this.paginaActual = 1;
     this.actualizarPaginacion();
   }
-
+// Busca alumnos en la lista según el texto introducido
   buscarAlumno(event: Event): void {
     const query = (event.target as HTMLInputElement).value.toLowerCase();
     this.alumnosFiltrados = this.alumnos.filter((alumno) =>
