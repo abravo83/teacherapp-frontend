@@ -52,8 +52,9 @@ export class TeachersFormComponent implements OnInit {
   archivoSeleccionado: File | null = null;
 
   mostrarCamposContrasena: boolean = false;
-  constructor() {
-    // Configuración del formulario
+
+  // Constructor para inicializar el formulario y las dependencias
+  constructor() {    
     this.teacherForm = new FormGroup(
       {
         id: new FormControl(null),
@@ -101,10 +102,12 @@ export class TeachersFormComponent implements OnInit {
     );
   }
 
+  // Alterna la visibilidad y validaciones de los campos de contraseña
   toggleCamposContrasena() {
     this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
   
     if (this.mostrarCamposContrasena) {
+      // Activar validaciones de contraseña
       this.teacherForm
         .get('password')
         ?.setValidators([
@@ -117,17 +120,20 @@ export class TeachersFormComponent implements OnInit {
         .get('repitepassword')
         ?.setValidators([Validators.required]);
     } else {
-      // Contraseña opcional si no está activada
+      // Desactivar validaciones de contraseña
       this.teacherForm.get('password')?.clearValidators();
       this.teacherForm.get('repitepassword')?.clearValidators();
+  
+      // Limpiar los campos para evitar confusión
+      this.teacherForm.get('password')?.setValue(null);
+      this.teacherForm.get('repitepassword')?.setValue(null);
     }
   
     this.teacherForm.get('password')?.updateValueAndValidity();
     this.teacherForm.get('repitepassword')?.updateValueAndValidity();
   }
   
-
-  /* direccion a longitud y latitud */
+  // Procesa el texto de entrada para buscar una dirección
   queryChanged(value: string): void {
     if (this.time) clearTimeout(this.time);
     this.time = setTimeout(() => {
@@ -135,14 +141,17 @@ export class TeachersFormComponent implements OnInit {
     }, 500);
   }
 
+  // Devuelve el estado de carga de lugares de Google Maps
   get isLoadingPlaces(): boolean {
     return this.CoordenadaService.isLoading;
   }
 
+  // Devuelve los lugares encontrados por Google Maps
   get places(): Feature[] {
     return this.CoordenadaService.places;
   }
 
+  // Selecciona un lugar y actualiza las coordenadas y dirección
   selectPlace(place: Feature): void {
     this.selectedPlace = place;
     this.teacherForm
@@ -158,6 +167,8 @@ export class TeachersFormComponent implements OnInit {
     this.CoordenadaService.places = [];
   }
 
+
+  // Valida que las contraseñas coincidan
   validadorCoincidenciaContraseñas: ValidatorFn = (
     group: AbstractControl
   ): { [key: string]: any } | null => {
@@ -166,6 +177,7 @@ export class TeachersFormComponent implements OnInit {
     return password === repitepassword ? null : { checkpassword: true };
   };
 
+  // Verifica los errores de validación en un campo de formulario
   checkControl(formControlName: string, validador: string) {
     return (
       this.teacherForm.get(formControlName)?.hasError(validador) &&
@@ -173,6 +185,7 @@ export class TeachersFormComponent implements OnInit {
     );
   }
 
+// Inicializa el componente y carga datos del usuario si está logueado
   async ngOnInit() {
     try {
       const materias = await this.materiasService.getMaterias();
@@ -189,15 +202,15 @@ export class TeachersFormComponent implements OnInit {
         await this.profesoresService.getProfesorById(userId);
   
       if (profesor) {
-        let direccionCompleta = '';
+        let direccionSinComillas = '';
+  
         if (profesor.profesor.localizacion) {
           try {
             const localizacion = JSON.parse(profesor.profesor.localizacion);
-            const partesDireccion: string[] = localizacion.address.split(',').map((part: string) => part.trim());
-            direccionCompleta = partesDireccion.slice(1).join(', ');
+                   direccionSinComillas = localizacion.address;
           } catch (error) {
             console.error('Error al parsear la localización:', error);
-            direccionCompleta = profesor.profesor.localizacion;
+            direccionSinComillas = profesor.profesor.localizacion; 
           }
         }
   
@@ -209,7 +222,7 @@ export class TeachersFormComponent implements OnInit {
           foto: profesor.usuario.foto,
           telefono: profesor.profesor.telefono,
           precio_hora: profesor.profesor.precio_hora,
-          localizacion: direccionCompleta,
+          localizacion: direccionSinComillas, 
           meses_experiencia: profesor.profesor.meses_experiencia,
         });
   
@@ -218,8 +231,6 @@ export class TeachersFormComponent implements OnInit {
         if (profesor.usuario.foto) {
           this.profileImgUrl = environment.API_URL + profesor.usuario.foto;
         }
-  
-        // Contraseña opcional por defecto al actualizar
         this.teacherForm.get('password')?.clearValidators();
         this.teacherForm.get('repitepassword')?.clearValidators();
         this.teacherForm.get('password')?.updateValueAndValidity();
@@ -231,11 +242,12 @@ export class TeachersFormComponent implements OnInit {
     }
   }
   
-  
+  // Alterna la visibilidad del desplegable de materias
   alternarDesplegable() {
     this.desplegableAbierto = !this.desplegableAbierto;
   }
 
+  // Cambia las materias seleccionadas en el formulario
   async cambiarMateria(event: any) {
     const selectedMaterias = this.teacherForm.value.materias || [];
     const materiaId = Number(event.target.value);
@@ -259,6 +271,7 @@ export class TeachersFormComponent implements OnInit {
     this.teacherForm.get('materias')?.setValue(selectedMaterias);
   }
 
+  // Envía los datos del formulario al servidor para guardar o actualizar
   async obtenerDatosFormulario() {
     if (!this.teacherForm.valid) {
       Swal.fire({
@@ -273,8 +286,21 @@ export class TeachersFormComponent implements OnInit {
     const formData = new FormData();
   
     let passwordToSend = null;
-    if (this.tipo === 'Registra' || this.mostrarCamposContrasena) {
-      passwordToSend = this.teacherForm.value.password;
+    if (this.mostrarCamposContrasena) {
+      if (
+        this.teacherForm.get('password')?.valid &&
+        this.teacherForm.get('repitepassword')?.valid
+      ) {
+        passwordToSend = this.teacherForm.get('password')?.value;
+      } else {
+        Swal.fire({
+          icon: 'error',
+          title: 'Contraseña inválida',
+          text: 'Por favor, asegúrate de que la contraseña cumpla con los requisitos.',
+          confirmButtonColor: '#d33',
+        });
+        return;
+      }
     }
   
     const datosProfesor: IRespuestaTeachersForm = {
@@ -326,18 +352,33 @@ export class TeachersFormComponent implements OnInit {
         });
         this.router.navigate(['/login']);
       }
-    } catch (error: any) {
-      console.error(error);
+    } catch (error: any) {   
+      let mensajeError = 'Ocurrió un error inesperado. Por favor, intenta de nuevo.';
+  
+      if (error?.error?.message) {
+        const mensaje = error.error.message.toLowerCase();
+  
+        if (mensaje.includes('duplicate')) {
+          mensajeError =
+            'El correo electrónico ya está registrado. Por favor, usa otro o inicia sesión.';
+        } else if (mensaje.includes('validation')) {
+          mensajeError =
+            'Algunos datos no son válidos. Revisa los campos e inténtalo de nuevo.';
+        } else if (mensaje.includes('network')) {
+          mensajeError = 'Problema de conexión. Revisa tu red e inténtalo nuevamente.';
+        }
+      }
+  
       Swal.fire({
         icon: 'error',
         title: 'Error',
-        text: error?.error?.message || 'Ocurrió un error inesperado.',
+        text: mensajeError,
         confirmButtonColor: '#d33',
       });
     }
-  }
-  
+  }  
 
+  // Procesa la imagen seleccionada por el usuario
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB
     const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
