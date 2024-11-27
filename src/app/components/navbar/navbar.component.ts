@@ -103,19 +103,6 @@ export class NavbarComponent {
     this.showNotifications = !this.showNotifications;
   }
 
-  /* cuando se pulse en la notificacion redirige a mensajes */
-  actualizarRutaDestino() {
-    if (this.role === 'alumno') {
-      this.role = '/dashboard/messages';
-    } else if (this.role === 'profesor') {
-      this.role = '/dashboard/messages'; 
-    }
-  }
-
-  /* eliminar token boton salir */
-  logout(){
-    localStorage.removeItem('token');
-    this.router.navigateByUrl('/home')
-  }  
+  
 
 }

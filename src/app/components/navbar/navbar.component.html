@@ -3,7 +3,11 @@
 >
   <div class="container-fluid px-4">
     <div class="text-black">
-      <a class="nav-link" routerLinkActive="active" aria-current="page"
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        aria-current="page"
+        [routerLink]="['/home']"
         ><img
           class="img-fluid"
           src="../../apple-touch-icon.png"
@@ -167,40 +171,34 @@
 
           <li class="nav-item ocultarli mx-1">
             <a
-              class="nav-link d-flex justify-content-center align-items-center"
+              class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/dashboard', '']"
-              title="Profesores"
-              ><i
-                class="fa-duotone fa-solid fa-person-chalkboard"
-                style="font-size: 22px"
-              ></i>
+              [routerLink]="['/panel-control']"
+              title="Panel de control"
+              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
             </a>
           </li>
-
+          <!-- 
           <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
               [routerLink]="['/dashboard']"
-              title="Estudiantes"
-              ><i
-                class="fa-duotone fa-solid fa-graduation-cap"
-                style="font-size: 22px"
-              ></i>
+              title="Mi Perfil"
+            >
+              <i class="fa-solid fa-user" style="font-size: 22px"></i>
             </a>
-          </li>
+          </li> -->
 
           <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              (click)="logout()"
-              [routerLink]="['/home']"
-              title="Salir"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
               ><i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
@@ -221,20 +219,30 @@
               Notificaciones
             </a>
           </li> -->
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/panel-control']"
+            >
+              <i class="fa-solid fa-gear" style="font-size: 22px"></i>
+              Panel de control</a
+            >
+          </li>
 
           <li class="nav-item hide-link">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              (click)="logout()"
-              [routerLink]="['/home']"
+              [routerLink]="['/logout']"
             >
               <i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
-              Salir</a
+              Cerrar Sesion</a
             >
           </li>
         </ul>
@@ -308,15 +316,27 @@
             </ul>
             }
           </li>
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Mi Perfil"
+              ><i
+                class="fa-regular fa-address-card"
+                style="font-size: 22px"
+              ></i>
+            </a>
+          </li>
 
           <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              (click)="logout()"
-              [routerLink]="['/home']"
-              title="Salir"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
               ><i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
@@ -328,9 +348,20 @@
             <a
               class="nav-link"
               routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+            >
+              <i class="fa-regular fa-address-card" style="font-size: 22px"></i>
+              Mi Perfil</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
               (click)="limpiarNotificaciones()"
               aria-current="page"
-              [routerLink]="[role]"
+              [routerLink]="['/dashboard', 'messages']"
             >
               @if(notiCount>0){
               <span
@@ -349,14 +380,13 @@
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              (click)="logout()"
-              [routerLink]="['/home']"
+              [routerLink]="['/logout']"
             >
               <i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
-              Salir</a
+              Cerrar sesion</a
             >
           </li>
         </ul>
@@ -429,20 +459,43 @@
             </ul>
             }
           </li>
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Mi Perfil"
+              ><i
+                class="fa-regular fa-address-card"
+                style="font-size: 22px"
+              ></i>
+            </a>
+          </li>
 
           <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              (click)="logout()"
-              [routerLink]="['/home']"
-              title="Salir"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
               ><i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
             </a>
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+            >
+              <i class="fa-regular fa-address-card" style="font-size: 22px"></i>
+              Mi Perfil</a
+            >
           </li>
 
           <li class="nav-item hide-link">
@@ -451,7 +504,7 @@
               routerLinkActive="active"
               (click)="limpiarNotificaciones()"
               aria-current="page"
-              [routerLink]="[role]"
+              [routerLink]="['/dashboard', 'messages']"
             >
               @if(notiCount>0){
               <span
@@ -470,14 +523,13 @@
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              (click)="logout()"
-              [routerLink]="['/home']"
+              [routerLink]="['/logout']"
             >
               <i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
-              Salir</a
+              Cerrar sesion</a
             >
           </li>
         </ul>

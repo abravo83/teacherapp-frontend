@@ -9,6 +9,8 @@
             type="text"
             class="form-control mb-3 border-0"
             placeholder="Buscar..."
+            #txtQuery
+            (input)="queryChanged(txtQuery.value)"
           />
         </div>
         @for(user of arrProf;track $index) {

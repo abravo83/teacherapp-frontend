@@ -181,7 +181,7 @@ export class MessagesComponent implements OnInit {
           user.apellidos.toLowerCase().includes(word)
         );
       } else if (this.role === 'alumno') {
-        this.arrProf = this.arrAlumnos.filter(user =>
+        this.arrProf = this.arrProf.filter(user =>
           user.nombre.toLowerCase().includes(word) ||
           user.apellidos.toLowerCase().includes(word)
         );
