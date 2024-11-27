@@ -36,6 +36,7 @@ export class StudentsFormComponent implements OnInit {
   archivoSeleccionado: File | null = null;
   mostrarCamposContrasena: boolean = false;
 
+  // Constructor para inicializar el formulario
   constructor() {
     this.studentForm = new FormGroup(
       {
@@ -61,6 +62,7 @@ export class StudentsFormComponent implements OnInit {
     );
   }
 
+  // Valida que las contraseñas coincidan
   validadorCoincidenciaContraseñas: ValidatorFn = (
     group: AbstractControl
   ): { [key: string]: any } | null => {
@@ -69,6 +71,7 @@ export class StudentsFormComponent implements OnInit {
     return password === repitepassword ? null : { checkpassword: true };
   };
 
+  // Alterna la visibilidad y las validaciones de los campos de contraseña
   toggleCamposContrasena() {
     this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
 
@@ -93,6 +96,7 @@ export class StudentsFormComponent implements OnInit {
     this.studentForm.get('repitepassword')?.updateValueAndValidity();
   }
 
+  // Verifica los errores de validación en un campo de formulario
   checkControl(formControlName: string, validador: string) {
     return (
       this.studentForm.get(formControlName)?.hasError(validador) &&
@@ -100,6 +104,7 @@ export class StudentsFormComponent implements OnInit {
     );
   }
 
+  // Inicializa el componente y carga los datos del usuario si está logueado
   async ngOnInit() {
     if (this.loginService.isLogged()) {
       this.tipo = 'Actualizar';
@@ -128,6 +133,7 @@ export class StudentsFormComponent implements OnInit {
     }
   }
 
+  // Procesa los datos del formulario y los envía al servidor
   async obtenerDatosFormulario() {
     if (!this.studentForm.valid) {
       Swal.fire({
@@ -224,6 +230,7 @@ export class StudentsFormComponent implements OnInit {
     }
   }
 
+  // Procesa la imagen seleccionada por el usuario
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB
     const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];
