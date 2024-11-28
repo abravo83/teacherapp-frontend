@@ -1,4 +1,4 @@
-import { Component, inject, Input, OnInit, Output, output } from '@angular/core';
+import { Component, inject, Input, OnInit, Output, output, Signal, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -10,8 +10,6 @@ import {
 } from '@angular/forms';
 import { Iusuario } from '../../../interfaces/iusuario';
 import { Imensaje, MensajeConEmisor } from '../../../interfaces/imensaje';
-import { USUARIOS } from '../../../db/usuarios';
-import { MENSAJES } from '../../../db/mensajes';
 import { LoginService } from '../../../services/login.service';
 import { MensajesService } from '../../../services/mensajes.service';
 
@@ -25,6 +23,7 @@ import { MensajesService } from '../../../services/mensajes.service';
 export class MessagesComponent implements OnInit {
   loginService = inject(LoginService);
   messagesService= inject(MensajesService);
+  
   notifications:MensajeConEmisor[]=[];  
   mensajes: Imensaje[] = [];
   arrAlumnos:Iusuario[]=[];
@@ -57,15 +56,13 @@ export class MessagesComponent implements OnInit {
       }
       if (this.role === 'alumno') {
         this.obtenerProfesores();
-        }                       
+        }
     }   
   }
   /* obtener mis alumnos */
   async obtenerAlumnos():Promise<void>{
     try {
-      // Aquí puedes reemplazar con el servicio que te da la lista de alumnos
       this.arrAlumnos = await this.messagesService.getMisAlumnos(this.usuarioId);
-      //console.log('Alumnos obtenidos:', this.arrAlumnos);
     } catch (error) {
       console.error('Error al obtener alumnos:', error);
     }
@@ -73,9 +70,7 @@ export class MessagesComponent implements OnInit {
   /* obtener mis profesores */
   async obtenerProfesores():Promise<void>{
     try {
-      // Aquí puedes reemplazar con el servicio que te da la lista de alumnos
       this.arrProf = await this.messagesService.getMisProfesores(this.usuarioId);
-      //console.log('profesores obtenidos:', this.arrProf);
     } catch (error) {
       console.error('Error al obtener profesores:', error);
     }
@@ -84,10 +79,8 @@ export class MessagesComponent implements OnInit {
   async cargarMensajesNoLeidos(): Promise<void> {
     try {         
       const response = await this.messagesService.getMensajesNoLeidos(this.usuarioId);  
-      this.notifications = response || [] //asignamos respuesta a notifications    
-      
+      this.notifications = response || [] //asignamos respuesta a notifications   
       if(this.notifications.length){
-        console.log(this.notifications.length)
       this.notiCount = this.notifications.length;// Actualizamos el número de mensajes no leídos
       }      
     } catch (error) {
@@ -98,7 +91,6 @@ export class MessagesComponent implements OnInit {
 
   // Función para seleccionar un contacto
   async seleccionarContacto(contacto: Iusuario): Promise<void> {
-
     this.contactoSeleccionado = contacto;
     this.contactoSeleccionadoid = contacto.id || 0;   
     await this.cargarMensajesNoLeidos();    
@@ -116,14 +108,13 @@ export class MessagesComponent implements OnInit {
   async marcarNotificacionesComoLeidas(emisorId: number): Promise<void> {
     try {
       const notificacionesDeEmisor = this.notifications.filter(n => n.emisor_id === emisorId);  
-      for (const noti of notificacionesDeEmisor) {
-        await this.messagesService.marcarLeido(noti.id); // Llamada a la API
+      for (const noti of notificacionesDeEmisor) {        
+        await this.messagesService.marcarLeido(noti.id); 
       }
-      this.notifications = this.notifications.filter(n => n.emisor_id !== emisorId); 
-      const notificationUnRead = this.notifications.filter(mensaje =>!mensaje.leido); 
-      console.log('pase por notificaciones mesages',notificationUnRead.length);
-      this.notiCount = notificationUnRead.length;  
-      
+      this.notifications = this.notifications.filter(n => n.emisor_id !== emisorId);       
+      this.messagesService.actualizarMensajesAgrupados(this.notifications); //Manda el nuevo estado al servicio para q la campana muestre los cambios
+      const notificationUnRead = this.notifications.filter(mensaje =>!mensaje.leido);      
+      this.notiCount = notificationUnRead.length;        
     } catch (error) {
       console.error('Error al marcar notificaciones como leídas:', error);
     }
@@ -172,7 +163,6 @@ export class MessagesComponent implements OnInit {
   /* buscador por nombre */
   queryChanged(value: string): void {
     const word = value.trim().toLowerCase();
-
     if (word) {
       // Si hay texto en el campo, aplicamos el filtro
       if (this.role === 'profesor') {
