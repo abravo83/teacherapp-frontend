@@ -21,44 +21,8 @@
                 </option>
               </select>
             </div>
-            <div class="text-center">
-              <h5>Experiencia</h5>
-              <select
-                (change)="selectMateria(filterForm.value)"
-                class="form-select"
-                name="experiencia"
-                ngModel
-              >
-                <option value="0,10000000">Todo</option>
-                <option value="0,12">Hasta 1 año</option>
-                <option value="13,24">Entre 1 y 2 años</option>
-                <option value="25,36">Entre 2 y 3 años</option>
-                <option value="37,48">Entre 3 y 4 años</option>
-                <option value="49,1000000">Más de 4 años</option>
-              </select>
-            </div>
-            <div class="text-center">
-              <h5>Precio</h5>
-              <select
-                (change)="selectMateria(filterForm.value)"
-                class="form-select"
-                name="precio"
-                ngModel
-              >
-                <option value="0,10000000">Todo</option>
-                <option value="10,50">Entre 10 y 50 dólares</option>
-                <option value="51,75">Entre 51 y 75 dólares</option>
-                <option value="76,100">Entre 75 y 100 dólares</option>
-                <option value="101,100000000">Más de 100 dólares</option>
-              </select>
-            </div>
           </div>
         </form>
-      </li>
-      <li>
-        <button class="b-lastmonths" style="cursor: pointer">
-          Últimos meses
-        </button>
       </li>
     </ul>
   </div>

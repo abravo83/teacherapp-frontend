@@ -63,7 +63,6 @@ export class ProfesorListHomeComponent {
     });
 
     this.coordenadasList = result;
-    console.log(this.coordenadasList);
   }
 
   private initializeMap() {
@@ -78,16 +77,6 @@ export class ProfesorListHomeComponent {
     }
   }
 
-  filterProfesor(event: any) {
-    if (event[0] !== 0) {
-      this.usuariosList = this.profesorService.filterByMaterias(
-        event[0],
-        event[1],
-        event[2]
-      );
-    } else {
-      this.usuariosList = this.profesorService.getAll();
-    }
-  }
+  filterProfesor(event: any) {}
   profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
 }
