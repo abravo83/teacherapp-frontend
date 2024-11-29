@@ -32,7 +32,9 @@
         <th>Reseña</th>
         <th>Fecha</th>
         <th>Puntuación</th>
+        @if(usuario && usuario.rol === 'alumno') {
         <th></th>
+        }
       </tr>
     </thead>
     <tbody>
@@ -51,12 +53,14 @@
         <td>
           <span class="stars">{{ "★".repeat(opinion.puntuacion) }}</span>
         </td>
+        @if(usuario && usuario.rol === 'alumno') {
         <td>
           <i
             class="icon_editar_opinion fa-regular fa-pen-to-square"
             (click)="editarResena(opinion)"
           ></i>
         </td>
+        }
       </tr>
       }
     </tbody>
