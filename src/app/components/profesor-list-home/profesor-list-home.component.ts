@@ -8,6 +8,8 @@ import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { environment } from '../../../environments/environments';
 import { PopUpContactarComponent } from './pop-up-contactar/pop-up-contactar.component';
 import { CommonModule } from '@angular/common';
+import { ImateriaProfesor } from '../../interfaces/imateriaprofesor';
+import { MateriasService } from '../../services/materias.service';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -20,18 +22,23 @@ import { CommonModule } from '@angular/common';
     MapMarker,
     MapAdvancedMarker,
     PopUpContactarComponent,
-    CommonModule
+    CommonModule,
   ],
   templateUrl: './profesor-list-home.component.html',
   styleUrl: './profesor-list-home.component.css',
 })
 export class ProfesorListHomeComponent {
+  //injectable
   profesorService = inject(ProfesoresService);
-  usuariosList: any[] = [];
+
+  //Variables
+  profesoresListFilter: Iprofesor[] = [];
+  coordenadasList: any[] = [];
+  profesoresList: Iprofesor[] = [];
   myposition = signal<any>('');
   isGoogleMapsLoaded = false;
 
-  ngOnInit() {
+  async ngOnInit() {
     // Cargar el script de Google Maps dinámicamente
     const script = document.createElement('script');
     script.src = `https://maps.googleapis.com/maps/api/js?key=${environment.token}`;
@@ -49,7 +56,20 @@ export class ProfesorListHomeComponent {
       console.error('Error al cargar Google Maps');
     };
 
-    this.usuariosList = this.profesorService.getAll();
+    //-----------------------------------------------------------------------
+
+    this.profesoresList = await this.profesorService.getMateriasandProfesor();
+
+    const result = this.profesoresList.map((item) => {
+      const localizacion = JSON.parse(item.localizacion);
+      return {
+        id: item.id,
+        address: `${localizacion.address}`,
+        coordenadas: `${localizacion.lat},${localizacion.lng}`,
+      };
+    });
+
+    this.coordenadasList = result;
   }
 
   private initializeMap() {
@@ -65,16 +85,7 @@ export class ProfesorListHomeComponent {
   }
 
   filterProfesor(event: any) {
-    if (event[0] !== 0) {
-      this.usuariosList = this.profesorService.filterByMaterias(
-        event[0],
-        event[1],
-        event[2]
-      );
-    } else {
-      this.usuariosList = this.profesorService.getAll();
-    }
+    this.profesoresListFilter = this.profesoresList.slice();
   }
-
-    profesorSeleccionado: any = null;  // Variable para almacenar el profesor seleccionado
-  }
+  profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
+}
