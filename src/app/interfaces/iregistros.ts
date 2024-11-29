@@ -6,6 +6,9 @@ export interface Iregistros {
   nombre_profesor?: string;
   apellidos_alumno?: string;
   apellidos_profesor?: string;
+  telefono: string;
+  meses_experiencia: number;
+  precio_hora: number;
   foto_alumno?: string;
   foto_profesor?: string;
   email_alumno?: string;
