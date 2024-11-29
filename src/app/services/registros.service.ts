@@ -14,39 +14,25 @@ import { LoginService } from './login.service';
 export class RegistrosService {
   httpClient = inject(HttpClient);
   usuariosService = inject(UsuariosService);
-  loginService = inject(LoginService);
 
-  BASE_URL = `${environment.API_URL}/api/registros`;
-  usuarioLogueado!: Iusuario;
-  registrosUsuario: any[] = [];
+  BASE_URL = `${environment.API_URL}/api/inscripciones`;
 
-  constructor() {
-    if (this.usuariosService.loginService.isLogged()) {
-      this.recuperarUsuarioLogueado().then(async () => {
-        this.registrosUsuario = await this.getRegistrosDeUsuario();
-      });
-    }
-  }
+  constructor() {}
 
-  async recuperarUsuarioLogueado() {
-    try {
-      this.usuarioLogueado = await this.usuariosService.getUsuarioActual();
-    } catch (error) {
-      console.error('Error al obtener el usuario actual:', error);
-    }
-  }
-
-  async getRegistrosDeUsuario(): Promise<Iregistros[]> {
-    try {
-      const id = this.usuarioLogueado.id || this.loginService.getLoggedUserId();
+  async getRegistrosDeUsuario(usuario: Iusuario): Promise<Iregistros[]> {
+    if (usuario.rol === 'alumno') {
       return firstValueFrom(
         this.httpClient.get<Iregistros[]>(
-          `${this.BASE_URL}/${this.usuarioLogueado.id}`
+          `${this.BASE_URL}/estudiante/${usuario.id}`
         )
       );
-    } catch (error) {
-      console.error('Error al obtener los registros del usuario:', error);
-      return [];
+    } else if (usuario.rol === 'profesor') {
+      return firstValueFrom(
+        this.httpClient.get<Iregistros[]>(
+          `${this.BASE_URL}/profesor/${usuario.id}`
+        )
+      );
     }
+    return [];
   }
 }

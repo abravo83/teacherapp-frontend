@@ -44,4 +44,19 @@ export class OpinionesService {
 
     return Promise.resolve([]);
   }
+
+  addOpinion(opinion: Iopinion): Promise<[Iopinion]> {
+    return firstValueFrom(
+      this.httpClient.post<[Iopinion]>(this.baseUrl, opinion)
+    );
+  }
+
+  updateOpinion(opinion: Iopinion): Promise<[Iopinion]> {
+    return firstValueFrom(
+      this.httpClient.put<[Iopinion]>(
+        `${this.baseUrl}/single/${opinion.estudiante_id}/${opinion.profesor_id}`,
+        opinion
+      )
+    );
+  }
 }

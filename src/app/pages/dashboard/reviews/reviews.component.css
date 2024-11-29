@@ -1,60 +1,109 @@
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
 
-section{
-    font-family: "Work Sans", sans-serif;
+section {
+  font-family: "Work Sans", sans-serif;
 }
 
 .reviews-container {
-    padding: 20px;
-  }
-  
-  .filters {
-    display: flex;
-    justify-content: space-between;
-    margin-bottom: 20px;
-  }
-  
-  .filter-btn {
-    background-color: #FDCB9E;
-    border-color: #CCEABB;
-    border-radius: 9px;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  .reviews-table {
-    width: 100%;
-    border-collapse: collapse;
-  }
-  
-  .reviews-table th,
-  .reviews-table td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-  }
-  
-  .stars {
-    color: #ffa500;
-  }
-  
-  .pagination {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 10px;
-    margin-top: 20px;
-  }
-  
-  button {
-    padding: 10px;
-    background-color: #FDCB9E;
-    border-color: #CCEABB;
-    border-radius: 9px;
-    border: none;
-    cursor: pointer;
-  }
-  
-  button:disabled {
-    background-color: #cccccc;
-  }
+  padding: 20px;
+  position: relative;
+}
+
+.filters {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.filtro__opiniones__label {
+  margin-right: 10px;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.standard-btn {
+  background-color: #fdcb9e;
+  border-color: #cceabb;
+  border-radius: 9px;
+  padding: 10px;
+  cursor: pointer;
+}
+
+.reviews-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.reviews-table th,
+.reviews-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.stars {
+  color: #ffa500;
+}
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+button {
+  padding: 10px;
+  background-color: #fdcb9e;
+  border-color: #cceabb;
+  border-radius: 9px;
+  border: none;
+  cursor: pointer;
+}
+
+button:disabled {
+  background-color: #cccccc;
+}
+
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  max-width: 90vw;
+  width: 800px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  position: relative;
+}
+
+.modal-close {
+  position: absolute;
+  top: 5px;
+  right: 10px;
+  cursor: pointer;
+  font-size: 24px;
+  color: #ccc;
+}
+
+.modal-close:hover {
+  color: #333;
+}
+
+.icon_editar_opinion {
+  cursor: pointer;
+}
+
+.icon_editar_opinion:hover {
+  color: #fdcb9e;
+}
