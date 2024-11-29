@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Imateria } from '../../../interfaces/imateria';
 import { ProfesoresService } from '../../../services/profesores.service';
 import { CommonModule, JsonPipe } from '@angular/common';
+import { MateriasService } from '../../../services/materias.service';
 
 @Component({
   selector: 'app-filter-home',
@@ -13,7 +14,7 @@ import { CommonModule, JsonPipe } from '@angular/common';
 })
 export class FilterHomeComponent {
   //injectables
-  profesoresService = inject(ProfesoresService);
+  materiaService = inject(MateriasService);
   //varialbles
   materiaList: Imateria[] = [];
   experienciaList: any[] = [];
@@ -22,7 +23,7 @@ export class FilterHomeComponent {
   @Output() filtro_emitido: EventEmitter<any> = new EventEmitter();
 
   async ngOnInit() {
-    this.materiaList = await this.profesoresService.getAllMaterias();
+    this.materiaList = await this.materiaService.getMaterias();
   }
   toggleFilters() {
     this.showFilters = !this.showFilters;

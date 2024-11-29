@@ -8,6 +8,8 @@ import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
 import { environment } from '../../../environments/environments';
 import { PopUpContactarComponent } from './pop-up-contactar/pop-up-contactar.component';
 import { CommonModule } from '@angular/common';
+import { ImateriaProfesor } from '../../interfaces/imateriaprofesor';
+import { MateriasService } from '../../services/materias.service';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -26,10 +28,13 @@ import { CommonModule } from '@angular/common';
   styleUrl: './profesor-list-home.component.css',
 })
 export class ProfesorListHomeComponent {
+  //injectable
   profesorService = inject(ProfesoresService);
-  usuariosList: any[] = [];
-  profesoresList: Iprofesor[] = [];
+
+  //Variables
+  profesoresListFilter: Iprofesor[] = [];
   coordenadasList: any[] = [];
+  profesoresList: Iprofesor[] = [];
   myposition = signal<any>('');
   isGoogleMapsLoaded = false;
 
@@ -51,13 +56,15 @@ export class ProfesorListHomeComponent {
       console.error('Error al cargar Google Maps');
     };
 
-    this.usuariosList = this.profesorService.getAll();
-    this.profesoresList = await this.profesorService.getAllProfesores();
+    //-----------------------------------------------------------------------
+
+    this.profesoresList = await this.profesorService.getMateriasandProfesor();
 
     const result = this.profesoresList.map((item) => {
       const localizacion = JSON.parse(item.localizacion);
       return {
         id: item.id,
+        address: `${localizacion.address}`,
         coordenadas: `${localizacion.lat},${localizacion.lng}`,
       };
     });
@@ -77,6 +84,8 @@ export class ProfesorListHomeComponent {
     }
   }
 
-  filterProfesor(event: any) {}
+  filterProfesor(event: any) {
+    this.profesoresListFilter = this.profesoresList.slice();
+  }
   profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
 }
