@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
+import { Component, inject} from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
 import { LoginService } from '../../services/login.service';
 import { MensajesService } from '../../services/mensajes.service';
-import { Imensaje, MensajeConEmisor } from '../../interfaces/imensaje';
-import { BehaviorSubject } from 'rxjs';
+import { MensajeAgrupado, MensajeConEmisor } from '../../interfaces/imensaje';
+
 
 @Component({
   selector: 'app-navbar',
@@ -19,19 +19,24 @@ export class NavbarComponent {
   router= inject(Router);
 
   notifications:MensajeConEmisor[]=[];
-  mensajesAgrupados: {id:number ;nombre: string; apellido: string; count: number }[] = [];     
+  mensajesAgrupados: MensajeAgrupado[] = [];     
   login: boolean = false;
   showNotifications= false; 
   role:string = '';  
   userid:number = 0;
-  notiCount:number = 0;
-  
-  ngOnInit() {    
-    this.login = this.loginService.isLogged();  
-    if (this.login) {      
+  notiCount:number = 0;  
+ 
+  ngOnInit() {
+    this.login = this.loginService.isLogged();
+    if (this.login) {
       this.role = this.loginService.getLoggedUserRole();
-      this.userid = this.loginService.getLoggedUserId();      
-      this.cargarMensajesNoLeidos();/* // Cargar la funcion de notificaciones) */
+      this.userid = this.loginService.getLoggedUserId();
+
+      this.serviceMensaje.mensajesAgrupados$.subscribe((agrupados) => {
+        this.mensajesAgrupados = agrupados;
+        this.notiCount = agrupados.reduce((acc, mensaje) => acc + mensaje.count, 0); // Contar los mensajes no leídos
+      });
+      this.cargarMensajesNoLeidos();
     }
   }
  
@@ -39,23 +44,9 @@ export class NavbarComponent {
   async cargarMensajesNoLeidos(): Promise<void> {
     try {         
       const response = await this.serviceMensaje.getMensajesNoLeidos(this.userid);  
-      this.notifications = response || [] //asignamos respuesta a notifications    
-      
-      if(this.notifications.length){
-      this.notiCount = this.notifications.length;// Actualizamos el número de mensajes no leídos
-      }
-      const agrupados = this.notifications.reduce((acc, mensaje) => {        
-      const id = mensaje.emisor_id;
-      const nombre = mensaje.nombre_emisor;
-      const apellido = mensaje.apellidos_emisor;  
-          if (!acc[id]) {
-            acc[id] = {id, nombre, apellido, count: 0 };
-          }
-          acc[id].count++;
-          return acc;
-      }, {} as { [id: number]: {id:number; nombre: string; apellido: string; count: number } });  
-      // Convertir el objeto agrupado a un array 
-      this.mensajesAgrupados = Object.values(agrupados);
+      this.notifications = response || [] //asignamos respuesta a notifications  
+      // Actualizamos los mensajes agrupados desde el servicio
+      this.serviceMensaje.actualizarMensajesAgrupados(this.notifications);
     } catch (error) {
       console.error('Error al obtener mensajes no leídos:', error);
       this.notiCount= 0;
@@ -67,13 +58,14 @@ export class NavbarComponent {
     try {
       // Filtramos todas las notificaciones de un mismo emisor
       const notificacionesDeEmisor = this.notifications.filter(n => n.emisor_id === emisorId);  
-      // Usamos un ciclo for para marcar cada notificación como leída
+      // usamos un ciclo for para marcar cada notificación como leída
       for (const noti of notificacionesDeEmisor) {
-        await this.serviceMensaje.marcarLeido(noti.id);  // Esperamos que cada notificación se marque como leída
+        await this.serviceMensaje.marcarLeido(noti.id); 
       }  
       // Eliminar todas las notificaciones de ese emisor de la lista
       this.notifications = this.notifications.filter(n => n.emisor_id !== emisorId); 
-      this.mensajesAgrupados = this.mensajesAgrupados.filter(group => group.id !== emisorId);   
+      this.mensajesAgrupados = this.mensajesAgrupados.filter(group => group.id !== emisorId);       
+      
       // Actualizar el contador de notificaciones no leídas
       const notificationUnRead = this.notifications.filter(mensaje =>!mensaje.leido); 
       this.notiCount = notificationUnRead.length;  
