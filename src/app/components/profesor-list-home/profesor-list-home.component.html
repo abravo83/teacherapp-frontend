@@ -13,8 +13,8 @@
   <section class="mapa">
     @if (isGoogleMapsLoaded) {
     <google-map width="100%" height="230px" [zoom]="12" [center]="myposition()">
-      @for (profesor of usuariosList; track $index ) {
-      <app-mapa-home [myProfesor]="profesor"></app-mapa-home>
+      @for (coordenadas of coordenadasList; track $index ) {
+      <app-mapa-home [myProfesor]="coordenadas"></app-mapa-home>
       }
     </google-map>
     } @else {
@@ -24,7 +24,7 @@
 </div>
 <div class="flex">
   <div class="profesor-list-home">
-    @for (profesor of usuariosList; track profesor.id) {
+    @for (profesor of profesoresList; track profesor.id) {
     <article>
       <app-profesor-card-home [myProfesor]="profesor"></app-profesor-card-home>
     </article>
