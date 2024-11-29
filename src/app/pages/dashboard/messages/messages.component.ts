@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, Input, OnInit, Output, output, Signal, signal, WritableSignal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -6,11 +6,12 @@ import {
   FormBuilder,
   FormGroup,
   Validators,
+  FormControl,
 } from '@angular/forms';
 import { Iusuario } from '../../../interfaces/iusuario';
-import { Imensaje } from '../../../interfaces/imensaje';
-import { USUARIOS } from '../../../db/usuarios';
-import { MENSAJES } from '../../../db/mensajes';
+import { Imensaje, MensajeConEmisor } from '../../../interfaces/imensaje';
+import { LoginService } from '../../../services/login.service';
+import { MensajesService } from '../../../services/mensajes.service';
 
 @Component({
   selector: 'app-messages',
@@ -20,67 +21,185 @@ import { MENSAJES } from '../../../db/mensajes';
   imports: [CommonModule, FormsModule, ReactiveFormsModule],
 })
 export class MessagesComponent implements OnInit {
-  usuarioId = 1; // ID del profesor logueado
-  alumnos: Iusuario[] = [];
+  loginService = inject(LoginService);
+  messagesService= inject(MensajesService);
+  
+  notifications:MensajeConEmisor[]=[];  
   mensajes: Imensaje[] = [];
-  alumnoSeleccionado: Iusuario | null = null;
+  arrAlumnos:Iusuario[]=[];
+  arrProf:Iusuario[]=[];
+  contactoSeleccionado: Iusuario | null = null;
+  contactoSeleccionadoid:number = 0;
+  usuarioId:number = 0;
+  role:string = ''; 
+  login: boolean = false;
+  mensajeOrigin:string= '';
   chatForm: FormGroup;
-
-  constructor(private fb: FormBuilder) {
-    this.chatForm = this.fb.group({
-      contenido: ['', [Validators.required]],
-    });
+  notiCount:number = 0; 
+  
+  constructor() {
+    this.chatForm = new FormGroup({
+      contenido: new FormControl(null,[
+        Validators.required
+      ])
+    })
   }
 
-  ngOnInit(): void {
-    const alumnosIds = new Set<number>();
-    MENSAJES.forEach((msg) => {
-      if (msg.emisor_id === this.usuarioId) {
-        alumnosIds.add(msg.destinatario_id);
+  ngOnInit() {
+    this.login = this.loginService.isLogged();  
+    if (this.login) {      
+      this.role = this.loginService.getLoggedUserRole();
+      this.usuarioId = this.loginService.getLoggedUserId();      
+
+      if (this.role === 'profesor') {
+      this.obtenerAlumnos();
       }
-      if (msg.destinatario_id === this.usuarioId) {
-        alumnosIds.add(msg.emisor_id);
+      if (this.role === 'alumno') {
+        this.obtenerProfesores();
+        }
+    }   
+  }
+  /* obtener mis alumnos */
+  async obtenerAlumnos():Promise<void>{
+    try {
+      this.arrAlumnos = await this.messagesService.getMisAlumnos(this.usuarioId);
+    } catch (error) {
+      console.error('Error al obtener alumnos:', error);
+    }
+  }
+  /* obtener mis profesores */
+  async obtenerProfesores():Promise<void>{
+    try {
+      this.arrProf = await this.messagesService.getMisProfesores(this.usuarioId);
+    } catch (error) {
+      console.error('Error al obtener profesores:', error);
+    }
+  }
+  /* actualizar notificacion */
+  async cargarMensajesNoLeidos(): Promise<void> {
+    try {         
+      const response = await this.messagesService.getMensajesNoLeidos(this.usuarioId);  
+      this.notifications = response || [] //asignamos respuesta a notifications   
+      if(this.notifications.length){
+      this.notiCount = this.notifications.length;// Actualizamos el número de mensajes no leídos
+      }      
+    } catch (error) {
+      console.error('Error al obtener mensajes no leídos:', error);
+      this.notiCount= 0;
+    }
+  }  
+
+  // Función para seleccionar un contacto
+  async seleccionarContacto(contacto: Iusuario): Promise<void> {
+    this.contactoSeleccionado = contacto;
+    this.contactoSeleccionadoid = contacto.id || 0;   
+    await this.cargarMensajesNoLeidos();    
+    await this.marcarNotificacionesComoLeidas(this.contactoSeleccionadoid);
+    await this.cargarMensajes(this.contactoSeleccionadoid);    
+    this.scrollaluttimomssj();  
+  }
+
+   // Función para cargar los mensajes entre el usuario y el contacto seleccionado
+  async cargarMensajes(contactoId: number): Promise<void> {
+    const mensajes = await this.messagesService.getmsjbetweenusers(this.usuarioId, contactoId);
+    this.mensajes = mensajes;    
+  }
+
+  async marcarNotificacionesComoLeidas(emisorId: number): Promise<void> {
+    try {
+      const notificacionesDeEmisor = this.notifications.filter(n => n.emisor_id === emisorId);  
+      for (const noti of notificacionesDeEmisor) {        
+        await this.messagesService.marcarLeido(noti.id); 
       }
-    });
-
-    this.alumnos = USUARIOS.filter(
-      (user) => user.rol === 'alumno' && alumnosIds.has(user.id!)
-    );
-  }
-
-  seleccionarAlumno(alumno: Iusuario): void {
-    this.alumnoSeleccionado = alumno;
-    this.cargarMensajes(alumno.id!);
-  }
-
-  cargarMensajes(alumnoId: number): void {
-    this.mensajes = MENSAJES.filter(
-      (msg) =>
-        (msg.emisor_id === this.usuarioId &&
-          msg.destinatario_id === alumnoId) ||
-        (msg.emisor_id === alumnoId && msg.destinatario_id === this.usuarioId)
-    );
-  }
-
-  enviarMensaje(): void {
-    if (this.chatForm.valid && this.alumnoSeleccionado) {
-      const nuevoMensaje: Imensaje = {
-        id: MENSAJES.length + 1,
-        emisor_id: this.usuarioId,
-        destinatario_id: this.alumnoSeleccionado.id!,
-        asunto: '',
-        contenido: this.chatForm.value.contenido,
-        leido: false,
-      };
-      MENSAJES.push(nuevoMensaje);
-      this.mensajes.push(nuevoMensaje);
-      this.chatForm.reset();
+      this.notifications = this.notifications.filter(n => n.emisor_id !== emisorId);       
+      this.messagesService.actualizarMensajesAgrupados(this.notifications); //Manda el nuevo estado al servicio para q la campana muestre los cambios
+      const notificationUnRead = this.notifications.filter(mensaje =>!mensaje.leido);      
+      this.notiCount = notificationUnRead.length;        
+    } catch (error) {
+      console.error('Error al marcar notificaciones como leídas:', error);
     }
   }
 
-  tieneMensajesNoLeidos(alumnoId: number): boolean {
-    return this.mensajes.some(
-      (mensaje) => mensaje.destinatario_id === alumnoId && !mensaje.leido
-    );
+  /* Captura el contenido del formulario */
+  getdata():void {
+    const mensaje = this.chatForm.value.contenido;
+    if (!mensaje || mensaje.trim() === '') {      
+      return;  
+    }    
+    this.sendMensaje({
+      id: 0,
+      emisor_id: this.usuarioId,  // El emisor es el usuario logueado
+      destinatario_id: this.contactoSeleccionadoid,  // Usamos el ID del contacto seleccionado
+      asunto: '',
+      contenido: mensaje,
+      leido: false
+    });
+  }
+
+   /* Enviar un mensaje */
+  async sendMensaje(mensajeorgin:Imensaje): Promise<void> {
+      console.log()
+      const mensajeform: Imensaje = {
+        id:0,
+        emisor_id: this.usuarioId,  // El emisor es el usuario logueado
+        destinatario_id: mensajeorgin.destinatario_id,  // El destinatario es el contacto seleccionado
+        asunto: '',
+        contenido: mensajeorgin.contenido,
+        leido: false,
+      };
+      const mensajeEnviado = await this.messagesService.sendMessage(mensajeform);  
+      this.mensajes.push(mensajeEnviado);
+      this.chatForm.reset(); 
+      ;    
+      this.scrollaluttimomssj();
+  }
+
+  //funcion para mostrar solo una apellidos
+  getPrimerApellido(apellidos: string): string {
+    if (!apellidos) return ''; 
+    return apellidos.trim().split(' ')[0]; 
+  }
+
+  /* buscador por nombre */
+  queryChanged(value: string): void {
+    const word = value.trim().toLowerCase();
+    if (word) {
+      // Si hay texto en el campo, aplicamos el filtro
+      if (this.role === 'profesor') {
+        this.arrAlumnos = this.arrAlumnos.filter(user =>
+          user.nombre.toLowerCase().includes(word) ||
+          user.apellidos.toLowerCase().includes(word)
+        );
+      } else if (this.role === 'alumno') {
+        this.arrProf = this.arrProf.filter(user =>
+          user.nombre.toLowerCase().includes(word) ||
+          user.apellidos.toLowerCase().includes(word)
+        );
+      }
+    } else {
+      // Si el campo está vacío, restablecemos la lista a la original
+      if (this.role === 'profesor') {
+        this.obtenerAlumnos();
+      } else if (this.role === 'alumno') {
+        this.obtenerProfesores();
+      }
+    }
+  }
+
+  //scroll al chat ultimo mensaje cuando se abre el chat y cuando envias un mensaje
+  scrollaluttimomssj(){
+    setTimeout(() => {
+    const mensaje = document.getElementsByClassName('chat-message'); 
+    const ultimo:any = mensaje[mensaje.length - 1];
+    const contenedor = document.getElementById('contmsj');
+    if(contenedor && ultimo){   
+      const irabajo = ultimo.offsetTop;        
+      if (!isNaN(irabajo)) {        
+        contenedor.scrollTop = irabajo;      
+      }  
+    } else {
+      return;      
+    }
+    }, 0); 
   }
 }

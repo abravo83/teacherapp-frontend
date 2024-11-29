@@ -1,4 +1,8 @@
+@if(usuarioLogueado.rol === 'administrador') {
+  <app-panel-administrador></app-panel-administrador>
+}@else{
 <div class="container mt-4">
+  
   <!--Encabezado con botón de edición-->
   <div class="d-flex justify-content-center">
     <h2>Mi Cuenta</h2>
@@ -14,7 +18,7 @@
     <app-teacher-form></app-teacher-form>
     }
   </div>
-
+   
   <!-- Foto de Perfil -->
   <!-- <div class="d-flex justify-content-center mb-4">
     <div>
@@ -196,3 +200,4 @@
     </div> -->
   <!-- </form> -->
 </div>
+}

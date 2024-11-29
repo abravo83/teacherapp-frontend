@@ -6,7 +6,6 @@ import Swal from 'sweetalert2';
 export const checkAdminGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const loginService = inject(LoginService);
-  alert("GUARD: " + loginService.getLoggedUserRole());
   if (loginService.getLoggedUserRole() != 'administrador') {
     Swal.fire({
       icon: 'error',
