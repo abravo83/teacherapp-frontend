@@ -19,7 +19,9 @@
           (click)="seleccionarContacto(user)"
         >
           <img
-            [src]="user.foto || './img/no_profile_freepick.webp'"
+            [src]="
+              user.foto ? API_URL + user.foto : './img/no_profile_freepick.webp'
+            "
             alt="Avatar"
             class="rounded-circle me-2"
             style="width: 40px; height: 40px"
@@ -45,7 +47,9 @@
           (click)="seleccionarContacto(user)"
         >
           <img
-            [src]="user.foto || './img/no_profile_freepick.webp'"
+            [src]="
+              user.foto ? API_URL + user.foto : './img/no_profile_freepick.webp'
+            "
             alt="Avatar"
             class="rounded-circle me-2"
             style="width: 40px; height: 40px"
@@ -72,7 +76,9 @@
           <div class="border-bottom py-2 d-flex text-center align-items-center">
             <img
               [src]="
-                contactoSeleccionado.foto || './img/no_profile_freepick.webp'
+                contactoSeleccionado.foto
+                  ? API_URL + contactoSeleccionado.foto
+                  : './img/no_profile_freepick.webp'
               "
               alt="Avatar"
               class="rounded-circle me-2"
