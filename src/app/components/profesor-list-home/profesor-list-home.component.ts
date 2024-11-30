@@ -59,7 +59,11 @@ export class ProfesorListHomeComponent {
     //-----------------------------------------------------------------------
 
     this.profesoresList = await this.profesorService.getMateriasandProfesor();
+    this.profesoresListFilter = this.profesoresList.slice();
+    this.muestracoordenadas();
+  }
 
+  muestracoordenadas() {
     const result = this.profesoresList.map((item) => {
       const localizacion = JSON.parse(item.localizacion);
       return {
@@ -84,8 +88,19 @@ export class ProfesorListHomeComponent {
     }
   }
 
-  filterProfesor(event: any) {
-    this.profesoresListFilter = this.profesoresList.slice();
+  filterProfesor(materiafilter: any) {
+    if (materiafilter === '0') {
+      this.profesoresList = this.profesoresListFilter;
+    }
+
+    if (materiafilter != '0') {
+      console.log('muestra filtro materia');
+      this.profesoresList = this.profesoresListFilter.filter((res) =>
+        res.materias.includes(materiafilter)
+      );
+    }
+    this.muestracoordenadas();
+    console.log(this.profesoresList);
   }
   profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
 }

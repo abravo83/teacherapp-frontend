@@ -31,9 +31,7 @@ export class FilterHomeComponent {
   }
 
   selectMateria(filterFormValue: any) {
-    let idMateria = Number(filterFormValue.materiaId);
-
-    this.filtro_emitido.emit(idMateria);
-    console.log(idMateria);
+    let materiaNombre = filterFormValue.materiaNombre;
+    this.filtro_emitido.emit(materiaNombre);
   }
 }
