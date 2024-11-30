@@ -9,13 +9,13 @@
               <select
                 (change)="selectMateria(filterForm.value)"
                 class="form-select"
-                name="materiaId"
+                name="materiaNombre"
                 ngModel
               >
                 <option value="0">Todas las materias</option>
                 <option
                   *ngFor="let materia of materiaList"
-                  [value]="materia.id"
+                  [value]="materia.nombre"
                 >
                   {{ materia.nombre }}
                 </option>
