@@ -26,29 +26,56 @@
   <table>
     <thead>
       <tr>
-        <th>Nombre Alumno</th>
-        <th>Clase</th>
-        <th>Fecha</th>
-        <th>Nº Clases</th>
-        <th>Precio Clase</th>
-        <th>Total Pagado</th>
+        <th>Nombre Profesor</th>
+        <th>Email</th>
+        <th>Teléfono</th>
+        <th>Fecha registro</th>
+        <th>Fecha baja</th>
+        <th>Precio/hora</th>
+        <th>Meses de experiencia</th>
+        <th>Acción</th>
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let course of courses$ | async">
+      @for(registro of registrosUsuario; track $index){
+      <tr>
         <td>
-          <img [src]="course.foto" alt="Foto de {{ course.alumnoNombre }}" class="alumno-foto" />
+          <img
+            [src]="
+              registro.foto_profesor
+                ? API_URL + registro.foto_profesor
+                : '/img/no_profile_freepick.webp'
+            "
+            alt="Foto de {{ registro.nombre_profesor }} {{
+              registro.apellidos_profesor
+            }}"
+            class="alumno-foto"
+          />
           <div>
-            <strong>{{ course.alumnoNombre }}</strong><br />
-            <small>{{ course.claseNombre }}</small>
+            <strong
+              >{{ registro.nombre_profesor }}
+              {{ registro.apellidos_profesor }}</strong
+            ><br />
           </div>
         </td>
-        <td>{{ course.claseNombre }}</td>
-        <td>{{ course.fecha | date: 'dd/MM/yyyy' }}</td>
-        <td>{{ course.numClases }}</td>
-        <td>{{ course.precioClase }}€</td>
-        <td>{{ course.totalPagado }}€</td>
+        <td>{{ registro.email_profesor }}</td>
+        <td>{{ registro.telefono }}</td>
+        <td>{{ registro.fecha_registro | date : "dd/MM/yyyy" }}</td>
+        <td>{{ registro.fecha_fin | date : "dd/MM/yyyy" }}</td>
+        <td>{{ registro.precio_hora }} €</td>
+        <td>{{ registro.meses_experiencia }} meses</td>
+        <td>
+          @if(!registro.fecha_fin){
+          <button
+            (click)="darRegistroDeBaja(registro.id)"
+            class="button-primary"
+          >
+            Darse de baja
+          </button>
+          }
+        </td>
       </tr>
+      }
     </tbody>
   </table>
 </div>

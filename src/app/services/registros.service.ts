@@ -35,4 +35,13 @@ export class RegistrosService {
     }
     return [];
   }
+
+  async darDeBaja(id: number): Promise<Iregistros[]> {
+    return firstValueFrom(
+      this.httpClient.put<Promise<Iregistros[]>>(
+        `${this.BASE_URL}/cerrar/${id}`,
+        {}
+      )
+    );
+  }
 }

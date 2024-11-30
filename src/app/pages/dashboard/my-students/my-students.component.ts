@@ -1,5 +1,5 @@
 import { DatePipe } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -12,6 +12,12 @@ import { Iusuario } from '../../../interfaces/iusuario';
 import { INSCRIPCIONES_CLASE } from '../../../db/inscripciones_clase';
 import { CommonModule } from '@angular/common';
 import { MATERIAS } from '../../../db/materias';
+import { environment } from '../../../../environments/environments';
+import { RegistrosService } from '../../../services/registros.service';
+import { UsuariosService } from '../../../services/usuarios.service';
+import { Router } from '@angular/router';
+import { Iregistros } from '../../../interfaces/iregistros';
+import Swal from 'sweetalert2';
 
 interface AlumnoConInscripcion extends Iusuario {
   fechaInscripcion?: Date | null;
@@ -26,41 +32,56 @@ interface AlumnoConInscripcion extends Iusuario {
   imports: [DatePipe, CommonModule, ReactiveFormsModule, FormsModule],
 })
 export class MyStudentsComponent implements OnInit {
-  alumnos: AlumnoConInscripcion[] = []; // Aquí se almacenará la lista de alumnos filtrados
-  filterForm: FormGroup; // Formulario para filtros de estado y fecha
+  fb = inject(FormBuilder);
+  router = inject(Router);
+  usuariosService = inject(UsuariosService);
+  registrosService = inject(RegistrosService);
 
-  constructor(private fb: FormBuilder) {
+  API_URL = environment.API_URL;
+  alumnos: Iregistros[] = []; // Aquí se almacenará la lista de alumnos filtrados
+  filterForm: FormGroup; // Formulario para filtros de estado y fecha
+  usuario!: Iusuario;
+
+  constructor() {
     this.filterForm = this.fb.group({
       estado: [''], // Filtro por estado
       fecha: [''], // Filtro por fecha de inscripción
     });
   }
 
-  ngOnInit(): void {
-    // 1. Filtramos solo los usuarios que tienen el rol "alumno" y están activos
-    const alumnosUsuarios = USUARIOS.filter(
-      (user) => user.rol === 'alumno' && user.activo
-    );
+  async ngOnInit(): Promise<void> {
+    try {
+      this.usuario = await this.usuariosService.getUsuarioActual();
 
-    // 2. Asignamos a cada alumno su fecha de inscripción desde `INSCRIPCIONES_CLASE`
-    this.alumnos = alumnosUsuarios.map((alumno) => {
-      const inscripcion = INSCRIPCIONES_CLASE.find(
-        (ins) => ins.alumno_id === alumno.id
-      );
-      // Encuentra la materia para obtener el nombre de la clase
-      const materia = inscripcion
-        ? MATERIAS.find((mat) => mat.id === inscripcion.materia_id)
-        : null;
+      if (!this.usuario || this.usuario.rol !== 'profesor') {
+        this.router.navigate(['/dashboard']);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'No se pudieron obtener los datos de usuario.',
+      }).then(() => {
+        setTimeout(() => {
+          this.router.navigate(['/dashboard']);
+        }, 2000);
+      });
+    }
 
-      return {
-        ...alumno,
-        fechaInscripcion: inscripcion ? inscripcion.fecha_registro : undefined,
-        clase: materia ? materia.nombre : 'Clase desconocida', // Añadimos la clase o mostramos un valor por defecto
-      };
-    });
+    await this.iniciarlizarComponente();
 
     // Si necesitas aplicar algún filtro inicial, hazlo aquí
-    this.applyFilters();
+    // this.applyFilters();
+  }
+
+  async iniciarlizarComponente() {
+    try {
+      this.alumnos = await this.registrosService.getRegistrosDeUsuario(
+        this.usuario
+      );
+    } catch (error) {
+      console.error('Error al obtener alumnos:', error);
+    }
   }
 
   applyFilters() {
@@ -73,8 +94,36 @@ export class MyStudentsComponent implements OnInit {
   }
 
   // Método para validar el alumno (simulación)
-  validarAlumno(alumno: any) {
-    console.log(`Alumno ${alumno.nombre} validado.`);
-    // Aquí puedes implementar la lógica de validación
+  darDeBaja(idRegistro: number): void {
+    console.log(`Alumno ${idRegistro} validado.`);
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: 'Esta acción dará de baja al alumno del curso',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#cceabb',
+      cancelButtonColor: '#fdcb9e',
+      confirmButtonText: 'Sí, dar de baja',
+      cancelButtonText: 'Cancelar',
+    })
+      .then((result) => {
+        if (result.isConfirmed) {
+          this.registrosService.darDeBaja(idRegistro);
+          Swal.fire(
+            '¡Dado de baja!',
+            'El alumno ha sido dado de baja exitosamente.',
+            'success'
+          );
+          this.iniciarlizarComponente();
+        }
+      })
+      .catch((error) => {
+        console.error('Error al dar de baja el alumno:', error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error',
+          text: 'No se pudo dar de baja el alumno.',
+        });
+      });
   }
 }

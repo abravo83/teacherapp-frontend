@@ -36,3 +36,16 @@ app-sidebar-menu {
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
 }
+
+@media screen and (max-width: 992px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  app-sidebar-menu {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    position: static;
+  }
+}
