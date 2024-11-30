@@ -43,7 +43,7 @@
           <img
             [src]="
               registro.foto_profesor
-                ? registro.foto_profesor
+                ? API_URL + registro.foto_profesor
                 : '/img/no_profile_freepick.webp'
             "
             alt="Foto de {{ registro.nombre_profesor }} {{

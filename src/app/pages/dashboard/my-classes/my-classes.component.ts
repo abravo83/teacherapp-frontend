@@ -1,9 +1,8 @@
 import { Component, inject, ViewEncapsulation } from '@angular/core';
-import { Observable } from 'rxjs';
 import { CommonModule, DatePipe } from '@angular/common';
 import Swal from 'sweetalert2';
 
-import { TeacherDataService } from '../../../services/teacher-data.service';
+import { environment } from '../../../../environments/environments';
 import { Iusuario } from '../../../interfaces/iusuario';
 import { LoginService } from '../../../services/login.service';
 import { UsuariosService } from '../../../services/usuarios.service';
@@ -23,6 +22,7 @@ export class MyClassesComponent {
   usuarioService = inject(UsuariosService);
   registrosService = inject(RegistrosService);
 
+  API_URL = environment.API_URL;
   usuario!: Iusuario;
   registrosUsuario!: Iregistros[];
 
