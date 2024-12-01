@@ -12,6 +12,7 @@ import { Iusuario } from '../../../interfaces/iusuario';
 import { Imensaje, MensajeConEmisor } from '../../../interfaces/imensaje';
 import { LoginService } from '../../../services/login.service';
 import { MensajesService } from '../../../services/mensajes.service';
+import { environment } from '../../../../environments/environments';
 
 @Component({
   selector: 'app-messages',
@@ -36,6 +37,7 @@ export class MessagesComponent implements OnInit {
   mensajeOrigin:string= '';
   chatForm: FormGroup;
   notiCount:number = 0; 
+  API_URL= environment.API_URL;
   
   constructor() {
     this.chatForm = new FormGroup({
