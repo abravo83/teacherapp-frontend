@@ -1,29 +1,56 @@
 <div class="container-home-nav">
   <div class="nav-home">
     <ul>
-      <li>
-        <form #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
-          <div class="d-flex justify-content-between">
-            <div class="text-center">
-              <h5>Materias</h5>
-              <select
-                (change)="selectMateria(filterForm.value)"
-                class="form-select"
-                name="materiaNombre"
-                ngModel
+      <form
+        #filterForm="ngForm"
+        (ngSubmit)="selectMateria(filterForm.value)"
+        class="card p-2 shadow"
+      >
+        <div class="d-flex justify-content-between gap-3">
+          <div class="text-center">
+            <h5>Materias</h5>
+            <select class="form-select" name="materiaNombre" ngModel>
+              <option value="0">Todas las materias</option>
+              <option
+                *ngFor="let materia of materiaList"
+                [value]="materia.nombre"
               >
-                <option value="0">Todas las materias</option>
-                <option
-                  *ngFor="let materia of materiaList"
-                  [value]="materia.nombre"
-                >
-                  {{ materia.nombre }}
-                </option>
-              </select>
+                {{ materia.nombre }}
+              </option>
+            </select>
+          </div>
+          <div class="text-center">
+            <h5>Precio</h5>
+
+            <div class="d-flex gap-1">
+              <input
+                id="valmin"
+                class="form-control"
+                type="number"
+                placeholder="Precio desde"
+                name="valmin"
+                value="0"
+                min="1"
+                ngModel
+              />
+
+              <input
+                class="form-control"
+                type="number"
+                placeholder="Precio hasta"
+                name="valmax"
+                ngModel
+              />
             </div>
           </div>
-        </form>
-      </li>
+        </div>
+        <input
+          (click)="selectMateria(filterForm.value)"
+          type="submit"
+          value="Buscar"
+          class="btn btn-info"
+        />
+      </form>
     </ul>
   </div>
 </div>
