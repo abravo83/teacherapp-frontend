@@ -32,6 +32,11 @@ export class FilterHomeComponent {
 
   selectMateria(filterFormValue: any) {
     let materiaNombre = filterFormValue.materiaNombre;
-    this.filtro_emitido.emit(materiaNombre);
+    let valmin = filterFormValue.valmin;
+    let valmax = filterFormValue.valmax;
+    if (valmin === null) valmin = '';
+    if (valmax === null) valmax = '';
+
+    this.filtro_emitido.emit([materiaNombre, valmin, valmax]);
   }
 }

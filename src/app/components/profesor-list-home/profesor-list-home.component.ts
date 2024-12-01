@@ -88,19 +88,28 @@ export class ProfesorListHomeComponent {
     }
   }
 
-  filterProfesor(materiafilter: any) {
-    if (materiafilter === '0') {
+  filterProfesor(event: any) {
+    if (event[0] === '0') {
       this.profesoresList = this.profesoresListFilter;
     }
 
-    if (materiafilter != '0') {
-      console.log('muestra filtro materia');
+    if (event[0] != '0' && event[0] != '') {
       this.profesoresList = this.profesoresListFilter.filter((res) =>
-        res.materias.includes(materiafilter)
+        res.materias.includes(event[0])
       );
     }
+
+    if (event[1] != '' || event[2] != '') {
+      let valmin = Number(event[1]);
+      let valmax = Number(event[2]);
+
+      this.profesoresList = this.profesoresList.filter((obj) => {
+        const precio = Number(obj.precio_hora);
+        return precio >= valmin && precio <= valmax;
+      });
+    }
+
     this.muestracoordenadas();
-    console.log(this.profesoresList);
   }
   profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
 }

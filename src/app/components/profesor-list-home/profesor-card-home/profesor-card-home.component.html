@@ -38,7 +38,7 @@
         </h5>
 
         <div class="study-general">
-          <!-- <h6>Áreas de Conocimiento:</h6> -->
+          <h6>Áreas de Conocimiento:</h6>
           @for (item of myProfesor.materias; track $index) {
           <ul class="study-fields">
             <li class="studies">{{ item }}</li>
@@ -52,8 +52,7 @@
           </div>
         </div>
         <div class="price">
-          <!-- Precio por hora: dentro del h6 -->
-          <h6 class="price-prof"></h6>
+          <h6 class="price-prof">Percio por hora:</h6>
           <div class="content-price-prof">{{ myProfesor.precio_hora }}€</div>
         </div>
       </div>
