@@ -34,9 +34,17 @@ export class FilterHomeComponent {
     let materiaNombre = filterFormValue.materiaNombre;
     let valmin = filterFormValue.valmin;
     let valmax = filterFormValue.valmax;
+    let puntuacion = filterFormValue.puntuacion;
+    let criterio = filterFormValue.criterio;
     if (valmin === null) valmin = '';
     if (valmax === null) valmax = '';
-
-    this.filtro_emitido.emit([materiaNombre, valmin, valmax]);
+    console.log(filterFormValue);
+    this.filtro_emitido.emit([
+      materiaNombre,
+      valmin,
+      valmax,
+      puntuacion,
+      criterio,
+    ]);
   }
 }
