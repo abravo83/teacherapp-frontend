@@ -6,7 +6,7 @@ import { LoginService } from '../services/login.service';
 export const checkIdGuard: CanActivateFn = (route, state) => {
   const router = inject(Router);
   const loginService = inject(LoginService);
-  const id = route.params['id']; ("***********ID: " + id);
+  const id = route.params['id'];
 
   //sólo dejo cargar la página si el id es el del usuario logado
   //o si es usuario administrador

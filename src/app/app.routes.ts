@@ -16,15 +16,16 @@ import { childrenGuard } from './guards/children.guard';
 import { checkIdGuard } from './guards/check-id.guard';
 import { MyClassesComponent } from './pages/dashboard/my-classes/my-classes.component';
 import { checkAdminGuard } from './guards/check-admin.guard';
+import { isLoggedGuard } from './guards/is-logged.guard';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
   { path: 'panel-control', component: PanelAdministradorComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: 'nuevo-profesor', component: TeachersFormComponent },
-  { path: 'nuevo-alumno', component: StudentsFormComponent },
+  { path: 'register', canActivate: [isLoggedGuard], component: RegisterComponent },
+  { path: 'nuevo-profesor', canActivate: [isLoggedGuard], component: TeachersFormComponent },
+  { path: 'nuevo-alumno', canActivate: [isLoggedGuard], component: StudentsFormComponent },
   { path: 'admin', canActivate: [checkAdminGuard], component: PanelAdministradorComponent },
   {
     path: 'dashboard',
