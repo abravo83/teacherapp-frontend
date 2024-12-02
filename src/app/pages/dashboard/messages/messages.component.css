@@ -9,7 +9,17 @@
     flex-direction: column;
     background-color: var(--color-background-secondary);
     padding: 10px 20px 20px 20px;
+    min-height: 30rem;  /* Establecer altura mínima */
+    min-width: 100%;    /* Evitar el cambio de ancho */
+    max-width: 100%;
   }
+  /* @media (max-width: 410px) {
+    .chat-window {
+        width: 70%;
+        height: 20rem;
+    }
+} */
+
 
 .userlist{
   border: none;
@@ -38,7 +48,8 @@
   font-size: var(--font-size-base);
   background-color: var(--color-chat-enviado);
   margin-left: auto;
-  text-align: end;
+  text-align: start;
+  max-width: 60%;
 }
 .chat-message.recibido {
   border-radius: 10px;
@@ -46,6 +57,7 @@
   font-size: var(--font-size-base);
   margin-right: auto; 
   text-align: start;
+  max-width: 60%;
 } 
 .message-content {
   border-radius: 10px;
