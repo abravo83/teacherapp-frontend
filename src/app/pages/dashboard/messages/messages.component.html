@@ -1,7 +1,7 @@
-<div class="container mt-4">
-  <div class="d-flex flex-wrap gap-5">
-    <div class="col-6 col-md-4 p-4 rounded-4 cont">
-      <div class="list-group contlist">
+<div class="mt-4">
+  <div class="d-flex flex-wrap gap-4">
+    <div class="col-6 col-md-4 col-12 p-4 rounded-4 cont">
+      <div class="list-group">
         @if(role==='alumno'){
         <div>
           <h5>Profesores</h5>
@@ -15,7 +15,7 @@
         </div>
         @for(user of arrProf;track $index) {
         <div
-          class="list-group-item userlist d-flex text-center align-items-center hov"
+          class="list-group-item userlist d-flex w-auto text-center align-items-center hov"
           (click)="seleccionarContacto(user)"
         >
           <img
@@ -65,7 +65,7 @@
     </div>
 
     <!-- Área de Chat -->
-    <div class="col-6 col-md-6 flex-grow-1">
+    <div class="col-6 col-md-6 flex-grow-1 custom">
       <div>
         @if(contactoSeleccionado){
         <div
@@ -104,11 +104,11 @@
             >
               <div class="message-content">
                 <p class="mb-2">{{ mensaje.contenido }}</p>
-                <small>{{
-                  mensaje.emisor_id === usuarioId
-                    ? "Enviado"
-                    : contactoSeleccionado.nombre
-                }}</small>
+                @if(mensaje.emisor_id === usuarioId){
+                <small class="d-flex justify-content-end"> enviado </small>
+                } @else {
+                {{ contactoSeleccionado.nombre }}
+                }
               </div>
             </div>
             }
