@@ -60,34 +60,22 @@ export class ProfesorListHomeComponent {
 
     this.profesoresList = await this.profesorService.getMateriasandProfesor();
 
-    this.profesoresListFilter = this.profesoresList.slice();
     this.profesoresList.sort((a, b) => {
       const nombreA = a.nombre.toLowerCase();
       const nombreB = b.nombre.toLowerCase();
 
       if (nombreA < nombreB) {
-        return -1; // `a` va antes que `b`
+        return -1;
       }
       if (nombreA > nombreB) {
-        return 1; // `a` va después que `b`
+        return 1;
       }
-      return 0; // Son iguales
+      return 0;
     });
+
+    this.profesoresListFilter = this.profesoresList.slice();
 
     this.muestracoordenadas();
-  }
-
-  muestracoordenadas() {
-    const result = this.profesoresList.map((item) => {
-      const localizacion = JSON.parse(item.localizacion);
-      return {
-        id: item.id,
-        address: `${localizacion.address}`,
-        coordenadas: `${localizacion.lat},${localizacion.lng}`,
-      };
-    });
-
-    this.coordenadasList = result;
   }
 
   private initializeMap() {
@@ -104,10 +92,6 @@ export class ProfesorListHomeComponent {
 
   filterProfesor(event: any) {
     this.profesoresList = this.profesoresListFilter;
-
-    if (event[0] === '0') {
-      this.profesoresList = this.profesoresListFilter;
-    }
 
     if (event[0] != '0' && event[0] != '') {
       this.profesoresList = this.profesoresListFilter.filter((res) =>
@@ -127,6 +111,21 @@ export class ProfesorListHomeComponent {
 
     if (event[3] != '') {
       console.log(`pasa por FLITRO DE puntuacion ${event[3]} `);
+      this.profesoresList = this.profesoresList.filter((item) => {
+        if (item.puntuacion !== null) {
+          const valorPuntuacion = parseFloat(item.puntuacion);
+
+          return (
+            valorPuntuacion >= parseFloat(event[3]) &&
+            valorPuntuacion < parseFloat(event[3]) + 1
+          );
+        }
+        return false;
+      });
+    }
+
+    if (event[3] === '0') {
+      this.profesoresList = this.profesoresListFilter;
     }
 
     if (event[4] === 'nombre') {
@@ -135,12 +134,12 @@ export class ProfesorListHomeComponent {
         const nombreB = b.nombre.toLowerCase();
 
         if (nombreA < nombreB) {
-          return -1; // `a` va antes que `b`
+          return -1;
         }
         if (nombreA > nombreB) {
-          return 1; // `a` va después que `b`
+          return 1;
         }
-        return 0; // Son iguales
+        return 0;
       });
     }
 
@@ -149,7 +148,7 @@ export class ProfesorListHomeComponent {
         const precioA = a.precio_hora;
         const precioB = b.precio_hora;
 
-        return precioB - precioA; // Orden descendente
+        return precioB - precioA;
       });
     }
 
@@ -158,13 +157,70 @@ export class ProfesorListHomeComponent {
         (item) => item.puntuacion !== null
       );
 
-      // Ordenar los objetos por puntuacion en orden descendente
-      validData.sort((a, b) => b.puntuacion - a.puntuacion);
+      validData.sort(
+        (a, b) => parseFloat(b.puntuacion) - parseFloat(a.puntuacion)
+      );
 
       this.profesoresList = validData;
     }
 
     this.muestracoordenadas();
   }
+  /*
+  muestracoordenadas() {
+  
+    const result = this.profesoresList.map((item) => {
+      const localizacion = JSON.parse(item.localizacion);
+      return {
+        id: item.id,
+        address: `${localizacion.address}`,
+        coordenadas: `${localizacion.lat},${localizacion.lng}`,
+      };
+    });
+
+    this.coordenadasList = result;
+  }*/
+
+  muestracoordenadas() {
+    const result = this.profesoresList
+      .map((item) => {
+        try {
+          // Verificar que la localización sea válida
+          if (!item.localizacion) {
+            console.warn(
+              `Localización vacía para el profesor con ID: ${item.id}`
+            );
+            return null; // Devuelve un valor vacío o manejable
+          }
+
+          const localizacion = JSON.parse(item.localizacion);
+
+          // Verificar que localizacion tenga los datos esperados
+          if (!localizacion.lat || !localizacion.lng || !localizacion.address) {
+            console.warn(
+              `Localización incompleta para el profesor con ID: ${item.id}, llena el formato correcto en localizacion`,
+              localizacion
+            );
+            return null; // Devuelve un valor vacío o manejable
+          }
+
+          return {
+            id: item.id,
+            address: ` ${localizacion.address}`,
+            coordenadas: ` ${localizacion.lat},${localizacion.lng}`,
+          };
+        } catch (error) {
+          console.error(
+            `Error al parsear localización para el profesor con ID : ${item.id}, llena el formato correcto en localizacion`,
+            error
+          );
+          return null; // Maneja errores de parseo
+        }
+      })
+      .filter((item) => item !== null); // Filtra los resultados nulos
+
+    this.coordenadasList = result;
+  }
+
   profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado
 }
