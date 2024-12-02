@@ -19,6 +19,7 @@ import { LoginService } from '../../../services/login.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { StudentsFormComponent } from '../../students-form/students-form.component';
 import { TeachersFormComponent } from '../../teachers-form/teachers-form.component';
+import { PanelAdministradorComponent } from '../../panel-administrador/panel-administrador.component';
 
 @Component({
   selector: 'app-my-account',
@@ -31,6 +32,7 @@ import { TeachersFormComponent } from '../../teachers-form/teachers-form.compone
     CommonModule,
     StudentsFormComponent,
     TeachersFormComponent,
+    PanelAdministradorComponent
   ],
 })
 export class MyAccountComponent implements OnInit {

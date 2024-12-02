@@ -48,6 +48,7 @@
         </div>
       </div>
 
+      <!-- Nombre y apellidos -->
       <div class="row">
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="nombre">Nombre</label>
@@ -88,6 +89,7 @@
         </div>
       </div>
 
+      <!-- Email y teléfono -->
       <div class="row">
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="email">Email</label>
@@ -128,6 +130,7 @@
         </div>
       </div>
 
+      <!-- Contraseña -->
       <div class="row">
         @if(tipo === 'Registra' || mostrarCamposContrasena) {
         <div class="my-2 fw-light col-md-6">
@@ -173,6 +176,7 @@
         }
       </div>
 
+      <!-- Precio por hora y meses de experiencia -->
       <div class="row">
         <div class="my-2 fw-light col-md-6">
           <label class="form-label" for="precio_hora">Precio por Hora</label>
@@ -215,6 +219,8 @@
           </div>
         </div>
       </div>
+
+      <!-- Dirección y materias -->
 
       <div class="form__last__row row">
         <div class="my-2 fw-light col-md-6">
@@ -284,6 +290,8 @@
         </div>
       </div>
 
+      <!-- Botón contraseña sección actualizar -->
+
       @if(tipo === 'Actualizar') {
       <div class="row justify-content-center mt-0 mb-5">
         <div class="col-auto">
@@ -298,6 +306,8 @@
       </div>
       }
 
+      <!-- Submit -->
+
       <div class="mt-5 mb-3 text-center">
         <input
           type="submit"
@@ -307,6 +317,8 @@
         />
       </div>
     </form>
+
+    <!-- Errores -->
 
     <div class="mt-4">
       @for(error of errorForm; track $index) { @if(error.message) {

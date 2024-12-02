@@ -36,6 +36,7 @@ export class StudentsFormComponent implements OnInit {
   archivoSeleccionado: File | null = null;
   mostrarCamposContrasena: boolean = false;
 
+  // Constructor para inicializar el formulario
   constructor() {
     this.studentForm = new FormGroup(
       {
@@ -61,6 +62,7 @@ export class StudentsFormComponent implements OnInit {
     );
   }
 
+  // Valida que las contraseñas coincidan
   validadorCoincidenciaContraseñas: ValidatorFn = (
     group: AbstractControl
   ): { [key: string]: any } | null => {
@@ -69,6 +71,7 @@ export class StudentsFormComponent implements OnInit {
     return password === repitepassword ? null : { checkpassword: true };
   };
 
+  // Alterna la visibilidad y las validaciones de los campos de contraseña
   toggleCamposContrasena() {
     this.mostrarCamposContrasena = !this.mostrarCamposContrasena;
 
@@ -93,6 +96,7 @@ export class StudentsFormComponent implements OnInit {
     this.studentForm.get('repitepassword')?.updateValueAndValidity();
   }
 
+  // Verifica los errores de validación en un campo de formulario
   checkControl(formControlName: string, validador: string) {
     return (
       this.studentForm.get(formControlName)?.hasError(validador) &&
@@ -100,6 +104,7 @@ export class StudentsFormComponent implements OnInit {
     );
   }
 
+  // Inicializa el componente y carga los datos del usuario si está logueado
   async ngOnInit() {
     if (this.loginService.isLogged()) {
       this.tipo = 'Actualizar';
@@ -128,6 +133,7 @@ export class StudentsFormComponent implements OnInit {
     }
   }
 
+  // Procesa los datos del formulario y los envía al servidor
   async obtenerDatosFormulario() {
     if (!this.studentForm.valid) {
       Swal.fire({
@@ -141,27 +147,28 @@ export class StudentsFormComponent implements OnInit {
 
     const formData = new FormData();
 
+    let passwordToSend: string | undefined = undefined;
+
+    if (this.tipo === 'Registra') {
+      passwordToSend = this.studentForm.value.password;
+    } else if (this.tipo === 'Actualizar' && this.mostrarCamposContrasena) {
+      passwordToSend = this.studentForm.value.password;
+    }
+
     const datosAlumno: Iusuario = {
       id: this.studentForm.value.id,
       nombre: this.studentForm.value.nombre,
       apellidos: this.studentForm.value.apellidos,
       email: this.studentForm.value.email,
-      password: this.mostrarCamposContrasena
-        ? this.studentForm.value.password
-        : '',
+      password: passwordToSend || '',
       rol: 'alumno',
       activo: true,
     };
-
-    if (this.mostrarCamposContrasena) {
-      datosAlumno.password = this.studentForm.value.password;
-    }
-
-    formData.append('datos', JSON.stringify(datosAlumno));
-
     if (this.studentForm.get('foto')?.value instanceof File) {
       formData.append('imagen', this.studentForm.get('foto')?.value);
     }
+
+    formData.append('datos', JSON.stringify(datosAlumno));
 
     try {
       if (this.tipo === 'Actualizar') {
@@ -223,6 +230,7 @@ export class StudentsFormComponent implements OnInit {
     }
   }
 
+  // Procesa la imagen seleccionada por el usuario
   obtenerImagen(event: Event): void {
     const maxFileSize = 1 * 1024 * 1024; // 2MB
     const tiposPermitidos = ['image/jpeg', 'image/png', 'image/webp'];

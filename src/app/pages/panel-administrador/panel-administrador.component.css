@@ -1,7 +1,13 @@
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
 
 .container {
+    max-width: 100%;
     font-family: "Work Sans", sans-serif;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
 }
 
 h2,
@@ -35,8 +41,8 @@ h3 {
 .alert-info,
 .alert-danger {
     position: absolute;
-    top: 2rem;
-    left: 50%;
+    top: 8rem;
+    left: 65%;
     transform: translateX(-50%);
     z-index: 1000;
     padding: 1rem 2rem;
@@ -149,14 +155,12 @@ h3 {
     background-color: #F9ECE6;
 }
 
-/* Ancho fijo para la columna "Activo" en Profesores */
 .table th:nth-child(8),
 .table td:nth-child(8) {
     width: 150px;
     text-align: center;
 }
 
-/* Ancho fijo para la columna "Activo" en Alumnos */
 .table th:nth-child(4),
 .table td:nth-child(4) {
     width: 150px;
@@ -252,7 +256,6 @@ h3 {
     appearance: none;
 }
 
-
 .filter-select:hover {
     border-color: #CCEABB;
 }
@@ -263,23 +266,62 @@ h3 {
     box-shadow: 0 0 0 2px rgba(204, 234, 187, 0.5);
 }
 
-
 .filter-select option {
     padding: 0.5rem;
     background-color: #FFFFFF;
     color: #4A4A4A;
 }
 
-
 .filter-select option:hover {
     background-color: #CCEABB;
     color: #FFFFFF;
 }
 
-
-.filter-container .form-label {
-    margin-bottom: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: #4A4A4A;
+.filter-select[type="text"] {
+    appearance: none;
 }
+
+.filter-select::placeholder {
+    color: #A0A0A0;
+}
+
+.pagination-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 2rem;
+  }
+  
+  .pagination-button {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.8rem;
+    color: #4a4a4a;
+    border: 1px solid #e0b589;
+    border-radius: 0.25rem;
+    background-color: #ffffff;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+  }
+  
+  .pagination-button:disabled {
+    color: #a0a0a0;
+    border-color: #e0b589;
+    background-color: #f9f9f9;
+    cursor: not-allowed;
+  }
+  
+  .pagination-button:hover:not(:disabled) {
+    background-color: #fdcb9e;
+    color: #ffffff;
+    border-color: #e0b589;
+  }
+  
+  .pagination-info {
+    font-size: 0.9rem;
+    color: #4a4a4a;
+  }
+  
+
+
+

@@ -29,10 +29,23 @@ app-sidebar-menu {
 /* Área de contenido principal */
 .content-area {
   flex-grow: 1;
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 20px;
   background-color: #fff;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
   border-radius: 8px;
+}
+
+@media screen and (max-width: 992px) {
+  .dashboard-layout {
+    flex-direction: column;
+  }
+
+  app-sidebar-menu {
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    position: static;
+  }
 }

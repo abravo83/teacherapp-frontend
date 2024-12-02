@@ -1,5 +1,5 @@
 <nav
-  class="navbar navbar-expand-lg border-1 text-white shadow px-3 fixed-top z-1"
+  class="navbar navbar-expand-lg border-1 text-white shadow px-3 fixed-top z-1 bg-white"
 >
   <div class="container-fluid px-4">
     <div class="text-black">
@@ -8,29 +8,74 @@
         routerLinkActive="active"
         aria-current="page"
         [routerLink]="['/home']"
-        >LOGO</a
-      >
+        ><img
+          class="img-fluid"
+          src="../../apple-touch-icon.png"
+          alt="logo"
+          style="width: 40px; height: 40px"
+      /></a>
     </div>
 
     <div class="d-flex align-items-center justify-content-center">
       <span>
-        @if(login === true && hasnoti()){
+        @if(login && role!=='administrador'){
         <ul class="navbar-nav hover-bg">
-          <li class="nav-item">
+          <li class="nav-item dropdown" (click)="toggleNotificaciones()">
             <a
-              class="nav-link position-relative d-lg-none"
+              class="nav-link position-relative d-lg-none dropdown-toggle"
               routerLinkActive="active"
               aria-current="page"
               title="Notificaciones"
             >
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
-                id="count-label"
                 >{{ notiCount }}</span
               >
-              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
-            </a>
+              }
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i
+            ></a>
+            @if(showNotifications){
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center"
+              style="
+                position: absolute;
+                left: -250px;
+                width: -webkit-fill-available;
+              "
+            >
+              @if(mensajesAgrupados.length === 0){
+              <li class="nav-item p-1 text-center text-black-50">
+                No tienes notificaciones
+              </li>
+              }
+              <li
+                *ngFor="
+                  let notificacion of mensajesAgrupados;
+                  let i = index;
+                  let last = last
+                "
+                class="nav-item p-1"
+                (click)="readNotifications(notificacion.id)"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black"
+                  style="background: none; text-decoration: none"
+                  [routerLink]="['/dashboard', 'messages']"
+                >
+                  <small class="d-block mb-1 text-dark"
+                    >{{ notificacion.nombre }}
+                    {{ notificacion.apellido }}</small
+                  >
+                  <small class="d-block text-muted">
+                    Te ha enviado {{ notificacion.count }} Mensajes
+                  </small>
+                </a>
+              </li>
+            </ul>
+            }
           </li>
         </ul>
         }
@@ -55,8 +100,12 @@
           routerLinkActive="active"
           aria-current="page"
           [routerLink]="['/home']"
-          >LOGO</a
-        >
+          ><img
+            class="img-fluid"
+            src="../../apple-touch-icon.png"
+            alt="logo"
+            style="width: 40px; height: 40px"
+        /></a>
 
         <button
           type="button"
@@ -102,14 +151,14 @@
       }@else if(login === true && role === 'administrador' ){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <li class="nav-item ocultarli mx-1">
+          <!-- <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
               title="Notificaciones"
             >
-              @if(hasnoti()){
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
@@ -118,45 +167,6 @@
               }
               <i class="fa-regular fa-bell" style="font-size: 22px"></i
             ></a>
-          </li>
-
-          <li class="nav-item ocultarli mx-1">
-            <a
-              class="nav-link d-flex justify-content-center align-items-center"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/', '']"
-              title="Profesores"
-              ><i
-                class="fa-duotone fa-solid fa-person-chalkboard"
-                style="font-size: 22px"
-              ></i>
-            </a>
-          </li>
-
-          <li class="nav-item ocultarli mx-1">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/', '']"
-              title="Estudiantes"
-              ><i
-                class="fa-duotone fa-solid fa-graduation-cap"
-                style="font-size: 22px"
-              ></i>
-            </a>
-          </li>
-          <!-- 
-          <li class="nav-item ocultarli mx-1">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-              title="Ajustes de perfil"
-              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
-            </a>
           </li> -->
 
           <li class="nav-item ocultarli mx-1">
@@ -164,8 +174,19 @@
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/home']"
-              title="Salir"
+              [routerLink]="['/panel-control']"
+              title="Panel de control"
+              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
+            </a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
               ><i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
@@ -173,9 +194,9 @@
             </a>
           </li>
 
-          <li class="nav-item hide-link">
+          <!-- <li class="nav-item hide-link">
             <a class="nav-link" routerLinkActive="active" aria-current="page">
-              @if(hasnoti()){
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
@@ -185,75 +206,51 @@
               <i class="fa-regular fa-bell" style="font-size: 22px"></i>
               Notificaciones
             </a>
-          </li>
-          <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-            >
-              <i
-                class="fa-duotone fa-solid fa-person-chalkboard"
-                style="font-size: 22px"
-              ></i>
-              Profesores</a
-            >
-          </li>
-          <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-            >
-              <i
-                class="fa-duotone fa-solid fa-graduation-cap"
-                style="font-size: 22px"
-              ></i>
-              Estudiantes</a
-            >
-          </li>
-          <!-- 
-          <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-            >
-              <i class="fa-solid fa-gear" style="font-size: 22px"></i> Ajustes
-              de Perfil</a
-            >
           </li> -->
           <li class="nav-item hide-link">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/home']"
+              [routerLink]="['/panel-control']"
+            >
+              <i class="fa-solid fa-gear" style="font-size: 22px"></i>
+              Panel de control</a
+            >
+          </li>
+
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
             >
               <i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
-              Salir</a
+              Cerrar Sesion</a
             >
           </li>
         </ul>
       </div>
 
       } @else if(login === true && role === 'alumno'){
+
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <li class="nav-item ocultarli mx-1">
+          <li
+            class="nav-item ocultarli mx-1 dropdown"
+            (click)="toggleNotificaciones()"
+          >
             <a
-              class="nav-link"
+              class="nav-link dropdown-toggle"
               routerLinkActive="active"
               aria-current="page"
               title="Notificaciones"
             >
-              @if(hasnoti()){
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
@@ -262,6 +259,63 @@
               }
               <i class="fa-regular fa-bell" style="font-size: 22px"></i
             ></a>
+            @if(showNotifications){
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center"
+              style="
+                position: absolute;
+                left: -250px;
+                width: -webkit-fill-available;
+              "
+            >
+              @if(mensajesAgrupados.length === 0){
+              <li class="nav-item p-1 text-center text-black-50">
+                No tienes notificaciones
+              </li>
+              }
+              <li
+                *ngFor="
+                  let notificacion of mensajesAgrupados;
+                  let i = index;
+                  let last = last
+                "
+                class="nav-item p-1"
+                (click)="readNotifications(notificacion.id)"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black"
+                  style="
+                    background: none;
+                    align-items: center;
+                    text-align: center;
+                  "
+                  [routerLink]="['/dashboard', 'messages']"
+                >
+                  <small class="d-block mb-1 text-dark"
+                    >{{ notificacion.nombre }}
+                    {{ notificacion.apellido }}</small
+                  >
+                  <small class="d-block text-muted">
+                    Te ha enviado {{ notificacion.count }} Mensajes
+                  </small>
+                </a>
+              </li>
+            </ul>
+            }
+          </li>
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Mi Perfil"
+              ><i
+                class="fa-regular fa-address-card"
+                style="font-size: 22px"
+              ></i>
+            </a>
           </li>
 
           <li class="nav-item ocultarli mx-1">
@@ -269,29 +323,8 @@
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/profile', '']"
-              title="clases/profesores"
-              ><i class="fa-solid fa-book" style="font-size: 22px"></i>
-            </a>
-          </li>
-          <!--  <li class="nav-item ocultarli mx-1">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/profile', '']"
-              title="Ajustes de perfil"
-              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
-            </a>
-          </li> -->
-
-          <li class="nav-item ocultarli mx-1">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/home']"
-              title="Salir"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
               ><i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
@@ -300,8 +333,25 @@
           </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page">
-              @if(hasnoti()){
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+            >
+              <i class="fa-regular fa-address-card" style="font-size: 22px"></i>
+              Mi Perfil</a
+            >
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              (click)="limpiarNotificaciones()"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'messages']"
+            >
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
@@ -312,41 +362,19 @@
               Notificaciones
             </a>
           </li>
-          <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/profile', 'my-classes']"
-            >
-              <i class="fa-solid fa-book" style="font-size: 22px"></i>
-              Clases/Profesores</a
-            >
-          </li>
 
-          <!-- <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-            >
-              <i class="fa-solid fa-gear" style="font-size: 22px"></i> Ajustes
-              de Perfil</a
-            >
-          </li> -->
           <li class="nav-item hide-link">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/home']"
+              [routerLink]="['/logout']"
             >
               <i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
-              Salir</a
+              Cerrar sesion</a
             >
           </li>
         </ul>
@@ -355,65 +383,118 @@
       } @else if(login === true && role === 'profesor'){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <li class="nav-item ocultarli mx-1">
+          <li
+            class="nav-item ocultarli mx-1 dropdown"
+            (click)="toggleNotificaciones()"
+          >
             <a
-              class="nav-link position-relative"
+              class="nav-link dropdown-toggle"
               routerLinkActive="active"
               aria-current="page"
               title="Notificaciones"
             >
-              @if(hasnoti()){
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
                 >{{ notiCount }}</span
               >
               }
-              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
-            </a>
+              <i class="fa-regular fa-bell" style="font-size: 22px"></i
+            ></a>
+            @if(showNotifications){
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center"
+              style="
+                position: absolute;
+                left: -250px;
+                width: -webkit-fill-available;
+              "
+            >
+              @if(mensajesAgrupados.length === 0){
+              <li class="nav-item p-1 text-center text-black-50">
+                No tienes notificaciones
+              </li>
+              }
+              <li
+                *ngFor="
+                  let notificacion of mensajesAgrupados;
+                  let i = index;
+                  let last = last
+                "
+                class="nav-item p-1"
+                (click)="readNotifications(notificacion.id)"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black"
+                  style="
+                    background: none;
+                    align-items: center;
+                    text-align: center;
+                  "
+                  [routerLink]="['/dashboard', 'messages']"
+                >
+                  <small class="d-block text-dark"
+                    >{{ notificacion.nombre }}
+                    {{ notificacion.apellido }}</small
+                  >
+                  <small class="d-block text-muted">
+                    Te ha enviado {{ notificacion.count }} Mensajes
+                  </small>
+                </a>
+              </li>
+            </ul>
+            }
           </li>
-
           <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/profile', 'profesor', 'my-classes']"
-              title="Alumnos"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Mi Perfil"
               ><i
-                class="fa-duotone fa-solid fa-users"
+                class="fa-regular fa-address-card"
                 style="font-size: 22px"
               ></i>
             </a>
           </li>
-          <!-- <li class="nav-item ocultarli mx-1">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-              title="Ajustes de perfil"
-              ><i class="fa-solid fa-gear" style="font-size: 22px"></i>
-            </a>
-          </li> -->
 
           <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/home']"
-              title="Salir"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
               ><i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
             </a>
           </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+            >
+              <i class="fa-regular fa-address-card" style="font-size: 22px"></i>
+              Mi Perfil</a
+            >
+          </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page">
-              @if(hasnoti()){
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              (click)="limpiarNotificaciones()"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'messages']"
+            >
+              @if(notiCount>0){
               <span
                 class="badge bg-warning position-absolute translate-middle p-1"
                 style="font-size: 12px"
@@ -424,44 +505,19 @@
               Notificaciones
             </a>
           </li>
-          <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/profile', 'profesor', 'my-classes']"
-            >
-              <i
-                class="fa-duotone fa-solid fa-users"
-                style="font-size: 22px"
-              ></i>
-              Alumnos</a
-            >
-          </li>
 
-          <!-- <li class="nav-item hide-link">
-            <a
-              class="nav-link"
-              routerLinkActive="active"
-              aria-current="page"
-              [routerLink]="['/dashboard', '']"
-            >
-              <i class="fa-solid fa-gear" style="font-size: 22px"></i> Ajustes
-              de Perfil</a
-            >
-          </li> -->
           <li class="nav-item hide-link">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              [routerLink]="['/home']"
+              [routerLink]="['/logout']"
             >
               <i
                 class="fa-solid fa-right-from-bracket"
                 style="font-size: 22px"
               ></i>
-              Salir</a
+              Cerrar sesion</a
             >
           </li>
         </ul>
