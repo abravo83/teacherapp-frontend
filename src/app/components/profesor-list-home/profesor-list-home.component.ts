@@ -59,6 +59,7 @@ export class ProfesorListHomeComponent {
     //-----------------------------------------------------------------------
 
     this.profesoresList = await this.profesorService.getMateriasandProfesor();
+
     this.profesoresListFilter = this.profesoresList.slice();
     this.profesoresList.sort((a, b) => {
       const nombreA = a.nombre.toLowerCase();
@@ -102,7 +103,8 @@ export class ProfesorListHomeComponent {
   }
 
   filterProfesor(event: any) {
-    console.log(event[4]);
+    this.profesoresList = this.profesoresListFilter;
+
     if (event[0] === '0') {
       this.profesoresList = this.profesoresListFilter;
     }
@@ -121,6 +123,10 @@ export class ProfesorListHomeComponent {
         const precio = Number(obj.precio_hora);
         return precio >= valmin && precio <= valmax;
       });
+    }
+
+    if (event[3] != '') {
+      console.log(`pasa por FLITRO DE puntuacion ${event[3]} `);
     }
 
     if (event[4] === 'nombre') {
@@ -145,6 +151,17 @@ export class ProfesorListHomeComponent {
 
         return precioB - precioA; // Orden descendente
       });
+    }
+
+    if (event[4] === 'puntuacion') {
+      const validData = this.profesoresList.filter(
+        (item) => item.puntuacion !== null
+      );
+
+      // Ordenar los objetos por puntuacion en orden descendente
+      validData.sort((a, b) => b.puntuacion - a.puntuacion);
+
+      this.profesoresList = validData;
     }
 
     this.muestracoordenadas();

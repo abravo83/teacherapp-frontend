@@ -38,7 +38,7 @@ export class FilterHomeComponent {
     let criterio = filterFormValue.criterio;
     if (valmin === null) valmin = '';
     if (valmax === null) valmax = '';
-    console.log(filterFormValue);
+
     this.filtro_emitido.emit([
       materiaNombre,
       valmin,
