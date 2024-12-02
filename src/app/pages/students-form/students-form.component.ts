@@ -15,13 +15,15 @@ import { environment } from '../../../environments/environments';
 import { Iusuario } from '../../interfaces/iusuario';
 import { AlumnosService } from '../../services/alumnos.service';
 import { LoginService } from '../../services/login.service';
+import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-students-form',
   standalone: true,
   templateUrl: './students-form.component.html',
   styleUrls: ['./students-form.component.css'],
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent, FooterComponent],
 })
 export class StudentsFormComponent implements OnInit {
   alumnosService = inject(AlumnosService);
