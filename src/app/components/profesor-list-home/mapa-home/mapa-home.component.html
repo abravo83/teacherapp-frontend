@@ -1,4 +1,11 @@
 <map-marker
   #miMaker="mapMarker"
   [position]="getposition(myProfesor.coordenadas)"
+  (mapClick)="openInfoWindow(miMaker, infoWindow)"
+>
+  <map-info-window #infoWindow="mapInfoWindow">
+    <h4>{{ myProfesor.nombre }}</h4>
+    <p>{{ myProfesor.precio }} $</p>
+
+    <hr /> </map-info-window
 ></map-marker>
