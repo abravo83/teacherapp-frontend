@@ -48,4 +48,15 @@
       Reseñas
     </button>
   </li>
+
+  @if(usuario.rol === 'profesor'){
+  <li>
+    <button
+      [routerLink]="['/dashboard/my-info']"
+      class="btn button-secondary w-100"
+    >
+      Más Información
+    </button>
+  </li>
+  }
 </ul>
