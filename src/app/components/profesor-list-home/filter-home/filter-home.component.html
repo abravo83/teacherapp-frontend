@@ -1,85 +1,74 @@
-<div class="container-home-nav">
-  <div class="nav-home">
-    <ul>
-      <form
-        #filterForm="ngForm"
-        (ngSubmit)="selectMateria(filterForm.value)"
-        class="card p-2 shadow"
-      >
-        <h6>Filtro:</h6>
-        <div class="d-flex justify-content-between gap-3">
-          <div class="text-center">
-            <h5>Materias</h5>
-            <select class="form-select" name="materiaNombre" ngModel>
-              <option value="0">Todas las materias</option>
-              <option
-                *ngFor="let materia of materiaList"
-                [value]="materia.nombre"
-              >
-                {{ materia.nombre }}
-              </option>
-            </select>
-          </div>
-          <div class="text-center">
-            <h5>Puntuación</h5>
-            <select class="form-select" name="puntuacion" ngModel>
-              <option value="0">Todas</option>
-              <option value="5">5 Estrellas</option>
-              <option value="4">4 Estrellas</option>
-              <option value="3">3 Estrellas</option>
-              <option value="2">2 Estrellas</option>
-              <option value="1">1 Estrellas</option>
-            </select>
-          </div>
-          <div class="text-center">
-            <h5>Precio</h5>
+<form #filterForm="ngForm" (ngSubmit)="selectMateria(filterForm.value)">
+  <h6>Filtro:</h6>
+  <div class="d-flex justify-content-between gap-3">
+    <div class="text-center">
+      <h5>Materias</h5>
+      <select class="form-select" name="materiaNombre" ngModel>
+        <option value="0">Todas las materias</option>
+        <option *ngFor="let materia of materiaList" [value]="materia.nombre">
+          {{ materia.nombre }}
+        </option>
+      </select>
+    </div>
+    <div class="text-center">
+      <h5>Puntuación</h5>
+      <select class="form-select" name="puntuacion" ngModel>
+        <option value="0">Todas</option>
+        <option value="5">5 Estrellas</option>
+        <option value="4">4 Estrellas</option>
+        <option value="3">3 Estrellas</option>
+        <option value="2">2 Estrellas</option>
+        <option value="1">1 Estrellas</option>
+      </select>
+    </div>
+    <div class="text-center">
+      <h5>Precio</h5>
 
-            <div class="d-flex gap-1">
-              <input
-                id="valmin"
-                class="form-control"
-                type="number"
-                placeholder="Precio desde"
-                name="valmin"
-                value="0"
-                min="1"
-                ngModel
-              />
-
-              <input
-                class="form-control"
-                type="number"
-                placeholder="Precio hasta"
-                name="valmax"
-                ngModel
-              />
-            </div>
-          </div>
-        </div>
-
-        <div class="d-flex justify-content-between gap-3 mt-5 mb-1">
-          <h6>Ordenar Por:</h6>
-          <label>
-            <input type="radio" name="criterio" value="nombre" ngModel />
-            Nombre </label
-          ><br />
-          <label>
-            <input type="radio" name="criterio" value="precio" ngModel />
-            Precio </label
-          ><br />
-          <label>
-            <input type="radio" name="criterio" value="puntuacion" ngModel />
-            Puntuación </label
-          ><br /><br />
-        </div>
+      <div class="d-flex gap-1">
+        <input
+          id="valmin"
+          class="form-control"
+          type="number"
+          placeholder="Precio desde"
+          name="valmin"
+          value="0"
+          min="1"
+          ngModel
+        />
 
         <input
-          (click)="selectMateria(filterForm.value)"
-          type="submit"
-          value="Buscar"
-          class="btn btn-info"
+          class="form-control"
+          type="number"
+          placeholder="Precio hasta"
+          name="valmax"
+          ngModel
         />
-      </form>
-    </ul>
+      </div>
+    </div>
   </div>
-</div>
+
+  <div class="d-flex justify-content-between gap-3 mt-5 mb-1">
+    <h6>Ordenar Por:</h6>
+    <label>
+      <input type="radio" name="criterio" value="nombre" ngModel />
+      Nombre </label
+    ><br />
+    <label>
+      <input type="radio" name="criterio" value="precio" ngModel />
+      Precio </label
+    ><br />
+    <label>
+      <input type="radio" name="criterio" value="puntuacion" ngModel />
+      Puntuación </label
+    ><br /><br />
+  </div>
+
+  <div class="d-grid">
+    <input
+      (click)="selectMateria(filterForm.value)"
+      type="submit"
+      value="Buscar"
+      class="btn btn-info"
+    />
+  </div>
+</form>
