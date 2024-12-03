@@ -128,6 +128,11 @@ export class MessagesComponent implements OnInit {
     if (!mensaje || mensaje.trim() === '') {      
       return;  
     }    
+     // Validar que el destinatario esté seleccionado
+    if (!this.contactoSeleccionadoid) {
+      return;
+    }
+
     this.sendMensaje({
       id: 0,
       emisor_id: this.usuarioId,  // El emisor es el usuario logueado

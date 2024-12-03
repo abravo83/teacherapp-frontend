@@ -4,12 +4,10 @@ import { Iprofesor } from '../../interfaces/iprofesor';
 import { FilterHomeComponent } from './filter-home/filter-home.component';
 import { ProfesorCardHomeComponent } from './profesor-card-home/profesor-card-home.component';
 import { MapaHomeComponent } from './mapa-home/mapa-home.component';
-import { GoogleMap, MapAdvancedMarker, MapMarker } from '@angular/google-maps';
+import { GoogleMap } from '@angular/google-maps';
 import { environment } from '../../../environments/environments';
 import { PopUpContactarComponent } from './pop-up-contactar/pop-up-contactar.component';
 import { CommonModule } from '@angular/common';
-import { ImateriaProfesor } from '../../interfaces/imateriaprofesor';
-import { MateriasService } from '../../services/materias.service';
 
 @Component({
   selector: 'app-profesor-list-home',
@@ -19,8 +17,6 @@ import { MateriasService } from '../../services/materias.service';
     ProfesorCardHomeComponent,
     MapaHomeComponent,
     GoogleMap,
-    MapMarker,
-    MapAdvancedMarker,
     PopUpContactarComponent,
     CommonModule,
   ],
@@ -33,7 +29,7 @@ export class ProfesorListHomeComponent {
 
   //Variables
   profesoresListFilter: Iprofesor[] = [];
-  coordenadasList: any[] = [];
+  marcasList: any[] = [];
   profesoresList: Iprofesor[] = [];
   myposition = signal<any>('');
   isGoogleMapsLoaded = false;
@@ -60,18 +56,7 @@ export class ProfesorListHomeComponent {
 
     this.profesoresList = await this.profesorService.getMateriasandProfesor();
 
-    this.profesoresList.sort((a, b) => {
-      const nombreA = a.nombre.toLowerCase();
-      const nombreB = b.nombre.toLowerCase();
-
-      if (nombreA < nombreB) {
-        return -1;
-      }
-      if (nombreA > nombreB) {
-        return 1;
-      }
-      return 0;
-    });
+    this.ordenarAlabeticamente();
 
     this.profesoresListFilter = this.profesoresList.slice();
 
@@ -113,7 +98,6 @@ export class ProfesorListHomeComponent {
     }
 
     if (event[3] != '' && event[3] != '0') {
-      console.log(`pasa por FLITRO DE puntuacion ${event[3]} `);
       this.profesoresList = this.profesoresList.filter((item) => {
         if (item.puntuacion !== null) {
           const valorPuntuacion = parseFloat(item.puntuacion);
@@ -129,18 +113,7 @@ export class ProfesorListHomeComponent {
 
     //-------ORDENAR
     if (event[4] === 'nombre') {
-      this.profesoresList.sort((a, b) => {
-        const nombreA = a.nombre.toLowerCase();
-        const nombreB = b.nombre.toLowerCase();
-
-        if (nombreA < nombreB) {
-          return -1;
-        }
-        if (nombreA > nombreB) {
-          return 1;
-        }
-        return 0;
-      });
+      this.ordenarAlabeticamente();
     }
 
     if (event[4] === 'precio') {
@@ -165,6 +138,21 @@ export class ProfesorListHomeComponent {
     }
 
     this.muestracoordenadas();
+  }
+
+  ordenarAlabeticamente() {
+    this.profesoresList.sort((a, b) => {
+      const nombreA = a.nombre.toLowerCase();
+      const nombreB = b.nombre.toLowerCase();
+
+      if (nombreA < nombreB) {
+        return -1;
+      }
+      if (nombreA > nombreB) {
+        return 1;
+      }
+      return 0;
+    });
   }
 
   muestracoordenadas() {
@@ -208,7 +196,7 @@ export class ProfesorListHomeComponent {
       })
       .filter((item) => item !== null); // Filtra los resultados nulos
 
-    this.coordenadasList = result;
+    this.marcasList = result;
   }
 
   profesorSeleccionado: any = null; // Variable para almacenar el profesor seleccionado

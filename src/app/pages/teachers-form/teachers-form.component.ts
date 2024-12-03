@@ -19,13 +19,15 @@ import { Imateria } from '../../interfaces/imateria';
 import { ProfesoresService } from '../../services/profesores.service';
 import { MateriasService } from '../../services/materias.service';
 import { LoginService } from '../../services/login.service';
+import { NavbarComponent } from "../../components/navbar/navbar.component";
+import { FooterComponent } from "../../components/footer/footer.component";
 
 @Component({
   selector: 'app-teacher-form',
   standalone: true,
   templateUrl: './teachers-form.component.html',
   styleUrls: ['./teachers-form.component.css'],
-  imports: [ReactiveFormsModule, CommonModule],
+  imports: [ReactiveFormsModule, CommonModule, NavbarComponent, FooterComponent],
 })
 export class TeachersFormComponent implements OnInit {
   profesoresService = inject(ProfesoresService);

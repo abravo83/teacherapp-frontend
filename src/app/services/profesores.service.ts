@@ -68,4 +68,10 @@ export class ProfesoresService {
       this.httpClient.put<{ message: string }>(url, { validado })
     );
   }
+
+  async actualizarSobreMi(id: number, sobre_mi: string) {
+    return firstValueFrom(
+      this.httpClient.patch(`${this.BASE_URL}/sobremi/${id}`, { sobre_mi })
+    );
+  }
 }
