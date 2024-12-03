@@ -3,7 +3,12 @@
   <div class="d-flex justify-content-between gap-3">
     <div class="text-center">
       <h5>Materias</h5>
-      <select class="form-select" name="materiaNombre" ngModel>
+      <select
+        class="form-select"
+        name="materiaNombre"
+        ngModel
+        (change)="selectMateria(filterForm.value)"
+      >
         <option value="0">Todas las materias</option>
         <option *ngFor="let materia of materiaList" [value]="materia.nombre">
           {{ materia.nombre }}
@@ -12,7 +17,12 @@
     </div>
     <div class="text-center">
       <h5>Puntuación</h5>
-      <select class="form-select" name="puntuacion" ngModel>
+      <select
+        class="form-select"
+        name="puntuacion"
+        ngModel
+        (change)="selectMateria(filterForm.value)"
+      >
         <option value="0">Todas</option>
         <option value="5">5 Estrellas</option>
         <option value="4">4 Estrellas</option>
@@ -34,6 +44,7 @@
           value="0"
           min="1"
           ngModel
+          (change)="selectMateria(filterForm.value)"
         />
 
         <input
@@ -42,6 +53,7 @@
           placeholder="Precio hasta"
           name="valmax"
           ngModel
+          (change)="selectMateria(filterForm.value)"
         />
       </div>
     </div>
@@ -50,25 +62,34 @@
   <div class="d-flex justify-content-between gap-3 mt-5 mb-1">
     <h6>Ordenar Por:</h6>
     <label>
-      <input type="radio" name="criterio" value="nombre" ngModel />
+      <input
+        type="radio"
+        name="criterio"
+        value="nombre"
+        ngModel
+        (change)="selectMateria(filterForm.value)"
+      />
       Nombre </label
     ><br />
     <label>
-      <input type="radio" name="criterio" value="precio" ngModel />
+      <input
+        type="radio"
+        name="criterio"
+        value="precio"
+        ngModel
+        (change)="selectMateria(filterForm.value)"
+      />
       Precio </label
     ><br />
     <label>
-      <input type="radio" name="criterio" value="puntuacion" ngModel />
+      <input
+        type="radio"
+        name="criterio"
+        value="puntuacion"
+        ngModel
+        (change)="selectMateria(filterForm.value)"
+      />
       Puntuación </label
     ><br /><br />
-  </div>
-
-  <div class="d-grid">
-    <input
-      (click)="selectMateria(filterForm.value)"
-      type="submit"
-      value="Buscar"
-      class="btn btn-info"
-    />
   </div>
 </form>
