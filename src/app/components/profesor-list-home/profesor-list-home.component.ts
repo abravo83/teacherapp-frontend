@@ -98,6 +98,9 @@ export class ProfesorListHomeComponent {
         res.materias.includes(event[0])
       );
     }
+    if (event[3] === '0' && event[0] === '' && event[0] === '0') {
+      this.profesoresList = this.profesoresListFilter;
+    }
 
     if (event[1] != '' || event[2] != '') {
       let valmin = Number(event[1]);
@@ -109,7 +112,7 @@ export class ProfesorListHomeComponent {
       });
     }
 
-    if (event[3] != '') {
+    if (event[3] != '' && event[3] != '0') {
       console.log(`pasa por FLITRO DE puntuacion ${event[3]} `);
       this.profesoresList = this.profesoresList.filter((item) => {
         if (item.puntuacion !== null) {
@@ -124,10 +127,7 @@ export class ProfesorListHomeComponent {
       });
     }
 
-    if (event[3] === '0') {
-      this.profesoresList = this.profesoresListFilter;
-    }
-
+    //-------ORDENAR
     if (event[4] === 'nombre') {
       this.profesoresList.sort((a, b) => {
         const nombreA = a.nombre.toLowerCase();
@@ -166,37 +166,6 @@ export class ProfesorListHomeComponent {
 
     this.muestracoordenadas();
   }
-  /*
-  muestracoordenadas() {
-    this.coordenadasList = this.profesoresList.map((usuario) => {
-      // Parsear localización para extraer coordenadas
-      const localizacion = JSON.parse(usuario.localizacion);
-
-      return {
-        nombre: usuario.nombre,
-        foto: usuario.foto || 'null', // Si no hay foto, retorna "null" como texto
-        precio_hora: usuario.precio_hora,
-        address: localizacion.address,
-        coordenadas: [`${localizacion.lat},${localizacion.lng}`],
-      };
-    });
-  }
-*/
-  /*
-  muestracoordenadas() {
-    const result = this.profesoresList.map((item) => {
-      const localizacion = JSON.parse(item.localizacion);
-      return {
-        nombre: item.nombre,
-        id: item.id,
-        address: `${localizacion.address}`,
-        coordenadas: `${localizacion.lat},${localizacion.lng}`,
-      };
-    });
-
-    this.coordenadasList = result;
-  }
-    */
 
   muestracoordenadas() {
     const result = this.profesoresList
