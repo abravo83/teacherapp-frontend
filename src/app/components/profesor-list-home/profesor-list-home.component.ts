@@ -168,10 +168,26 @@ export class ProfesorListHomeComponent {
   }
   /*
   muestracoordenadas() {
-  
+    this.coordenadasList = this.profesoresList.map((usuario) => {
+      // Parsear localización para extraer coordenadas
+      const localizacion = JSON.parse(usuario.localizacion);
+
+      return {
+        nombre: usuario.nombre,
+        foto: usuario.foto || 'null', // Si no hay foto, retorna "null" como texto
+        precio_hora: usuario.precio_hora,
+        address: localizacion.address,
+        coordenadas: [`${localizacion.lat},${localizacion.lng}`],
+      };
+    });
+  }
+*/
+  /*
+  muestracoordenadas() {
     const result = this.profesoresList.map((item) => {
       const localizacion = JSON.parse(item.localizacion);
       return {
+        nombre: item.nombre,
         id: item.id,
         address: `${localizacion.address}`,
         coordenadas: `${localizacion.lat},${localizacion.lng}`,
@@ -179,7 +195,8 @@ export class ProfesorListHomeComponent {
     });
 
     this.coordenadasList = result;
-  }*/
+  }
+    */
 
   muestracoordenadas() {
     const result = this.profesoresList
@@ -205,6 +222,9 @@ export class ProfesorListHomeComponent {
           }
 
           return {
+            nombre: item.nombre,
+            foto: item.foto,
+            precio: item.precio_hora,
             id: item.id,
             address: ` ${localizacion.address}`,
             coordenadas: ` ${localizacion.lat},${localizacion.lng}`,
