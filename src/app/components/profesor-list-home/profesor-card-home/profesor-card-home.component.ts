@@ -19,7 +19,6 @@ export class ProfesorCardHomeComponent {
   mostrarPopUp() {
     // this.openPopUp.emit(this.myProfesor);
     this.popUpVisible = true;
-    console.log(1);
   }
 
   cerrarPopUp() {
