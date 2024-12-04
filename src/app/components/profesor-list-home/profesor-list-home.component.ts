@@ -109,6 +109,7 @@ export class ProfesorListHomeComponent {
         }
         return false;
       });
+      this.ordenarPuntuacion();
     }
 
     //-------ORDENAR
@@ -126,13 +127,7 @@ export class ProfesorListHomeComponent {
     }
 
     if (event[4] === 'puntuacion') {
-      const validData = this.profesoresList.filter(
-        (item) => item.puntuacion !== null
-      );
-
-      validData.sort((a, b) => b.puntuacion - a.puntuacion);
-
-      this.profesoresList = validData;
+      this.ordenarPuntuacion();
     }
 
     this.muestracoordenadas();
@@ -151,6 +146,16 @@ export class ProfesorListHomeComponent {
       }
       return 0;
     });
+  }
+
+  ordenarPuntuacion() {
+    const validData = this.profesoresList.filter(
+      (item) => item.puntuacion !== null
+    );
+
+    validData.sort((a, b) => b.puntuacion - a.puntuacion);
+
+    this.profesoresList = validData;
   }
 
   muestracoordenadas() {
