@@ -4,4 +4,5 @@ export interface Iopinion {
   puntuacion: number;
   comentario: string;
   fecha: Date;
+  estudiante_nombre?: string;
 }
