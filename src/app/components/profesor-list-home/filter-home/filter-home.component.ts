@@ -1,7 +1,6 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Imateria } from '../../../interfaces/imateria';
-import { ProfesoresService } from '../../../services/profesores.service';
 import { CommonModule, JsonPipe } from '@angular/common';
 import { MateriasService } from '../../../services/materias.service';
 
@@ -17,20 +16,14 @@ export class FilterHomeComponent {
   materiaService = inject(MateriasService);
   //varialbles
   materiaList: Imateria[] = [];
-  experienciaList: any[] = [];
-  showFilters: boolean = false;
 
   @Output() filtro_emitido: EventEmitter<any> = new EventEmitter();
 
   async ngOnInit() {
     this.materiaList = await this.materiaService.getMaterias();
   }
-  toggleFilters() {
-    this.showFilters = !this.showFilters;
-    console.log('toggleFilters called, showFilters is now:', this.showFilters);
-  }
 
-  selectMateria(filterFormValue: any) {
+  selectFilter(filterFormValue: any) {
     let materiaNombre = filterFormValue.materiaNombre;
     let valmin = filterFormValue.valmin;
     let valmax = filterFormValue.valmax;

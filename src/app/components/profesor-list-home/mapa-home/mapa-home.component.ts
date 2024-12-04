@@ -1,23 +1,16 @@
 import { Component, inject, Input, signal } from '@angular/core';
-import {
-  GoogleMap,
-  MapAdvancedMarker,
-  MapInfoWindow,
-  MapMarker,
-} from '@angular/google-maps';
-import { ProfesoresService } from '../../../services/profesores.service';
+import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 
 @Component({
   selector: 'app-mapa-home',
   standalone: true,
-  imports: [GoogleMap, MapMarker, MapAdvancedMarker, MapInfoWindow],
+  imports: [MapMarker, MapInfoWindow],
   templateUrl: './mapa-home.component.html',
   styleUrl: './mapa-home.component.css',
 })
 export class MapaHomeComponent {
-  @Input() myProfesor!: any;
+  @Input() myCoordenada!: any;
   myposition = signal<any>('');
-  private profesoresService = inject(ProfesoresService);
   profesoresList: any = [];
 
   ngOnInit() {

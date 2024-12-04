@@ -1,5 +1,5 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
-import { PopUpContactarComponent } from "../pop-up-contactar/pop-up-contactar.component";
+import { Component, Input } from '@angular/core';
+import { PopUpContactarComponent } from '../pop-up-contactar/pop-up-contactar.component';
 import { CommonModule } from '@angular/common';
 import { Iprofesor } from '../../../interfaces/iprofesor';
 
@@ -15,7 +15,6 @@ export class ProfesorCardHomeComponent {
   // @Output() openPopUp = new EventEmitter<any>(); // evento para abrir el contenido de pop-up
   popUpVisible = false;
 
-
   mostrarPopUp() {
     // this.openPopUp.emit(this.myProfesor);
     this.popUpVisible = true;
@@ -25,5 +24,4 @@ export class ProfesorCardHomeComponent {
   cerrarPopUp() {
     this.popUpVisible = false;
   }
-
 }
