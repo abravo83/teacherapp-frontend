@@ -100,7 +100,7 @@ export class ProfesorListHomeComponent {
     if (event[3] != '' && event[3] != '0') {
       this.profesoresList = this.profesoresList.filter((item) => {
         if (item.puntuacion !== null) {
-          const valorPuntuacion = parseFloat(item.puntuacion);
+          const valorPuntuacion = item.puntuacion;
 
           return (
             valorPuntuacion >= parseFloat(event[3]) &&
@@ -130,9 +130,7 @@ export class ProfesorListHomeComponent {
         (item) => item.puntuacion !== null
       );
 
-      validData.sort(
-        (a, b) => parseFloat(b.puntuacion) - parseFloat(a.puntuacion)
-      );
+      validData.sort((a, b) => b.puntuacion - a.puntuacion);
 
       this.profesoresList = validData;
     }
