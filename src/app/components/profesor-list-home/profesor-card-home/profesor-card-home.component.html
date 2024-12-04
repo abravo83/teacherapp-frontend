@@ -55,9 +55,36 @@
           <h6 class="price-prof">Percio por hora:</h6>
           <div class="content-price-prof">{{ myProfesor.precio_hora }}€</div>
         </div>
-        <div class="price">
-          <h6 class="price-prof">Puntuacion:</h6>
-          <div class="content-price-prof">{{ myProfesor.puntuacion }}</div>
+
+        <div class="flex align-items-center justify-content-center">
+          <div>
+            @if ( myProfesor.puntuacion!= null && 1 <= myProfesor.puntuacion &&
+            myProfesor.puntuacion<1.5){
+            <i class="fas fa-star star"></i>
+            } @if( myProfesor.puntuacion!= null && 1.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<2.5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            } @if(myProfesor.puntuacion!= null && 2.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<3.5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            } @if(myProfesor.puntuacion!= null && 3.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<4.5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            } @if(myProfesor.puntuacion!= null && 4.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<=5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            }
+          </div>
         </div>
       </div>
       <div class="button-home-prof flex-grow-1 text-end px-4">

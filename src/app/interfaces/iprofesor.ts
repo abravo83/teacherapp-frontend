@@ -17,5 +17,5 @@ export interface Iprofesor {
   sobreMi?: string;
   materias: [string];
   reviews: string;
-  puntuacion: string;
+  puntuacion: number;
 }
