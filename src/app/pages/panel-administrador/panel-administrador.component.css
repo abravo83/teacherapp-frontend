@@ -1,5 +1,6 @@
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
 
+
 .container {
     max-width: 100%;
     font-family: "Work Sans", sans-serif;
@@ -25,7 +26,7 @@ h3 {
 
 .nav-tabs .nav-link.active {
     background-color: #FDCB9E;
-    color: #FFFFFF;
+    color: #3f3f44;
     border: none;
 }
 
@@ -56,8 +57,8 @@ h3 {
 }
 
 .alert-info {
-    background-color: #CCEABB;
-    color: #FFFFFF;
+    background-color: #FDCB9E;
+    color: #3f3f44;
 }
 
 .alert-danger {
@@ -134,7 +135,7 @@ h3 {
 
 .table th {
     background-color: #FDCB9E;
-    color: #FFFFFF;
+    color: #3f3f44;
     font-weight: 600;
     text-align: left;
     padding: 0.75rem;
@@ -257,12 +258,12 @@ h3 {
 }
 
 .filter-select:hover {
-    border-color: #CCEABB;
+    border-color: #3f3f44;
 }
 
 .filter-select:focus {
     outline: none;
-    border-color: #CCEABB;
+    border-color: #3f3f44;
     box-shadow: 0 0 0 2px rgba(204, 234, 187, 0.5);
 }
 
@@ -273,7 +274,7 @@ h3 {
 }
 
 .filter-select option:hover {
-    background-color: #CCEABB;
+    background-color: #3f3f44;
     color: #FFFFFF;
 }
 
