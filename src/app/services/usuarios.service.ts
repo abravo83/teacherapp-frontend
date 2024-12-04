@@ -39,6 +39,12 @@ export class UsuariosService {
     // return this.arrUsuarios.find((user) => user.id === this.usuarioActualId);
   }
 
+  getUsuarioById(id:number): Promise<Iusuario> {
+    return firstValueFrom(
+      this.httpClient.get<Iusuario>(`${this.BASE_URL}/${id}`)
+    );
+  }
+
   // Método para activar o desactivar un usuario
   async activarUsuario(
     id: number,

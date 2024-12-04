@@ -36,43 +36,44 @@
              Opiniones
             </h2>
             <div class="opinion">
-             <div class="opinion-header">
-              <img alt="Foto de perfil de Miguel Ángel Amigo Cid" height="40" src="https://replicate.delivery/xezq/v97XjxRilMYwChX6TxffzozyqHtnV3cveQEItiLHbqQuePNPB/out-0.png" width="40"/>
-              <div>
-               <div class="opinion-name">
-                Miguel Ángel Amigo Cid
-               </div>
-               <span class="rating">
-                <i class="fas fa-star" style="color:var(--color-button1);">
-                </i>
-                <i class="fas fa-star" style="color:var(--color-button1);">
-                </i>
-                <i class="fas fa-star" style="color:var(--color-button1);">
-                </i>
-                <i class="fas fa-star" style="color:var(--color-button1);">
-                </i>
-                <i class="fas fa-star">
-                </i>
-               </span>
-               <span class="opinion-time">
-                hace 15 minutos
-               </span>
-              </div>
-             </div>
-             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis varius arcu eget tincidunt lobortis. Nam placerat neque sed risus mollis, id mollis nisi sodales.
-             </p>
-            </div>
-
-<!-- 
-    <div class="more-info">
-        <div *ngIf="myProfesor.sobreMi" class="description-professor">
-            Descripción del profesor: {{ myProfesor.sobreMi }}
+            
+  <!-- Comprobamos si hay opiniones -->
+  <div *ngIf="opinionesProfesor.length > 0; else noOpiniones">
+    <!-- Iteramos sobre cada opinión -->
+    <div *ngFor="let opinion of opinionesProfesor" class="opinion">
+      <div class="opinion-header">
+        
+        <div>
+          <div class="opinion-name">
+            {{ opinion.estudiante_nombre || 'No hay opiniones disponibles para este profesor' }}
+          </div>
+          
+          <span class="rating">
+            <i 
+              class="fas fa-star" 
+              *ngFor="let _ of [].constructor(opinion.puntuacion || 0); let i = index"
+              [style.color]="i < opinion.puntuacion ? 'var(--color-button1)' : '#ccc'">
+            </i>
+          </span>
+          
+          <span class="opinion-time">
+            {{ opinion.fecha ? (opinion.fecha | date: 'short') : '' }}
+          </span>
         </div>
-        <div *ngIf="myProfesor.reviews" class="reviews">
-            Opiniones de otros usuarios: {{ myProfesor.reviews }}
-        </div> -->
-    <!-- </div> -->
+      </div>
+      
+      <p>
+        <strong>Comentario:</strong> 
+        {{ opinion.comentario || '' }}
+      </p>
+    </div>
+  </div>
+
+  <!-- Mensaje si no hay opiniones -->
+  <ng-template #noOpiniones>
+    <p>No hay opiniones disponibles para este profesor.</p>
+  </ng-template>
+
     <div class="buttons">
         <button class="button-close" (click)="cerrar()">Cerrar</button>
 
