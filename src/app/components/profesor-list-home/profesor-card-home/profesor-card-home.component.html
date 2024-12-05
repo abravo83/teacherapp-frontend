@@ -12,7 +12,7 @@
     >
       <img
         class="img-prof rounded-circle"
-        [src]="myProfesor.foto"
+        [src]="API_URL + myProfesor.foto"
         [alt]="myProfesor.nombre"
         style="
           height: 120px;
@@ -52,22 +52,51 @@
           </div>
         </div>
         <div class="price">
-          <h6 class="price-prof">Percio por hora:</h6>
-          <div class="content-price-prof">{{ myProfesor.precio_hora }}€</div>
-        </div>
-        <div class="price">
-          <h6 class="price-prof">Puntuacion:</h6>
-          <div class="content-price-prof">{{ myProfesor.puntuacion }}</div>
+          <h6 class="price-prof">Precio por hora:</h6>
+          <div class="content-price-prof">{{ myProfesor.precio_hora }}€/h</div>
         </div>
       </div>
-      <div class="button-home-prof flex-grow-1 text-end px-4">
-        <button
-          class="button-contact"
-          style="color: var(--color-text-primary); font-weight: 500"
-          (click)="mostrarPopUp()"
-        >
-          Más información
-        </button>
+
+      <div class="flex-grow-1 text-end">
+        <div class="flex align-items-center justify-content-center px-4 py-5">
+          <div>
+            @if ( myProfesor.puntuacion!= null && 0.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<1.5){
+            <i class="fas fa-star star"></i>
+            } @if( myProfesor.puntuacion!= null && 1.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<2.5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            } @if(myProfesor.puntuacion!= null && 2.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<3.5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            } @if(myProfesor.puntuacion!= null && 3.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<4.5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            } @if(myProfesor.puntuacion!= null && 4.5 <= myProfesor.puntuacion
+            && myProfesor.puntuacion<=5){
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            <i class="fas fa-star star"></i>
+            }
+          </div>
+        </div>
+        <div class="button-home-prof px-4">
+          <button
+            class="button-contact"
+            style="color: var(--color-text-primary); font-weight: 500"
+            (click)="mostrarPopUp()"
+          >
+            Más información
+          </button>
+        </div>
       </div>
     </div>
   </div>

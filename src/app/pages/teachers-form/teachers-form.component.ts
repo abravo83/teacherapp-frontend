@@ -208,13 +208,16 @@ export class TeachersFormComponent implements OnInit {
   
         if (profesor.profesor.localizacion) {
           try {
-            const localizacion = JSON.parse(profesor.profesor.localizacion);
-                   direccionSinComillas = localizacion.address;
+              const localizacion = JSON.parse(profesor.profesor.localizacion);
+              direccionSinComillas = localizacion.address;
+              this.coordenadas = JSON.stringify(localizacion);
           } catch (error) {
-            console.error('Error al parsear la localización:', error);
-            direccionSinComillas = profesor.profesor.localizacion; 
+              console.error('Error al parsear la localización:', error);
+              direccionSinComillas = profesor.profesor.localizacion;
+              this.coordenadas = profesor.profesor.localizacion;
           }
-        }
+      }
+      
   
         this.teacherForm.patchValue({
           id: profesor.usuario.id,
@@ -276,109 +279,121 @@ export class TeachersFormComponent implements OnInit {
   // Envía los datos del formulario al servidor para guardar o actualizar
   async obtenerDatosFormulario() {
     if (!this.teacherForm.valid) {
-      Swal.fire({
-        icon: 'error',
-        title: 'Formulario inválido',
-        text: 'Por favor, revisa los campos y corrige los errores.',
-        confirmButtonColor: '#d33',
-      });
-      return;
-    }
-  
-    const formData = new FormData();
-  
-    let passwordToSend = null;
-    if (this.mostrarCamposContrasena) {
-      if (
-        this.teacherForm.get('password')?.valid &&
-        this.teacherForm.get('repitepassword')?.valid
-      ) {
-        passwordToSend = this.teacherForm.get('password')?.value;
-      } else {
         Swal.fire({
-          icon: 'error',
-          title: 'Contraseña inválida',
-          text: 'Por favor, asegúrate de que la contraseña cumpla con los requisitos.',
-          confirmButtonColor: '#d33',
+            icon: 'error',
+            title: 'Formulario inválido',
+            text: 'Por favor, revisa los campos y corrige los errores.',
+            confirmButtonColor: '#d33',
         });
         return;
-      }
     }
-  
-    const datosProfesor: IRespuestaTeachersForm = {
-      usuario: {
-        id: this.teacherForm.value.id,
-        nombre: this.teacherForm.value.nombre,
-        apellidos: this.teacherForm.value.apellidos,
-        email: this.teacherForm.value.email,
-        password: passwordToSend,
-        rol: 'profesor',
-        activo: true,
-      },
-      profesor: {
-        precio_hora: this.teacherForm.value.precio_hora,
-        localizacion: this.coordenadas,
-        telefono: this.teacherForm.value.telefono,
-        meses_experiencia: this.teacherForm.value.meses_experiencia,
-        validado: false,
-      },
-      materias: this.teacherForm.value.materias,
-    };
-  
-    formData.append('datos', JSON.stringify(datosProfesor));
-  
-    if (this.teacherForm.get('foto')?.value instanceof File) {
-      formData.append('imagen', this.teacherForm.get('foto')?.value);
-    }
-  
-    try {
-      if (this.tipo === 'Actualizar' && datosProfesor.usuario.id) {
-        await this.profesoresService.actualizarProfesor(
-          formData,
-          datosProfesor.usuario.id
-        );
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Profesor actualizado exitosamente.',
-          confirmButtonColor: '#28a745',
-        });
-        this.router.navigate(['/home']);
-      } else {
-        await this.profesoresService.registroProfesor(formData);
-        Swal.fire({
-          icon: 'success',
-          title: 'Éxito',
-          text: 'Profesor registrado exitosamente.',
-          confirmButtonColor: '#28a745',
-        });
-        this.router.navigate(['/login']);
-      }
-    } catch (error: any) {   
-      let mensajeError = 'Ocurrió un error inesperado. Por favor, intenta de nuevo.';
-  
-      if (error?.error?.message) {
-        const mensaje = error.error.message.toLowerCase();
-  
-        if (mensaje.includes('duplicate')) {
-          mensajeError =
-            'El correo electrónico ya está registrado. Por favor, usa otro o inicia sesión.';
-        } else if (mensaje.includes('validation')) {
-          mensajeError =
-            'Algunos datos no son válidos. Revisa los campos e inténtalo de nuevo.';
-        } else if (mensaje.includes('network')) {
-          mensajeError = 'Problema de conexión. Revisa tu red e inténtalo nuevamente.';
+
+    const formData = new FormData();
+
+    let passwordToSend = null;
+    if (this.mostrarCamposContrasena) {
+        if (
+            this.teacherForm.get('password')?.valid &&
+            this.teacherForm.get('repitepassword')?.valid
+        ) {
+            passwordToSend = this.teacherForm.get('password')?.value;
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: 'Contraseña inválida',
+                text: 'Por favor, asegúrate de que la contraseña cumpla con los requisitos.',
+                confirmButtonColor: '#d33',
+            });
+            return;
         }
-      }
-  
-      Swal.fire({
-        icon: 'error',
-        title: 'Error',
-        text: mensajeError,
-        confirmButtonColor: '#d33',
-      });
     }
-  }  
+
+    let localizacionToSend = this.coordenadas;
+    const visualLocalizacion = this.teacherForm.get('localizacion')?.value;
+
+    if (
+        visualLocalizacion &&
+        localizacionToSend &&
+        !visualLocalizacion.includes(localizacionToSend)
+    ) {
+        localizacionToSend = this.coordenadas;
+    }
+
+    const datosProfesor: IRespuestaTeachersForm = {
+        usuario: {
+            id: this.teacherForm.value.id,
+            nombre: this.teacherForm.value.nombre,
+            apellidos: this.teacherForm.value.apellidos,
+            email: this.teacherForm.value.email,
+            password: passwordToSend,
+            rol: 'profesor',
+            activo: true,
+        },
+        profesor: {
+            precio_hora: this.teacherForm.value.precio_hora,
+            localizacion: localizacionToSend,
+            telefono: this.teacherForm.value.telefono,
+            meses_experiencia: this.teacherForm.value.meses_experiencia,
+            validado: false,
+        },
+        materias: this.teacherForm.value.materias,
+    };
+
+    formData.append('datos', JSON.stringify(datosProfesor));
+
+    if (this.teacherForm.get('foto')?.value instanceof File) {
+        formData.append('imagen', this.teacherForm.get('foto')?.value);
+    }
+
+    try {
+        if (this.tipo === 'Actualizar' && datosProfesor.usuario.id) {
+            await this.profesoresService.actualizarProfesor(
+                formData,
+                datosProfesor.usuario.id
+            );
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Profesor actualizado exitosamente.',
+                confirmButtonColor: '#28a745',
+            });
+            this.router.navigate(['/home']);
+        } else {
+            await this.profesoresService.registroProfesor(formData);
+            Swal.fire({
+                icon: 'success',
+                title: 'Éxito',
+                text: 'Profesor registrado exitosamente.',
+                confirmButtonColor: '#28a745',
+            });
+            this.router.navigate(['/login']);
+        }
+    } catch (error: any) {
+        let mensajeError = 'Ocurrió un error inesperado. Por favor, intenta de nuevo.';
+
+        if (error?.error?.message) {
+            const mensaje = error.error.message.toLowerCase();
+
+            if (mensaje.includes('duplicate')) {
+                mensajeError =
+                    'El correo electrónico ya está registrado. Por favor, usa otro o inicia sesión.';
+            } else if (mensaje.includes('validation')) {
+                mensajeError =
+                    'Algunos datos no son válidos. Revisa los campos e inténtalo de nuevo.';
+            } else if (mensaje.includes('network')) {
+                mensajeError = 'Problema de conexión. Revisa tu red e inténtalo nuevamente.';
+            }
+        }
+
+        Swal.fire({
+            icon: 'error',
+            title: 'Error',
+            text: mensajeError,
+            confirmButtonColor: '#d33',
+        });
+    }
+}
+
 
   // Procesa la imagen seleccionada por el usuario
   obtenerImagen(event: Event): void {

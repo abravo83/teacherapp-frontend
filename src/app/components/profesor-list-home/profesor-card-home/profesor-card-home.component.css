@@ -9,6 +9,11 @@ section {
   gap: 2em;
 }
 
+.star {
+  font-size: 20px;
+  color: var(--color-button1);
+}
+
 .study-fields {
   display: flex;
   flex-direction: row;

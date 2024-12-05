@@ -68,7 +68,7 @@
   background-color: var(--color-background-secondary);
 }
 
-.courses-list td:last-child {
+/* .courses-list td:last-child {
   color: var(--color-link-verde);
   font-weight: bold;
-}
+} */
