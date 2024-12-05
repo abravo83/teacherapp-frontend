@@ -18,11 +18,13 @@ import { MyClassesComponent } from './pages/dashboard/my-classes/my-classes.comp
 import { checkAdminGuard } from './guards/check-admin.guard';
 import { isLoggedGuard } from './guards/is-logged.guard';
 import { MyInfoComponent } from './pages/dashboard/my-info/my-info.component';
+import { PasswordRecoveryComponent } from './components/password-recovery/password-recovery.component';
 export const routes: Routes = [
   { path: '', pathMatch: 'full', redirectTo: 'home' },
   { path: 'home', component: HomeComponent },
   { path: 'login', component: LoginComponent },
   { path: 'logout', component: LogoutComponent },
+  { path: 'password-recovery', component: PasswordRecoveryComponent },
   { path: 'panel-control', component: PanelAdministradorComponent },
   {
     path: 'register',
