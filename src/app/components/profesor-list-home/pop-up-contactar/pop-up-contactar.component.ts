@@ -70,10 +70,10 @@ export class PopUpContactarComponent {
        // Si encontramos al profesor, extraemos las opiniones
        if (this.myProfesor) {
         this.opinionesProfesor = this.myProfesor.opiniones || [];
-        console.log('Opiniones:', this.opinionesProfesor); // Verifica las opiniones en la consola
+        // console.log('Opiniones:', this.opinionesProfesor); // Verifica las opiniones en la consola
       }
   
-      console.log(this.myProfesor); // Verifica que se obtiene el profesor correcto
+      // console.log(this.myProfesor); // Verifica que se obtiene el profesor correcto
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
