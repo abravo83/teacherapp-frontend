@@ -29,6 +29,7 @@ export class FilterHomeComponent {
     let valmax = filterFormValue.valmax;
     let puntuacion = filterFormValue.puntuacion;
     let criterio = filterFormValue.criterio;
+    let experiencia = filterFormValue.experiencia;
     if (valmin === null) valmin = '';
     if (valmax === null) valmax = '';
 
@@ -38,6 +39,7 @@ export class FilterHomeComponent {
       valmax,
       puntuacion,
       criterio,
+      experiencia,
     ]);
   }
 }
