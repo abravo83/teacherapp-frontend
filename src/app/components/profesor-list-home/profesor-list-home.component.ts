@@ -56,6 +56,10 @@ export class ProfesorListHomeComponent {
 
     this.profesoresList = await this.profesorService.getMateriasandProfesor();
 
+    this.profesoresList = this.profesoresList.filter(
+      (profesor) => Boolean(profesor.validado) === true
+    );
+
     this.ordenarAlabeticamente();
 
     this.profesoresListFilter = this.profesoresList.slice();
@@ -102,15 +106,29 @@ export class ProfesorListHomeComponent {
         if (item.puntuacion !== null) {
           const valorPuntuacion = item.puntuacion;
 
-          return (
-            valorPuntuacion >= parseFloat(event[3]) &&
-            valorPuntuacion < parseFloat(event[3]) + 1
-          );
+          return valorPuntuacion >= parseFloat(event[3]) - 0.5;
+
+          // return (
+          //   valorPuntuacion >= parseFloat(event[3]) &&
+          //   valorPuntuacion < parseFloat(event[3]) + 1
+          // );
         }
         return false;
       });
+      this.ordenarPuntuacion();
     }
 
+    if (event[5] != '' && event[5] != '0') {
+      console.log('pasa por expe');
+      this.profesoresList = this.profesoresList.filter((obj) => {
+        const mes = obj.meses_experiencia;
+
+        return mes <= event[5] * 12;
+      });
+      this.ordenaExperiencia();
+    }
+
+    console.log(this.profesoresList);
     //-------ORDENAR
     if (event[4] === 'nombre') {
       this.ordenarAlabeticamente();
@@ -126,16 +144,20 @@ export class ProfesorListHomeComponent {
     }
 
     if (event[4] === 'puntuacion') {
-      const validData = this.profesoresList.filter(
-        (item) => item.puntuacion !== null
-      );
+      this.ordenarPuntuacion();
+    }
 
-      validData.sort((a, b) => b.puntuacion - a.puntuacion);
-
-      this.profesoresList = validData;
+    if (event[4] === 'experiencia') {
+      this.ordenaExperiencia();
     }
 
     this.muestracoordenadas();
+  }
+
+  ordenaExperiencia() {
+    this.profesoresList = this.profesoresList.sort(
+      (a, b) => b.meses_experiencia - a.meses_experiencia
+    );
   }
 
   ordenarAlabeticamente() {
@@ -151,6 +173,16 @@ export class ProfesorListHomeComponent {
       }
       return 0;
     });
+  }
+
+  ordenarPuntuacion() {
+    const validData = this.profesoresList.filter(
+      (item) => item.puntuacion !== null
+    );
+
+    validData.sort((a, b) => b.puntuacion - a.puntuacion);
+
+    this.profesoresList = validData;
   }
 
   muestracoordenadas() {
