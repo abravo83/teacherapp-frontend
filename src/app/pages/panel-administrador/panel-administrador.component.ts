@@ -27,7 +27,7 @@ export class PanelAdministradorComponent implements OnInit {
   profesoresPaginados: Iprofesor[] = [];
   alumnosPaginados: Iusuario[] = [];
   paginaActual: number = 1;
-  registrosPorPagina: number = 10;
+  registrosPorPagina: number = 5;
   totalPaginas: number = 1;
 
   constructor(
