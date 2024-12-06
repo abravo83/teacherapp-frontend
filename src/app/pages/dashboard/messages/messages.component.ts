@@ -9,7 +9,7 @@ import {
   FormControl,
 } from '@angular/forms';
 import { Iusuario } from '../../../interfaces/iusuario';
-import { Imensaje, MensajeConEmisor } from '../../../interfaces/imensaje';
+import { Imensaje, MensajeAgrupado, MensajeConEmisor } from '../../../interfaces/imensaje';
 import { LoginService } from '../../../services/login.service';
 import { MensajesService } from '../../../services/mensajes.service';
 import { environment } from '../../../../environments/environments';
@@ -24,7 +24,8 @@ import { environment } from '../../../../environments/environments';
 export class MessagesComponent implements OnInit {
   loginService = inject(LoginService);
   messagesService= inject(MensajesService);
-  
+  mensajesAgrupados: MensajeAgrupado[] = [];
+
   notifications:MensajeConEmisor[]=[];  
   mensajes: Imensaje[] = [];
   arrAlumnos:Iusuario[]=[];
@@ -59,8 +60,24 @@ export class MessagesComponent implements OnInit {
       if (this.role === 'alumno') {
         this.obtenerProfesores();
         }
+
+        this.messagesService.mensajesAgrupados$.subscribe((agrupados) => {
+          this.mensajesAgrupados = agrupados;
+          this.notiCount = agrupados.reduce((acc, mensaje) => acc + mensaje.count, 0);
+        });
+      
+        this.cargarMensajesNoLeidos();
+
     }   
   }
+
+  //contador de mensajes sin leer de un usuario para mostrar badge
+  getMensajesNoLeidosPorUsuario(userId: number | undefined):number {
+    const usuario = this.mensajesAgrupados.find((mensaje) => mensaje.id === userId);
+    return usuario ? usuario.count : 0;
+  }
+
+
   /* obtener mis alumnos */
   async obtenerAlumnos():Promise<void>{
     try {
@@ -84,6 +101,7 @@ export class MessagesComponent implements OnInit {
       this.notifications = response || [] //asignamos respuesta a notifications   
       if(this.notifications.length){
       this.notiCount = this.notifications.length;// Actualizamos el número de mensajes no leídos
+      console.log(this.notiCount)
       }      
     } catch (error) {
       console.error('Error al obtener mensajes no leídos:', error);
@@ -145,7 +163,6 @@ export class MessagesComponent implements OnInit {
 
    /* Enviar un mensaje */
   async sendMensaje(mensajeorgin:Imensaje): Promise<void> {
-      console.log()
       const mensajeform: Imensaje = {
         id:0,
         emisor_id: this.usuarioId,  // El emisor es el usuario logueado

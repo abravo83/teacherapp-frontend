@@ -29,11 +29,10 @@
         <th>Nombre Profesor</th>
         <th>Email</th>
         <th>Teléfono</th>
-        <th>Fecha registro</th>
-        <th>Fecha baja</th>
         <th>Precio/hora</th>
         <th>Meses de experiencia</th>
-        <th>Acción</th>
+        <th>Fecha registro</th>
+        <th>Fecha baja</th>
       </tr>
     </thead>
     <tbody>
@@ -60,20 +59,21 @@
         </td>
         <td>{{ registro.email_profesor }}</td>
         <td>{{ registro.telefono }}</td>
-        <td>{{ registro.fecha_registro | date : "dd/MM/yyyy" }}</td>
-        <td>{{ registro.fecha_fin | date : "dd/MM/yyyy" }}</td>
         <td>{{ registro.precio_hora }} €</td>
         <td>{{ registro.meses_experiencia }} meses</td>
+        <td>{{ registro.fecha_registro | date : "dd/MM/yyyy" }}</td>
+        @if(registro.fecha_fin){
+        <td>{{ registro.fecha_fin | date : "dd/MM/yyyy" }}</td>
+        } @else {
         <td>
-          @if(!registro.fecha_fin){
           <button
             (click)="darRegistroDeBaja(registro.id)"
             class="button-primary"
           >
             Darse de baja
           </button>
-          }
         </td>
+        }
       </tr>
       }
     </tbody>
