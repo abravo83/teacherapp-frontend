@@ -13,7 +13,7 @@ section {
 .profesor-list-home {
   margin-top: 10px;
   height: 100%;
-  overflow-y: auto;
+
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
@@ -29,7 +29,7 @@ img {
 .img-prof {
   width: 120px;
   max-width: 30vw;
-  overflow: hidden;
+
   object-fit: cover;
   border-radius: 8px;
 }
