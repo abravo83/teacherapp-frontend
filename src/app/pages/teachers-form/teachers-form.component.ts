@@ -319,6 +319,15 @@ export class TeachersFormComponent implements OnInit {
         localizacionToSend = this.coordenadas;
     }
 
+    let validado = false;
+    if (this.tipo === 'Actualizar') {
+        const userId = this.teacherForm.value.id;
+        const profesor = await this.profesoresService.getProfesorById(userId);
+        if (profesor) {
+            validado = profesor.profesor.validado;
+        }
+    }
+
     const datosProfesor: IRespuestaTeachersForm = {
         usuario: {
             id: this.teacherForm.value.id,
@@ -334,7 +343,7 @@ export class TeachersFormComponent implements OnInit {
             localizacion: localizacionToSend,
             telefono: this.teacherForm.value.telefono,
             meses_experiencia: this.teacherForm.value.meses_experiencia,
-            validado: false,
+            validado,
         },
         materias: this.teacherForm.value.materias,
     };
@@ -393,6 +402,7 @@ export class TeachersFormComponent implements OnInit {
         });
     }
 }
+
 
 
   // Procesa la imagen seleccionada por el usuario
