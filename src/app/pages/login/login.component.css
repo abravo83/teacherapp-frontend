@@ -76,3 +76,9 @@ a {
 .error-box{
   height: 21px;
 }
+
+@media (min-width: 390px) and (max-width: 767px) {
+  .alert-box {
+    width: 80%;
+  }
+}
