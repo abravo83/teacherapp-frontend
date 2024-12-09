@@ -57,7 +57,6 @@
                   let last = last
                 "
                 class="nav-item p-1"
-                (click)="readNotifications(notificacion.id)"
                 [ngClass]="{ 'border-bottom': !last }"
               >
                 <a
@@ -280,7 +279,6 @@
                   let last = last
                 "
                 class="nav-item p-1"
-                (click)="readNotifications(notificacion.id)"
                 [ngClass]="{ 'border-bottom': !last }"
               >
                 <a
@@ -347,7 +345,6 @@
             <a
               class="nav-link"
               routerLinkActive="active"
-              (click)="limpiarNotificaciones()"
               aria-current="page"
               [routerLink]="['/dashboard', 'messages']"
             >
@@ -423,7 +420,6 @@
                   let last = last
                 "
                 class="nav-item p-1"
-                (click)="readNotifications(notificacion.id)"
                 [ngClass]="{ 'border-bottom': !last }"
               >
                 <a
@@ -490,7 +486,6 @@
             <a
               class="nav-link"
               routerLinkActive="active"
-              (click)="limpiarNotificaciones()"
               aria-current="page"
               [routerLink]="['/dashboard', 'messages']"
             >

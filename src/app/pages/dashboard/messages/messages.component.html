@@ -13,24 +13,39 @@
             (input)="queryChanged(txtQuery.value)"
           />
         </div>
-        @for(user of arrProf;track $index) {
-        <div
-          class="list-group-item userlist d-flex w-auto text-center align-items-center hov"
-          (click)="seleccionarContacto(user)"
-        >
-          <img
-            [src]="
-              user.foto ? API_URL + user.foto : './img/no_profile_freepick.webp'
-            "
-            alt="Avatar"
-            class="rounded-circle me-2"
-            style="width: 40px; height: 40px"
-          />
-          <h6 class="mb-1">
-            {{ user.nombre }} {{ getPrimerApellido(user.apellidos) }}
-          </h6>
+        <div class="overflow-auto" style="height: 500px">
+          @for(user of arrProf;track $index) {
+          <div
+            class="list-group-item userlist d-flex w-auto text-center align-items-center hov"
+            (click)="seleccionarContacto(user)"
+          >
+            <img
+              [src]="
+                user.foto
+                  ? API_URL + user.foto
+                  : './img/no_profile_freepick.webp'
+              "
+              alt="Avatar"
+              class="rounded-circle me-2"
+              style="width: 40px; height: 40px"
+            />
+            <div>
+              <h6 class="mb-1">
+                {{ user.nombre }} {{ getPrimerApellido(user.apellidos) }}
+
+                <span
+                  *ngIf="getMensajesNoLeidosPorUsuario(user.id) > 0"
+                  class="badge bg-danger position-relative p-1"
+                  style="font-size: 12px"
+                >
+                  {{ getMensajesNoLeidosPorUsuario(user.id) }}
+                </span>
+              </h6>
+            </div>
+          </div>
+          }
         </div>
-        } } @if(role==='profesor') {
+        } @if(role==='profesor') {
         <div>
           <h5>Alumnos</h5>
           <input
@@ -41,26 +56,38 @@
             (input)="queryChanged(txtQuery.value)"
           />
         </div>
-        @for(user of arrAlumnos; track $index){
-        <div
-          class="list-group-item userlist d-flex text-center align-items-center hov"
-          (click)="seleccionarContacto(user)"
-        >
-          <img
-            [src]="
-              user.foto ? API_URL + user.foto : './img/no_profile_freepick.webp'
-            "
-            alt="Avatar"
-            class="rounded-circle me-2"
-            style="width: 40px; height: 40px"
-          />
-          <div>
-            <h6 class="mb-0">
-              {{ user.nombre }} {{ getPrimerApellido(user.apellidos) }}
-            </h6>
+        <div class="overflow-auto" style="height: 500px">
+          @for(user of arrAlumnos; track $index){
+          <div
+            class="list-group-item userlist d-flex text-center align-items-center hov"
+            (click)="seleccionarContacto(user)"
+          >
+            <img
+              [src]="
+                user.foto
+                  ? API_URL + user.foto
+                  : './img/no_profile_freepick.webp'
+              "
+              alt="Avatar"
+              class="rounded-circle me-2"
+              style="width: 40px; height: 40px"
+            />
+            <div>
+              <h6 class="mb-0">
+                {{ user.nombre }} {{ getPrimerApellido(user.apellidos) }}
+                <span
+                  *ngIf="getMensajesNoLeidosPorUsuario(user.id) > 0"
+                  class="badge bg-danger position-relative p-1"
+                  style="font-size: 12px"
+                >
+                  {{ getMensajesNoLeidosPorUsuario(user.id) }}
+                </span>
+              </h6>
+            </div>
           </div>
+          }
         </div>
-        } }
+        }
       </div>
     </div>
 

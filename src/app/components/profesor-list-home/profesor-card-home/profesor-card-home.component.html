@@ -1,11 +1,27 @@
 <div *ngIf="popUpVisible" class="overlay"></div>
 <section class="my2 container profesores-list">
   <div class="card my-2">
+    <h5
+      class="card-header name-prof bg-dark text-white"
+      style="color: var(--color-text-primary)"
+    >
+      {{ myProfesor.nombre }} {{ myProfesor.apellidos }}
+      <img
+        src="https://cdn3.emoji.gg/emojis/1178-verified.png"
+        alt="Check Icon"
+        style="
+          display: inline;
+          width: 20px;
+          height: 20px;
+          vertical-align: middle;
+        "
+      />
+    </h5>
     <div
       class="card-body d-flex align-items-center"
       style="
         background-color: var(--color-background-secondary);
-        overflow: hidden;
+
         position: relative;
         gap: 2em;
       "
@@ -23,20 +39,6 @@
       />
 
       <div class="info-prof-container" style="max-width: 60%">
-        <h5 class="name-prof" style="color: var(--color-text-primary)">
-          {{ myProfesor.nombre }} {{ myProfesor.apellidos }}
-          <img
-            src="https://cdn3.emoji.gg/emojis/1178-verified.png"
-            alt="Check Icon"
-            style="
-              display: inline;
-              width: 20px;
-              height: 20px;
-              vertical-align: middle;
-            "
-          />
-        </h5>
-
         <div class="study-general">
           <h6>Áreas de Conocimiento:</h6>
           @for (item of myProfesor.materias; track $index) {

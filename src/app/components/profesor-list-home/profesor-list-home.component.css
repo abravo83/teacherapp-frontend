@@ -1,3 +1,4 @@
+/* Base styles */
 .flex {
   display: flex;
   flex-direction: column;
@@ -13,6 +14,7 @@ section {
   margin-top: 10px;
   height: 100%;
   overflow-y: auto;
+
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
@@ -29,8 +31,9 @@ img {
   width: 120px;
   max-width: 30vw;
   overflow: hidden;
-  display: block;
+
   object-fit: cover;
+  border-radius: 8px;
 }
 
 .mapa {
@@ -41,24 +44,71 @@ img {
 }
 
 .filter {
-  height: 250px;
+  height: auto;
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
 }
 
-@media (min-width: 390px) and (max-width: 767px) {
-  flex {
+/* Responsive styles for small devices (smartphones) */
+@media (max-width: 767px) {
+  .flex {
     flex-direction: column;
+    gap: 15px;
+  }
+
+  .mapa,
+  .filter {
+    height: 300px;
+    margin-bottom: 10px;
   }
 
   img {
-    width: 50%;
+    width: 100%; /* Images take full width for small devices */
+  }
+
+  .img-prof {
+    width: 100px; /* Smaller image size for compact view */
   }
 }
 
-@media (min-width: 800px) {
+/* Responsive styles for medium devices (tablets) */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .flex {
+    flex-direction: column;
+  }
+
+  .mapa,
+  .filter {
+    height: 300px;
+  }
+
+  img {
+    width: 75%; /* Adjust image width for tablets */
+  }
+
+  .img-prof {
+    width: 150px; /* Slightly larger images for tablets */
+  }
+}
+
+/* Responsive styles for large devices (desktops) */
+@media (min-width: 1025px) {
   .flex {
     flex-direction: row;
+    gap: 20px;
+  }
+
+  .profesor-list-home {
+    max-height: 600px; /* Limit height for large lists */
+  }
+
+  .img-prof {
+    width: 120px; /* Restore original image size */
+  }
+
+  .mapa,
+  .filter {
+    height: 300px; /* Increase size for better visibility */
   }
 }
