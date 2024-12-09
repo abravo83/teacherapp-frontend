@@ -1,5 +1,6 @@
 import { Component, inject, Input, signal } from '@angular/core';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
+import { environment } from '../../../../environments/environments';
 
 @Component({
   selector: 'app-mapa-home',
@@ -12,6 +13,7 @@ export class MapaHomeComponent {
   @Input() myCoordenada!: any;
   myposition = signal<any>('');
   profesoresList: any = [];
+  API_URL = environment.API_URL;
 
   ngOnInit() {
     //api de geolocalizacion de js nativa
