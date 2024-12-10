@@ -1,8 +1,30 @@
 @import url(https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap);
+.card-body {
+  display: flex;
+  flex-direction: row;
+  gap: 2em;
+}
+.icono {
+  display: inline;
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.card2 {
+  text-align: end;
+}
+
 section {
   font-family: "Work Sans", sans-serif;
 }
 
+.img-prof {
+  height: 120px;
+  aspect-ratio: 1/1;
+  display: block;
+  object-fit: cover;
+}
 .study-general {
   display: flex;
   flex-wrap: wrap;
@@ -20,8 +42,6 @@ section {
   flex-flow: row nowrap;
   padding-left: 0;
   margin-bottom: 1em;
-  list-style-type: none;
-  list-style-position: inside;
 }
 
 .studies {
@@ -36,7 +56,6 @@ section {
   gap: 10px;
 }
 
-/* meses de experiencia y precio por hora: margin-bottom: 1em;   */
 .experience-prof {
   display: inline-block;
   margin-right: 8px;
@@ -80,22 +99,28 @@ section {
   box-shadow: 4px 4px 5px rgba(0, 0.3, 0, 0.3);
 }
 
-@media (min-width: 390px) and (max-width: 767px) {
+@media (min-width: 340px) and (max-width: 767px) {
+  .card-body {
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
+  }
+
+  .card2 {
+    text-align: center;
+  }
   .study-general {
-    gap: 10px;
+    flex-direction: column;
+    text-align: center;
+    gap: 0;
   }
 
   .study-fields {
     flex-direction: column;
-    display: block;
-    padding: 0;
-    margin: 0;
   }
 
   .studies {
-    display: block;
-    padding-left: 0;
-    margin-bottom: 3px;
+    height: 5%;
     width: 100%;
   }
 
@@ -105,23 +130,29 @@ section {
   }
 
   .content-experience-prof {
-    margin-bottom: 1em;
-    display: inline;
-    margin-bottom: 1em;
+    display: inline-block;
+    margin-right: 8px;
   }
 
   .price-prof {
-    margin-top: 1em;
+    display: inline-block;
+    margin-right: 8px;
   }
 
   .content-price-prof {
-    display: inline;
-    margin-top: 1em;
+    margin-bottom: 1em;
+    display: inline-block;
+    background-color: var(--color-button2);
+    border: 3px transparent;
+    border-radius: 5px;
+    padding-left: 0;
+    text-align: left;
+    justify-content: left;
   }
   .button-contact {
     background-color: var(--color-button1);
     color: var(--color-text-secondary);
-    padding: 0.5em 1em;
+    padding: 0;
     margin-top: 1em;
     width: 100%;
     border: none;
