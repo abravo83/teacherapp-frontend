@@ -30,7 +30,8 @@ export class LoginComponent {
   errorForm: any[] = [];
   email: string = "";
   showAlert: boolean = false;
-    erroremail: boolean = false;
+  erroremail: boolean = false;
+
   ngOnInit() {
     
   }
@@ -64,25 +65,25 @@ export class LoginComponent {
  
 //Desarrollo lógica de la alerta
 toggleAlert(event: Event): void {
-    event.preventDefault(); // Evita que el formulario se envíe
+    event.preventDefault(); 
     this.showAlert = !this.showAlert;
+    
   }
 
   //solicitar correo a usuario y enviar al backend
   async getemail(resetKeyForm:Iusuario,form:any){
     //const email = resetKeyForm.email.trim();
     try {
-        this.erroremail = false
-        let resp: res = await this.recoverypass.sendRecoveryEmail(resetKeyForm);
-      if (resp.message === "email correcto") {
+        this.erroremail = false;   
+        const resp: res = await this.recoverypass.sendRecoveryEmail(resetKeyForm);
+        if (resp.message === "email correcto") {
         Swal.fire({
             position: "center",
             icon: "success",
             title: '¡Correo enviado!',
             text: 'Se ha enviado un correo de recuperacion',
             showConfirmButton: false,
-            timer: 3500,
-            width: '35%',
+            timer: 3500,            
           });
     }
     } catch ({ error }: any) {
@@ -92,67 +93,6 @@ toggleAlert(event: Event): void {
         form.reset()
       }
   }
-
-
-
-
-
-/* sendEmail() {
-    const email = this.email;
-
-    // Método para validar el formato del correo electrónico
-    const validarFormato = (email: string): boolean => {
-        const re = /.+@.+\..+/; 
-        email = email.trim();
-        console.log(email);
-        return re.test(email); 
-    };
-
-    // Método para validar el dominio del correo electrónico
-    const validarDominio = (email: string): boolean => {
-        const validDomains = ['hotmail.com', 'hotmail.es', 'yahoo.es', 'gmail.com', 'gmail.es']; // Lista de dominios válidos
-        return validDomains.some(domain => email.endsWith(domain)); // Retorna verdadero si el dominio es válido
-    };
-
-    // Validar el formato del correo electrónico
-    if (!validarFormato(email)) {
-        alert('El formato del correo electrónico es incorrecto. Asegúrate de que incluya un "@" y no dejes espacios.');
-        return;
-    }
-
-    // Validar el dominio del correo electrónico
-    if (!validarDominio(email)) {
-        alert('Por favor, introduce un correo electrónico válido. Asegúrate de que el dominio sea uno de los siguientes: hotmail.com, gmail.com, yahoo.es, etc.');
-        return; // Salir si el dominio no es válido
-    }
-
-    // Simulación de envío de correo (puedes reemplazarlo con una llamada a un servicio real)
-    this.simulateEmailSend(email)
-        .then(() => {
-            alert('¡Correo enviado! 👏 Se ha enviado un enlace para restablecer la contraseña a ' + email);
-            this.showAlert = false; // Ocultar la alerta después de enviar
-        })
-        .catch((error) => {
-            alert('Hubo un problema al enviar el correo: ' + error.message);
-        });
-} */
-
-// Simulación de un servicio de envío de correo
-/* private simulateEmailSend(email: string): Promise<void> {
-    return new Promise((resolve, reject) => {
-
-        setTimeout(() => {
-            // Simular éxito o fallo
-            const isSuccess = Math.random() > 0.2; // 80% de éxito
-            if (isSuccess) {
-                resolve(); // Envío exitoso
-            } else {
-                reject(new Error('No se pudo enviar el correo. Intenta más tarde.')); // Envío fallido
-            }
-        }, 1000); // 1 segundo de retraso
-    });
-}
- */
 
 
  }

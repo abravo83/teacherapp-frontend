@@ -5,7 +5,8 @@ import { firstValueFrom } from 'rxjs';
 
 type Body = { email: string};
 type Response = { message: string };
-type userpass = { code: string, newpass: string}
+type userpass = { code: string, newpass: string};
+type iResponse = { caduco: boolean, message: string };
 
 @Injectable({
   providedIn: 'root'
@@ -26,6 +27,12 @@ export class PasswordRecoveryService {
     console.log(myuser,'en service')
     return firstValueFrom(
       this.http.post<Response>(`${this.baseUrl}/restablecermiclave`, myuser)
+    );
+  }
+
+  sendCodeLink(code: string):Promise<any>{
+    return firstValueFrom(
+      this.http.get<any>(`${this.baseUrl}/restablecermiclave/${code}`)
     );
   }
 
