@@ -46,72 +46,76 @@
     </p>
   </div>
   <div class="section">
-    <h2>Opiniones</h2>
-    <div class="opinions" style="overflow: auto">
-      <!-- Comprobamos si hay opiniones -->
-      <div *ngIf="opinionesProfesor.length > 0; else noOpiniones">
-        <!-- Iteramos sobre cada opinión -->
-        <div *ngFor="let opinion of opinionesProfesor" class="opinion">
-          <div class="opinion-header">
-            <img alt="Profile picture of a person with a friendly smile" class="review-avatar" height="40" src="https://d1nhio0ox7pgb.cloudfront.net/_img/g_collection_png/standard/64x64/user.png" width="40 auto"/>
-            <div>
-              <div class="opinion-name">
-                {{
-                  opinion.estudiante_nombre ||
-                    "No hay opiniones disponibles para este profesor"
-                }}
+    <div class="opiniones-container">
+      <h2>Opiniones</h2>
+      <div class="opinions">
+        <!-- Comprobamos si hay opiniones -->
+        <div *ngIf="opinionesProfesor.length > 0; else noOpiniones">
+          <!-- Iteramos sobre cada opinión -->
+          <div *ngFor="let opinion of opinionesProfesor" class="opinion">
+            <div class="opinion-header">
+              <img
+                alt="Profile picture of a person with a friendly smile"
+                class="review-avatar"
+                height="40"
+                [src]="myProfesor.foto ? URLAPI + myProfesor.foto : '/img/no_profile_freepick.webp'"
+                width="40 auto"
+              />
+              <div>
+                <div class="opinion-name">
+                  {{
+                    opinion.estudiante_nombre ||
+                      "No hay opiniones disponibles para este profesor"
+                  }}
+                </div>
+
+                <span class="rating">
+                  <i
+                    class="fas fa-star"
+                    *ngFor="
+                      let _ of [].constructor(opinion.puntuacion || 0);
+                      let i = index
+                    "
+                    [style.color]="
+                      i < opinion.puntuacion ? 'var(--color-button1)' : '#ccc'
+                    "
+                  >
+                  </i>
+                </span>
+
+                <span class="opinion-time">
+                  {{ opinion.fecha ? (opinion.fecha | date : "short") : "" }}
+                </span>
               </div>
-
-              <span class="rating">
-                <i
-                  class="fas fa-star"
-                  *ngFor="
-                    let _ of [].constructor(opinion.puntuacion || 0);
-                    let i = index
-                  "
-                  [style.color]="
-                    i < opinion.puntuacion ? 'var(--color-button1)' : '#ccc'
-                  "
-                >
-                </i>
-              </span>
-
-              <span class="opinion-time">
-                {{ opinion.fecha ? (opinion.fecha | date : "short") : "" }}
-              </span>
             </div>
+
+            <p>
+              <strong>Comentario:</strong>
+              {{ opinion.comentario || "" }}
+            </p>
           </div>
-
-          <p>
-            <strong>Comentario:</strong>
-            {{ opinion.comentario || "" }}
-          </p>
         </div>
-      </div>
 
-      <!-- Mensaje si no hay opiniones -->
-      <ng-template #noOpiniones>
-        <p>No hay opiniones disponibles para este profesor.</p>
-      </ng-template>
+        <!-- Mensaje si no hay opiniones -->
+        <ng-template #noOpiniones>
+          <p>No hay opiniones disponibles para este profesor.</p>
+        </ng-template>
 
-      <div class="buttons">
-        <button class="button-close" (click)="cerrar()">Cerrar</button>
+        <div class="buttons">
+          <button class="button-close" (click)="cerrar()">Cerrar</button>
 
-        <button
-          class="button-register"
-          id="button-register"
-          
-          (click)="redirect()"
-        >
-        @if(login){
-          ¡Apúntate a la clase de este profesor!
-        } @else {
-          ¡Regístrate para contactar!
-        }
-        </button>
-        <!-- <div *ngIf="show_message" @fadeInOut class="alert alert-success" role="alert">
-          {{success_message}}
-        </div> -->
+          <button
+            class="button-register"
+            id="button-register"
+            (click)="redirect()"
+          >
+            @if(login){ ¡Apúntate a la clase de este profesor! } @else {
+            ¡Regístrate para contactar! }
+          </button>
+          <!-- <div *ngIf="show_message" @fadeInOut class="alert alert-success" role="alert">
+            {{success_message}}
+          </div> -->
+        </div>
       </div>
     </div>
   </div>

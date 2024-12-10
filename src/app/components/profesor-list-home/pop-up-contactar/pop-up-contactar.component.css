@@ -92,10 +92,14 @@
 
 }
 
+
 .review-avatar {
   margin-right: 10px; 
 }
 
+.opiniones-container {
+  overflow: auto;
+}
 .opinion {
     background-color: #f9f9f9;
     padding: 15px;
@@ -170,7 +174,7 @@
     flex-direction: column;
     align-items: center;
   }
-  
+
   .button-close {
     width: 35%;
   }

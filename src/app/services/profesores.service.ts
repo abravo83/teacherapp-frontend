@@ -23,6 +23,7 @@ export class ProfesoresService {
 
   // Variables
   BASE_URL = `${environment.API_URL}/api/profesores`;
+  idProfesorSeleccionado: number = 0;
 
   //HOME
   getAllProfesores() {

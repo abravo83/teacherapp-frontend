@@ -25,6 +25,7 @@ import { LoginService } from '../../../services/login.service';
 import { InscripcionesService } from '../../../services/inscripciones.service';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../environments/environments';
 
 @Component({
   standalone: true,
@@ -58,7 +59,8 @@ export class PopUpContactarComponent {
   id_profesor: number = 0;
   success_message: string = "";
   show_message: boolean = false;
-
+  URLAPI: string = environment.API_URL;
+  
   constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
   cerrar() {
@@ -74,7 +76,7 @@ export class PopUpContactarComponent {
     }
 
     this.id_alumno = this.loginService.getLoggedUserId();
-    this.id_profesor = this.myProfesor?.id;
+    this.id_profesor = this.myProfesor?.usuario_id;
 
     if (!this.id_alumno || !this.id_profesor) {
       console.error('faltan datos para la inscripcion');
@@ -110,6 +112,7 @@ export class PopUpContactarComponent {
 
   async ngOnInit(): Promise<void> {
     this.login = this.loginService.isLogged();
+    this.profesorId = this.profesoresService.idProfesorSeleccionado;
     try {
       // Obtener todos los profesores
       const profesores = await this.profesoresService.getMateriasandProfesor();
