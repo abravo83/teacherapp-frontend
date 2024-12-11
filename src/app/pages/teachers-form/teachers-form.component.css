@@ -96,3 +96,12 @@ input.button-primary:disabled {
   border-radius: 50%;
   border: 2px solid var(--color-button2);
 }
+
+.teacher-container {
+  min-height: 100vh;
+}
+
+.desplegable {
+  max-height: 150px;
+  overflow-y: auto;
+}

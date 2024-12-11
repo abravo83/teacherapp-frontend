@@ -107,3 +107,12 @@ input.button-primary:disabled {
   box-shadow: none;
   border: 2px solid #b3b3b3;
 }
+
+.student-container {
+  min-height: 100vh;
+}
+
+.student-card {
+max-width: 800px;
+width: 90%;
+}
