@@ -1,0 +1,13 @@
+.teacher-container {
+  min-height: 100vh;
+}
+
+.teacher-card {
+  max-width: 800px;
+  width: 90%;
+}
+
+.desplegable {
+  max-height: 150px;
+  overflow-y: auto;
+}

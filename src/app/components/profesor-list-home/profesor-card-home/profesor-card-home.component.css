@@ -171,3 +171,7 @@ section {
   z-index: 999;
   overflow: hidden;
 }
+
+.info-prof-container{
+  max-width: 60%;
+}

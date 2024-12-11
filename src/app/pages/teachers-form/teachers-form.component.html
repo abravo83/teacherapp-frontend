@@ -4,7 +4,7 @@
 </header>
 }
 <main>
-  <section class="bg-white py-5 d-flex justify-content-center align-items-center" style="min-height: 100vh">
+  <section class="bg-white py-5 d-flex justify-content-center align-items-center teacher-container">
     <div class="card container p-5 border-0 shadow-lg bg-light">
       <h3 class="shadow title w-auto align-self-center text-uppercase text-center">
         {{ tipo }} tu perfil de profesor
@@ -186,7 +186,7 @@
             </button>
             @if(desplegableAbierto) { @if(materiasList && materiasList.length > 0)
             {
-            <div class="border p-2 mt-2" style="max-height: 150px; overflow-y: auto">
+            <div class="border p-2 mt-2 desplegable">
               <div class="form-check" *ngFor="let materia of materiasList">
                 <input class="form-check-input" type="checkbox" [value]="materia.id" (change)="cambiarMateria($event)"
                   [checked]="teacherForm.value.materias.includes(materia.id)" />

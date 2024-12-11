@@ -28,3 +28,8 @@ button.btn-primary {
   background-color: #fdcb9e;
   border-color: #cceabb;
 }
+
+.foto {
+  width: 40px;
+  height: 40px;
+}
