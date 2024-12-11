@@ -13,8 +13,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    overflow: auto;
     gap: 10px; 
+    overflow: auto;
 
   }
 
@@ -98,7 +98,9 @@
 }
 
 .opiniones-container {
-  overflow: auto;
+  overflow-y: auto;
+  max-height: 400px;
+  margin-bottom: 50px;
 }
 .opinion {
     background-color: #f9f9f9;
@@ -179,3 +181,4 @@
     width: 35%;
   }
 }
+

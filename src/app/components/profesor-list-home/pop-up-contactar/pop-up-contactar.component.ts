@@ -95,7 +95,9 @@ export class PopUpContactarComponent {
             text: '¡Ya estás inscrito en tus clases con este profesor!',
             showConfirmButton: false,
             timer: 1500,
+
           });
+          this.cerrarPopUp.emit();
         },
         error: (err) => {
           this.show_message = false;

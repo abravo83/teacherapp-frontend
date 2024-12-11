@@ -58,7 +58,11 @@
                 alt="Profile picture of a person with a friendly smile"
                 class="review-avatar"
                 height="40"
-                [src]="myProfesor.foto ? URLAPI + myProfesor.foto : '/img/no_profile_freepick.webp'"
+                [src]="
+                  myProfesor.foto
+                    ? URLAPI + myProfesor.foto
+                    : '/img/no_profile_freepick.webp'
+                "
                 width="40 auto"
               />
               <div>
@@ -100,23 +104,18 @@
         <ng-template #noOpiniones>
           <p>No hay opiniones disponibles para este profesor.</p>
         </ng-template>
-
-        <div class="buttons">
-          <button class="button-close" (click)="cerrar()">Cerrar</button>
-
-          <button
-            class="button-register"
-            id="button-register"
-            (click)="redirect()"
-          >
-            @if(login){ ¡Apúntate a la clase de este profesor! } @else {
-            ¡Regístrate para contactar! }
-          </button>
-          <!-- <div *ngIf="show_message" @fadeInOut class="alert alert-success" role="alert">
-            {{success_message}}
-          </div> -->
-        </div>
       </div>
+    </div>
+    <div class="buttons">
+      <button class="button-close" (click)="cerrar()">Cerrar</button>
+
+      <button class="button-register" id="button-register" (click)="redirect()">
+        @if(login){ ¡Apúntate a la clase de este profesor! } @else { ¡Regístrate
+        para contactar! }
+      </button>
+      <!-- <div *ngIf="show_message" @fadeInOut class="alert alert-success" role="alert">
+        {{success_message}}
+      </div> -->
     </div>
   </div>
 </div>
