@@ -255,14 +255,14 @@ export class ReviewsComponent implements OnInit {
     this.mostrarModal = false;
   }
 
-  cambiarPagina(pagina: number): void {
-    this.currentPage = pagina;
-    const startIndex = (pagina - 1) * this.itemsPerPage;
-    this.opinionesFiltradas = this.opiniones.slice(
-      startIndex,
-      startIndex + this.itemsPerPage
-    );
-  }
+  // cambiarPagina(pagina: number): void {
+  //   this.currentPage = pagina;
+  //   const startIndex = (pagina - 1) * this.itemsPerPage;
+  //   this.opinionesFiltradas = this.opiniones.slice(
+  //     startIndex,
+  //     startIndex + this.itemsPerPage
+  //   );
+  // }
 
   cerrarModal(): void {
     this.mostrarModal = false;

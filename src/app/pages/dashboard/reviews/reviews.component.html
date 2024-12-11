@@ -2,22 +2,10 @@
   <h2>Mis Reseñas de Clases</h2>
   <div class="filters">
     @if(usuario &&usuario.rol === 'alumno') {
-    <button (click)="agregarResena()" class="standard-btn">Agregar</button>
+    <button (click)="agregarResena()" class="standard-btn">
+      Agregar Reseña
+    </button>
     }
-    <div>
-      <label for="filtro-opiniones" class="filtro__opiniones__label"
-        >Filtrar por:</label
-      >
-      <select
-        id="filtro-opiniones"
-        [(ngModel)]="filtroTiempo"
-        (change)="filtrarOpiniones()"
-      >
-        <option value="12m">Últimos 12 meses</option>
-        <option value="6m">Últimos 6 meses</option>
-        <option value="3m">Últimos 3 meses</option>
-      </select>
-    </div>
   </div>
 
   <table class="reviews-table">
@@ -66,21 +54,44 @@
     </tbody>
   </table>
 
-  <div class="pagination">
-    <button
-      (click)="cambiarPagina(currentPage - 1)"
-      [disabled]="currentPage === 1"
-    >
-      Anterior
-    </button>
-    <span>Página {{ currentPage }}</span>
-    <button
-      (click)="cambiarPagina(currentPage + 1)"
-      [disabled]="currentPage * itemsPerPage >= totalItems"
-    >
-      Siguiente
-    </button>
+  <div class="reviews-grid">
+    @for(opinion of opinionesFiltradas; track $index){
+    <div class="review-card">
+      @if(usuario && usuario.rol === 'alumno') {
+      <div class="review-field">
+        <span class="field-label">Profesor:</span>
+        <span>{{ getNombreProfesor(opinion.profesor_id) }}</span>
+      </div>
+      } @if(usuario && usuario.rol === 'profesor') {
+      <div class="review-field">
+        <span class="field-label">Estudiante:</span>
+        <span>{{ getNombreAlumno(opinion.estudiante_id) }}</span>
+      </div>
+      }
+      <div class="review-field">
+        <span class="field-label">Reseña:</span>
+        <span>{{ opinion.comentario }}</span>
+      </div>
+      <div class="review-field">
+        <span class="field-label">Fecha:</span>
+        <span>{{ opinion.fecha | date : "dd/MM/yyyy" }}</span>
+      </div>
+      <div class="review-field">
+        <span class="field-label">Puntuación:</span>
+        <span class="stars">{{ "★".repeat(opinion.puntuacion) }}</span>
+      </div>
+      @if(usuario && usuario.rol === 'alumno') {
+      <div class="review-actions">
+        <i
+          class="icon_editar_opinion fa-regular fa-pen-to-square"
+          (click)="editarResena(opinion)"
+        ></i>
+      </div>
+      }
+    </div>
+    }
   </div>
+
   <!-- Modal Agregar/Editar Reseña -->
   @if(mostrarModal){
   <div class="modal">
@@ -131,15 +142,6 @@
           disabled
         />
         }
-
-        <!-- <input
-          class="form-select"
-          type="number"
-          id="estudiante"
-          formControlName="estudiante_id"
-          required
-          hidden
-        /> -->
 
         <label for="comentario">Comentario:</label>
         <textarea

@@ -107,3 +107,48 @@ button:disabled {
 .icon_editar_opinion:hover {
   color: #fdcb9e;
 }
+
+@media (max-width: 768px) {
+  .reviews-table {
+    display: none;
+  }
+
+  .reviews-container {
+    padding: 0;
+  }
+
+  .reviews-grid {
+    display: grid;
+    gap: 1rem;
+    padding: 0;
+  }
+
+  .review-card {
+    background: white;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
+
+  .review-field {
+    margin-bottom: 0.5rem;
+  }
+
+  .field-label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.25rem;
+  }
+
+  .review-actions {
+    margin-top: 1rem;
+    text-align: right;
+  }
+}
+
+/* Mostrar tabla en desktop y ocultar cards */
+@media (min-width: 769px) {
+  .reviews-grid {
+    display: none;
+  }
+}
