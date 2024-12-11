@@ -119,7 +119,6 @@ export class ProfesorListHomeComponent {
     }
 
     if (event[5] != '' && event[5] != '0') {
-      console.log('pasa por expe');
       this.profesoresList = this.profesoresList.filter((obj) => {
         const mes = obj.meses_experiencia;
 
@@ -128,7 +127,6 @@ export class ProfesorListHomeComponent {
       this.ordenaExperiencia();
     }
 
-    console.log(this.profesoresList);
     //-------ORDENAR
     if (event[4] === 'nombre') {
       this.ordenarAlabeticamente();
