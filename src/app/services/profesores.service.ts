@@ -4,13 +4,8 @@ import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 import { environment } from '../../environments/environments';
 import { Iprofesor } from '../interfaces/iprofesor';
-import { DATOS_PROFESORES } from '../db/profesores';
 import { UsuariosService } from './usuarios.service';
 import { Iusuario } from '../interfaces/iusuario';
-import { MATERIAS } from '../db/materias';
-import { USUARIOS } from '../db/usuarios';
-import { MATERIAS_PROFESORES } from '../db/materias_profesores';
-
 import { IRespuestaTeachersForm } from '../interfaces/iRespuestaTeachersForm.interface';
 
 @Injectable({

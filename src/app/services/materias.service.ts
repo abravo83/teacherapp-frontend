@@ -4,8 +4,6 @@ import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 import { environment } from '../../environments/environments';
 import { Imateria } from '../interfaces/imateria';
-import { ImateriaProfesor } from '../interfaces/imateriaprofesor';
-import { Iprofesor } from '../interfaces/iprofesor';
 
 @Injectable({
   providedIn: 'root',

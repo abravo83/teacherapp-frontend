@@ -68,17 +68,7 @@ export const routes: Routes = [
         component: TeachersFormComponent,
       },
       {
-        path: 'editar-profesor-guarded/:id',
-        canActivate: [checkIdGuard],
-        component: TeachersFormComponent,
-      },
-      {
         path: 'editar-alumno/:id',
-        component: StudentsFormComponent,
-      },
-      {
-        path: 'editar-alumno-guarded/:id',
-        canActivate: [checkIdGuard],
         component: StudentsFormComponent,
       },
     ],

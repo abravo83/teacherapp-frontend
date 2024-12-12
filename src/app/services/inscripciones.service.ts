@@ -1,18 +1,9 @@
 import { inject, Injectable } from '@angular/core';
-import { Iusuario } from '../interfaces/iusuario';
-import { firstValueFrom, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { USUARIOS } from '../db/usuarios';
 import { environment } from '../../environments/environments';
-import { jwtDecode, JwtPayload } from "jwt-decode";
-import { LoginService } from './login.service';
+import { JwtPayload } from "jwt-decode";
 
-type Body = { id_alumno:number, id_profesor:number };
 type Response = { message: string; token: string };
-interface CustomPayload extends JwtPayload {
-  usuario_id: number;
-  usuario_rol: string;
-}
 
 @Injectable({
   providedIn: 'root',
