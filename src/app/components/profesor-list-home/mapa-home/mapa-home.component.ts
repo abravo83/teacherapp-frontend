@@ -1,4 +1,4 @@
-import { Component, inject, Input, signal } from '@angular/core';
+import { Component, Input, signal } from '@angular/core';
 import { MapInfoWindow, MapMarker } from '@angular/google-maps';
 import { environment } from '../../../../environments/environments';
 

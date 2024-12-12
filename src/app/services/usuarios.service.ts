@@ -11,7 +11,6 @@ import { LoginService } from './login.service';
 })
 export class UsuariosService {
   arrUsuarios: Iusuario[] = [];
-  private usuarioActualId = 1;
 
   httpClient = inject(HttpClient);
   loginService = inject(LoginService);

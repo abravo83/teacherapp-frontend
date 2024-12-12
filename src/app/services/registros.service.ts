@@ -6,7 +6,6 @@ import { environment } from '../../environments/environments';
 import { Iusuario } from '../interfaces/iusuario';
 import { Iregistros } from '../interfaces/iregistros';
 import { UsuariosService } from './usuarios.service';
-import { LoginService } from './login.service';
 
 @Injectable({
   providedIn: 'root',
