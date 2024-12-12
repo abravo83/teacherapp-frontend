@@ -9,8 +9,12 @@
     <div class="section-img-info">
       <img
         *ngIf="myProfesor.foto"
-        class="img-prof"
-        [src]="myProfesor.foto"
+        class="img-prof rounded-circle"
+        [src]="
+          myProfesor.foto
+            ? URLAPI + myProfesor.foto
+            : '/img/no_profile_freepick.webp'
+        "
         [alt]="myProfesor.nombre"
       />
       <div class="info">
