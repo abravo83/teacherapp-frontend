@@ -22,22 +22,7 @@ export class LoginService {
   arrUsers: Iusuario[] = USUARIOS;
 
   login(user: Body): Promise<Response> {
-    //login contra la BD local JSON de usuarios.
-    //comentar cuando la api esté disponible
-    // const userLogin = this.arrUsers.find(userDb => userDb.email === user.email);
-    // return new Promise<response>((resolve, reject) => {
-    //   let result: response = { success: "false", token: "" };
-    //   if (userLogin) {
-    //     if (userLogin.password === user.password) {
-    //       const token = "Token" + userLogin.id;
-    //       result = { success: "true", token: token }
-    //       resolve(result);
-    //     }
-    //   };
-    //   reject({ message: 'email y/o contraseña incorrectos' });
-    // });
-
-    //llamada a la api descomentar cuando esté disponible
+  
     console.log(`${this.baseUrl}/login`);
     console.log(user);
 

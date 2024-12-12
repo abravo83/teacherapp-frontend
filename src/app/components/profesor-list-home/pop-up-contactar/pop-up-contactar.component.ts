@@ -1,29 +1,22 @@
 import {
   Component,
   Input,
-  NgModule,
   EventEmitter,
   Output,
-  inject,
-  input,
+  inject
 } from '@angular/core';
 import { Iprofesor } from '../../../interfaces/iprofesor';
-import { IProfesorCompleto } from '../../../interfaces/iprofesor-completo.interface';
 import { Iopinion } from '../../../interfaces/iopinion';
 import { Iusuario } from '../../../interfaces/iusuario';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ActivatedRoute } from '@angular/router';
-import { RouterLink } from '@angular/router';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { ProfesoresService } from '../../../services/profesores.service';
 import { OpinionesService } from '../../../services/opiniones.service';
 
-import { MyInfoComponent } from '../../../pages/dashboard/my-info/my-info.component';
-import { StarRatingComponent } from '../star-rating/star-rating.component';
 import { LoginService } from '../../../services/login.service';
 import { InscripcionesService } from '../../../services/inscripciones.service';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import Swal from 'sweetalert2';
 import { environment } from '../../../../environments/environments';
 
@@ -61,7 +54,7 @@ export class PopUpContactarComponent {
   show_message: boolean = false;
   URLAPI: string = environment.API_URL;
   
-  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
+  constructor(private router: Router) {}
 
   cerrar() {
     this.cerrarPopUp.emit();

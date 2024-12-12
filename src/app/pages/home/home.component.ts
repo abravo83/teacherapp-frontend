@@ -9,9 +9,7 @@ import { NavbarComponent } from '../../components/navbar/navbar.component';
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [
-    RouterLink, 
-    ProfesorCardHomeComponent, 
+  imports: [  
     ProfesorListHomeComponent,
     NavbarComponent,
     FooterComponent,

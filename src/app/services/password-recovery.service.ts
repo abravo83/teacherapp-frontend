@@ -6,7 +6,6 @@ import { firstValueFrom } from 'rxjs';
 type Body = { email: string};
 type Response = { message: string };
 type userpass = { code: string, newpass: string};
-type iResponse = { caduco: boolean, message: string };
 
 @Injectable({
   providedIn: 'root'

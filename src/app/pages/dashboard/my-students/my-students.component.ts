@@ -3,26 +3,17 @@ import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
-  FormControl,
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
-import { USUARIOS } from '../../../db/usuarios';
 import { Iusuario } from '../../../interfaces/iusuario';
-import { INSCRIPCIONES_CLASE } from '../../../db/inscripciones_clase';
 import { CommonModule } from '@angular/common';
-import { MATERIAS } from '../../../db/materias';
 import { environment } from '../../../../environments/environments';
 import { RegistrosService } from '../../../services/registros.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
 import { Iregistros } from '../../../interfaces/iregistros';
 import Swal from 'sweetalert2';
-
-interface AlumnoConInscripcion extends Iusuario {
-  fechaInscripcion?: Date | null;
-  clase?: string;
-}
 
 @Component({
   selector: 'app-my-students',
