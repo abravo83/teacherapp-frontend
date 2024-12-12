@@ -51,7 +51,8 @@ img.rounded-circle {
 }
 
 .logo {
-  width: 40px;
+  max-width: 40vw;
+  object-fit: contain;
   height: 40px;
 }
 
@@ -70,6 +71,10 @@ img.rounded-circle {
   background: none;
   align-items: center;
   text-align: center;
+}
+
+.navbar__teacherapp {
+  margin-right: -17px;
 }
 
 /* header */

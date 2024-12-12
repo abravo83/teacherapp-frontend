@@ -1,8 +1,15 @@
-<nav class="navbar navbar-expand-lg border-1 text-white shadow px-3 fixed-top z-1 bg-white">
+<nav
+  class="navbar navbar__teacherapp navbar-expand-lg border-1 text-white shadow px-2 fixed-top z-1 bg-white"
+>
   <div class="container-fluid px-4">
     <div class="text-black">
-      <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/home']"><img
-          class="img-fluid logo" src="../../apple-touch-icon.png" alt="logo" /></a>
+      <a
+        class="nav-link"
+        routerLinkActive="active"
+        aria-current="page"
+        [routerLink]="['/home']"
+        ><img class="img-fluid logo" src="/teacherapp_logo.png" alt="logo"
+      /></a>
     </div>
 
     <div class="d-flex align-items-center justify-content-center">
@@ -10,27 +17,46 @@
         @if(login && role!=='administrador'){
         <ul class="navbar-nav hover-bg">
           <li class="nav-item dropdown" (click)="toggleNotificaciones()">
-            <a class="nav-link position-relative d-lg-none dropdown-toggle" routerLinkActive="active"
-              aria-current="page" title="Notificaciones">
+            <a
+              class="nav-link position-relative d-lg-none dropdown-toggle"
+              routerLinkActive="active"
+              aria-current="page"
+              title="Notificaciones"
+            >
               @if(notiCount>0){
-              <span class="badge bg-warning position-absolute translate-middle p-1 font12">{{ notiCount }}</span>
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1 font12"
+                >{{ notiCount }}</span
+              >
               }
-              <i class="fa-regular fa-bell font22"></i></a>
+              <i class="fa-regular fa-bell font22"></i
+            ></a>
             @if(showNotifications){
-            <ul class="dropdown-menu dropdown-menu shadow text-black text-center notificaciones">
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center notificaciones"
+            >
               @if(mensajesAgrupados.length === 0){
               <li class="nav-item p-1 text-center text-black-50">
                 No tienes notificaciones
               </li>
               }
-              <li *ngFor="
+              <li
+                *ngFor="
                   let notificacion of mensajesAgrupados;
                   let i = index;
                   let last = last
-                " class="nav-item p-1" [ngClass]="{ 'border-bottom': !last }">
-                <a class="text-black texto-notificacion" [routerLink]="['/dashboard', 'messages']">
-                  <small class="d-block mb-1 text-dark">{{ notificacion.nombre }}
-                    {{ notificacion.apellido }}</small>
+                "
+                class="nav-item p-1"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black texto-notificacion"
+                  [routerLink]="['/dashboard', 'messages']"
+                >
+                  <small class="d-block mb-1 text-dark"
+                    >{{ notificacion.nombre }}
+                    {{ notificacion.apellido }}</small
+                  >
                   <small class="d-block text-muted">
                     Te ha enviado {{ notificacion.count }} Mensajes
                   </small>
@@ -43,33 +69,68 @@
         }
       </span>
 
-      <button class="navbar-toggler border-0 bg-white" type="button" data-bs-toggle="offcanvas" data-bs-target="#menu"
-        aria-controls="menu" aria-expanded="false" aria-label="Toggle navigation">
+      <button
+        class="navbar-toggler border-0 bg-white"
+        type="button"
+        data-bs-toggle="offcanvas"
+        data-bs-target="#menu"
+        aria-controls="menu"
+        aria-expanded="false"
+        aria-label="Toggle navigation"
+      >
         <span class="navbar-toggler-icon"></span>
       </button>
     </div>
     <div class="offcanvas offcanvas-start" id="menu">
       <div class="offcanvas-header border-bottom text-black">
-        <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/home']"><img
-            class="img-fluid logo" src="../../apple-touch-icon.png" alt="logo" /></a>
+        <a
+          class="nav-link"
+          routerLinkActive="active"
+          aria-current="page"
+          [routerLink]="['/home']"
+          ><img
+            class="img-fluid logo"
+            src="../../apple-touch-icon.png"
+            alt="logo"
+        /></a>
 
-        <button type="button" data-bs-dismiss="offcanvas" class="btn-close bg-white"></button>
+        <button
+          type="button"
+          data-bs-dismiss="offcanvas"
+          class="btn-close bg-white"
+        ></button>
       </div>
 
       @if(login === false){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
           <li class="nav-item px-lg-4">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/home']">Inicio</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/home']"
+              >Inicio</a
+            >
           </li>
 
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/login']">Iniciar
-              sesion</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/login']"
+              >Iniciar sesion</a
+            >
           </li>
           <li class="nav-item">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/register']">Registrarse</a>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/register']"
+              >Registrarse</a
+            >
           </li>
         </ul>
       </div>
@@ -77,61 +138,49 @@
       }@else if(login === true && role === 'administrador' ){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <!-- <li class="nav-item ocultarli mx-1">
+          <li class="nav-item ocultarli mx-1">
             <a
               class="nav-link"
               routerLinkActive="active"
               aria-current="page"
-              title="Notificaciones"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Panel de administrador"
+              ><i class="fa-solid fa-gear font22"></i>
+            </a>
+          </li>
+
+          <li class="nav-item ocultarli mx-1">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
+              ><i class="fa-solid fa-right-from-bracket font22"></i>
+            </a>
+          </li>
+          <li class="nav-item hide-link">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
             >
-              @if(notiCount>0){
-              <span
-                class="badge bg-warning position-absolute translate-middle p-1"
-                style="font-size: 12px"
-                >{{ notiCount }}</span
-              >
-              }
-              <i class="fa-regular fa-bell" style="font-size: 22px"></i
-            ></a>
-          </li> -->
-
-          <li class="nav-item ocultarli mx-1">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/dashboard', 'my-account']" title="Panel de administrador"><i
-                class="fa-solid fa-gear font22"></i>
-            </a>
-          </li>
-
-          <li class="nav-item ocultarli mx-1">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/logout']"
-              title="Cerrar sesion"><i class="fa-solid fa-right-from-bracket font22"></i>
-            </a>
-          </li>
-
-          <!-- <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page">
-              @if(notiCount>0){
-              <span
-                class="badge bg-warning position-absolute translate-middle p-1"
-                style="font-size: 12px"
-                >{{ notiCount }}</span
-              >
-              }
-              <i class="fa-regular fa-bell" style="font-size: 22px"></i>
-              Notificaciones
-            </a>
-          </li> -->
-          <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/dashboard', 'my-account']">
               <i class="fa-solid fa-gear font22"></i>
-              Panel de Administrador</a>
+              Panel de Administrador</a
+            >
           </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/logout']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+            >
               <i class="fa-solid fa-right-from-bracket font22"></i>
-              Cerrar Sesion</a>
+              Cerrar Sesion</a
+            >
           </li>
         </ul>
       </div>
@@ -140,28 +189,50 @@
 
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <li class="nav-item ocultarli mx-1 dropdown" (click)="toggleNotificaciones()">
-            <a class="nav-link dropdown-toggle" routerLinkActive="active" aria-current="page" title="Notificaciones">
+          <li
+            class="nav-item ocultarli mx-1 dropdown"
+            (click)="toggleNotificaciones()"
+          >
+            <a
+              class="nav-link dropdown-toggle"
+              routerLinkActive="active"
+              aria-current="page"
+              title="Notificaciones"
+            >
               @if(notiCount>0){
-              <span class="badge bg-warning position-absolute translate-middle p-1 font12">{{ notiCount
-                }}</span>
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1 font12"
+                >{{ notiCount }}</span
+              >
               }
-              <i class="fa-regular fa-bell font22"></i></a>
+              <i class="fa-regular fa-bell font22"></i
+            ></a>
             @if(showNotifications){
-            <ul class="dropdown-menu dropdown-menu shadow text-black text-center notificaciones">
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center notificaciones"
+            >
               @if(mensajesAgrupados.length === 0){
               <li class="nav-item p-1 text-center text-black-50">
                 No tienes notificaciones
               </li>
               }
-              <li *ngFor="
+              <li
+                *ngFor="
                   let notificacion of mensajesAgrupados;
                   let i = index;
                   let last = last
-                " class="nav-item p-1" [ngClass]="{ 'border-bottom': !last }">
-                <a class="text-black mensajes" [routerLink]="['/dashboard', 'messages']">
-                  <small class="d-block mb-1 text-dark">{{ notificacion.nombre }}
-                    {{ notificacion.apellido }}</small>
+                "
+                class="nav-item p-1"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black mensajes"
+                  [routerLink]="['/dashboard', 'messages']"
+                >
+                  <small class="d-block mb-1 text-dark"
+                    >{{ notificacion.nombre }}
+                    {{ notificacion.apellido }}</small
+                  >
                   <small class="d-block text-muted">
                     Te ha enviado {{ notificacion.count }} Mensajes
                   </small>
@@ -171,28 +242,50 @@
             }
           </li>
           <li class="nav-item ocultarli mx-1">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/dashboard', 'my-account']" title="Mi Perfil"><i
-                class="fa-regular fa-address-card font22"></i>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Mi Perfil"
+              ><i class="fa-regular fa-address-card font22"></i>
             </a>
           </li>
 
           <li class="nav-item ocultarli mx-1">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/logout']"
-              title="Cerrar sesion"><i class="fa-solid fa-right-from-bracket font22"></i>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
+              ><i class="fa-solid fa-right-from-bracket font22"></i>
             </a>
           </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/dashboard', 'my-account']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+            >
               <i class="fa-regular fa-address-card font22"></i>
-              Mi Perfil</a>
+              Mi Perfil</a
+            >
           </li>
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/dashboard', 'messages']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'messages']"
+            >
               @if(notiCount>0){
-              <span class="badge bg-warning position-absolute translate-middle p-1 font12">{{ notiCount }}</span>
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1 font12"
+                >{{ notiCount }}</span
+              >
               }
               <i class="fa-regular fa-bell font22"></i>
               Notificaciones
@@ -200,9 +293,15 @@
           </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/logout']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+            >
               <i class="fa-solid fa-right-from-bracket font22"></i>
-              Cerrar sesion</a>
+              Cerrar sesion</a
+            >
           </li>
         </ul>
       </div>
@@ -210,27 +309,50 @@
       } @else if(login === true && role === 'profesor'){
       <div class="offcanvas-body text-start">
         <ul class="navbar-nav ms-sm-auto mi-li hover-bg">
-          <li class="nav-item ocultarli mx-1 dropdown" (click)="toggleNotificaciones()">
-            <a class="nav-link dropdown-toggle" routerLinkActive="active" aria-current="page" title="Notificaciones">
+          <li
+            class="nav-item ocultarli mx-1 dropdown"
+            (click)="toggleNotificaciones()"
+          >
+            <a
+              class="nav-link dropdown-toggle"
+              routerLinkActive="active"
+              aria-current="page"
+              title="Notificaciones"
+            >
               @if(notiCount>0){
-              <span class="badge bg-warning position-absolute translate-middle p-1 font12">{{ notiCount }}</span>
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1 font12"
+                >{{ notiCount }}</span
+              >
               }
-              <i class="fa-regular fa-bell font22"></i></a>
+              <i class="fa-regular fa-bell font22"></i
+            ></a>
             @if(showNotifications){
-            <ul class="dropdown-menu dropdown-menu shadow text-black text-center notificaciones">
+            <ul
+              class="dropdown-menu dropdown-menu shadow text-black text-center notificaciones"
+            >
               @if(mensajesAgrupados.length === 0){
               <li class="nav-item p-1 text-center text-black-50">
                 No tienes notificaciones
               </li>
               }
-              <li *ngFor="
+              <li
+                *ngFor="
                   let notificacion of mensajesAgrupados;
                   let i = index;
                   let last = last
-                " class="nav-item p-1" [ngClass]="{ 'border-bottom': !last }">
-                <a class="text-black mensajes" [routerLink]="['/dashboard', 'messages']">
-                  <small class="d-block text-dark">{{ notificacion.nombre }}
-                    {{ notificacion.apellido }}</small>
+                "
+                class="nav-item p-1"
+                [ngClass]="{ 'border-bottom': !last }"
+              >
+                <a
+                  class="text-black mensajes"
+                  [routerLink]="['/dashboard', 'messages']"
+                >
+                  <small class="d-block text-dark"
+                    >{{ notificacion.nombre }}
+                    {{ notificacion.apellido }}</small
+                  >
                   <small class="d-block text-muted">
                     Te ha enviado {{ notificacion.count }} Mensajes
                   </small>
@@ -240,29 +362,50 @@
             }
           </li>
           <li class="nav-item ocultarli mx-1">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/dashboard', 'my-account']" title="Mi Perfil"><i
-                class="fa-regular fa-address-card font22"></i>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+              title="Mi Perfil"
+              ><i class="fa-regular fa-address-card font22"></i>
             </a>
           </li>
 
           <li class="nav-item ocultarli mx-1">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/logout']"
-              title="Cerrar sesion"><i class="fa-solid fa-right-from-bracket font22"></i>
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+              title="Cerrar sesion"
+              ><i class="fa-solid fa-right-from-bracket font22"></i>
             </a>
           </li>
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page"
-              [routerLink]="['/dashboard', 'my-account']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'my-account']"
+            >
               <i class="fa-regular fa-address-card font22"></i>
-              Mi Perfil</a>
+              Mi Perfil</a
+            >
           </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/dashboard', 'messages']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/dashboard', 'messages']"
+            >
               @if(notiCount>0){
-              <span class="badge bg-warning position-absolute translate-middle p-1 font12">{{ notiCount
-                }}</span>
+              <span
+                class="badge bg-warning position-absolute translate-middle p-1 font12"
+                >{{ notiCount }}</span
+              >
               }
               <i class="fa-regular fa-bell font22"></i>
               Notificaciones
@@ -270,9 +413,15 @@
           </li>
 
           <li class="nav-item hide-link">
-            <a class="nav-link" routerLinkActive="active" aria-current="page" [routerLink]="['/logout']">
+            <a
+              class="nav-link"
+              routerLinkActive="active"
+              aria-current="page"
+              [routerLink]="['/logout']"
+            >
               <i class="fa-solid fa-right-from-bracket font22"></i>
-              Cerrar sesion</a>
+              Cerrar sesion</a
+            >
           </li>
         </ul>
       </div>
