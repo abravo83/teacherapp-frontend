@@ -33,7 +33,7 @@ Y que tienes tokens válidos para usar la api de maps y de geocode de google. [h
 1. **Clonar el repositorio**
 
 ```bash
-git clone <url-del-repositorio>
+git clone https://github.com/abravo83/teacherapp-frontend.git
 cd teacherapp-front
 ```
 
@@ -85,8 +85,7 @@ src/
 │   ├── components/        # Componentes reutilizables
 │   ├── pages/            # Páginas principales
 │   ├── services/         # Servicios
-│   ├── interfaces/       # Interfaces TypeScript
-│   └── db/              # Datos mock para desarrollo
+│   └──  interfaces/       # Interfaces TypeScript
 ├── assets/              # Recursos estáticos
 └── environments/        # Configuración de entornos
 ```
