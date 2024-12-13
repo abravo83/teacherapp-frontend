@@ -74,6 +74,9 @@
 
 .listado {
   height: 500px;
+  @media (max-width: 767px) {
+    height: 100px;
+  }
 }
 
 .avatar {
@@ -87,4 +90,12 @@
 
 .height50 {
   height: 50px;
+}
+
+.badge__element {
+  background-color: #cceabb;
+  color: #3f3f44;
+  padding: 2px 2px;
+  border-radius: 4px;
+  font-size: 12px;
 }
