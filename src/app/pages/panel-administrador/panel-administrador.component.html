@@ -1,6 +1,6 @@
 <div class="container my-4">
-  <h2 class="mb-4 ">Panel de Administración</h2>
-  
+  <h2 class="mb-4">Panel de Administración</h2>
+
   <!-- Secciones -->
   <ul class="nav nav-tabs">
     <li class="nav-item">
@@ -21,7 +21,7 @@
     </li>
   </ul>
 
-<!-- Respuesta API -->
+  <!-- Respuesta API -->
   @if (respuestaAPI) {
   <div
     class="alert alert-info mt-3 d-flex justify-content-between align-items-center"
@@ -36,11 +36,11 @@
   </div>
   } @if (seccionActual === 'profesores') {
 
-<!-- Sección profesores -->
+  <!-- Sección profesores -->
   <div class="mt-4">
     <h3>Profesores</h3>
-    <div class="d-flex gap-3 align-items-center mb-3">
-      <div class="filter-container">
+    <div class="d-flex gap-3 align-items-center mb-3 flex-wrap">
+      <div class="filter-container col-12 col-sm-12 col-md-3 col-lg-3">
         <label for="filtroValidacion" class="form-label">Validación:</label>
         <select
           id="filtroValidacion"
@@ -52,7 +52,7 @@
           <option value="noValidados">No Validados</option>
         </select>
       </div>
-      <div class="filter-container">
+      <div class="filter-container col-12 col-sm-12 col-md-3 col-lg-3">
         <label for="filtroActividad" class="form-label">Actividad:</label>
         <select
           id="filtroActividad"
@@ -64,7 +64,7 @@
           <option value="noActivos">No Activos</option>
         </select>
       </div>
-      <div class="filter-container">
+      <div class="filter-container col-12 col-sm-12 col-md-3 col-lg-3">
         <label for="buscarProfesor" class="form-label">Buscar por Email:</label>
         <input
           id="buscarProfesor"
@@ -76,30 +76,98 @@
       </div>
     </div>
 
-    <div class="table-responsive">
-    <table class="table table-bordered">
-      <thead class="table-light">
-        <tr>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Teléfono</th>
-          <th>Precio Hora</th>
-          <th>Localización</th>
-          <th>Foto</th>
-          <th>Materias</th>
-          <th>Activo</th>
-          <th>Validado</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (profesor of profesoresPaginados; track profesor.id) {
-        <tr>
-          <td>{{ profesor.nombre }} {{ profesor.apellidos }}</td>
-          <td>{{ profesor.email }}</td>
-          <td>{{ profesor.telefono }}</td>
-          <td>{{ profesor.precio_hora }}</td>
-          <td>{{ profesor.localizacion }}</td>
-          <td>
+    <div class="desktop-table-p">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Teléfono</th>
+            <th>Precio Hora</th>
+            <th>Localización</th>
+            <th>Foto</th>
+            <th>Materias</th>
+            <th>Activo</th>
+            <th>Validado</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (profesor of profesoresPaginados; track profesor.id) {
+          <tr>
+            <td>{{ profesor.nombre }} {{ profesor.apellidos }}</td>
+            <td>{{ profesor.email }}</td>
+            <td>{{ profesor.telefono }}</td>
+            <td>{{ profesor.precio_hora }}</td>
+            <td>{{ profesor.localizacion }}</td>
+            <td>
+              @if (profesor.foto) {
+              <a
+                href="javascript:void(0);"
+                (click)="abrirFoto(profesor.foto)"
+                class="foto-link"
+                >Ver Foto</a
+              >
+              } @else { No disponible }
+            </td>
+            <td>
+              {{
+                profesor.id !== undefined &&
+                materiasPorProfesor[profesor.id] &&
+                materiasPorProfesor[profesor.id].length > 0
+                  ? materiasPorProfesor[profesor.id].join(", ")
+                  : "No asignadas"
+              }}
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="profesor.activo"
+                  (change)="
+                    profesor.id !== undefined &&
+                      cambiarEstadoUsuario(profesor.id, !profesor.activo)
+                  "
+                />
+                <label class="form-check-label">{{
+                  profesor.activo ? "On" : "Off"
+                }}</label>
+              </div>
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="profesor.validado"
+                  (change)="
+                    profesor.id !== undefined &&
+                      cambiarValidacionProfesor(profesor.id, !profesor.validado)
+                  "
+                />
+                <label class="form-check-label">{{
+                  profesor.validado ? "On" : "Off"
+                }}</label>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="mobile-cards-p">
+      @for (profesor of profesoresPaginados; track profesor.id) {
+      <div class="card mb-3 shadow">
+        <div class="card-header">
+          <h5>{{ profesor.nombre }} {{ profesor.apellidos }}</h5>
+        </div>
+        <div class="card-body">
+          <div><strong>Email:</strong> {{ profesor.email }}</div>
+          <div><strong>Teléfono:</strong> {{ profesor.telefono }}</div>
+          <div><strong>Precio Hora:</strong> {{ profesor.precio_hora }}</div>
+          <div><strong>Localización:</strong> {{ profesor.localizacion }}</div>
+          <div>
+            <strong>Foto: </strong>
             @if (profesor.foto) {
             <a
               href="javascript:void(0);"
@@ -108,8 +176,9 @@
               >Ver Foto</a
             >
             } @else { No disponible }
-          </td>
-          <td>
+          </div>
+          <div>
+            <strong>Materias:</strong>
             {{
               profesor.id !== undefined &&
               materiasPorProfesor[profesor.id] &&
@@ -117,44 +186,47 @@
                 ? materiasPorProfesor[profesor.id].join(", ")
                 : "No asignadas"
             }}
-          </td>
-          <td>
-            <div class="form-check form-switch">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                [checked]="profesor.activo"
-                (change)="
-                  profesor.id !== undefined &&
-                    cambiarEstadoUsuario(profesor.id, !profesor.activo)
-                "
-              />
-              <label class="form-check-label">{{
-                profesor.activo ? "On" : "Off"
-              }}</label>
+          </div>
+          <div class="mt-3 d-flex flex-column">
+            <div class="d-flex">
+              <strong class="me-2">Activo:</strong>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="profesor.activo"
+                  (change)="
+                    profesor.id !== undefined &&
+                      cambiarEstadoUsuario(profesor.id, !profesor.activo)
+                  "
+                />
+                <label class="form-check-label">{{
+                  profesor.activo ? "On" : "Off"
+                }}</label>
+              </div>
             </div>
-          </td>
-          <td>
-            <div class="form-check form-switch">
-              <input
-                type="checkbox"
-                class="form-check-input"
-                [checked]="profesor.validado"
-                (change)="
-                  profesor.id !== undefined &&
-                    cambiarValidacionProfesor(profesor.id, !profesor.validado)
-                "
-              />
-              <label class="form-check-label">{{
-                profesor.validado ? "On" : "Off"
-              }}</label>
+            <div class="d-flex mt-2">
+              <strong class="me-2">Validado:</strong>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="profesor.validado"
+                  (change)="
+                    profesor.id !== undefined &&
+                      cambiarValidacionProfesor(profesor.id, !profesor.validado)
+                  "
+                />
+                <label class="form-check-label">{{
+                  profesor.validado ? "On" : "Off"
+                }}</label>
+              </div>
             </div>
-          </td>
-        </tr>
-        }
-      </tbody>
-    </table>
-  </div>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
 
     <div class="pagination-container">
       <button
@@ -179,11 +251,10 @@
 
   } @if (seccionActual === 'alumnos') {
   <div class="mt-4">
-
-  <!-- Sección alumnos -->
+    <!-- Sección alumnos -->
     <h3>Alumnos</h3>
-    <div class="d-flex gap-3 align-items-center mb-3">
-      <div class="filter-container">
+    <div class="d-flex gap-3 align-items-center mb-3 flex-wrap">
+      <div class="filter-container col-12 col-sm-12 col-md-4">
         <label for="filtroActividadAlumnos" class="form-label"
           >Actividad:</label
         >
@@ -197,7 +268,7 @@
           <option value="noActivos">No Activos</option>
         </select>
       </div>
-      <div class="filter-container">
+      <div class="filter-container col-12 col-sm-12 col-md-4">
         <label for="buscarAlumno" class="form-label">Buscar por Email:</label>
         <input
           id="buscarAlumno"
@@ -209,21 +280,63 @@
       </div>
     </div>
 
-    <table class="table table-bordered">
-      <thead class="table-light">
-        <tr>
-          <th>Nombre</th>
-          <th>Email</th>
-          <th>Foto</th>
-          <th>Activo</th>
-        </tr>
-      </thead>
-      <tbody>
-        @for (alumno of alumnosPaginados; track alumno.id) {
-        <tr>
-          <td>{{ alumno.nombre }} {{ alumno.apellidos }}</td>
-          <td>{{ alumno.email }}</td>
-          <td>
+    <div class="desktop-table">
+      <table class="table table-bordered">
+        <thead class="table-light">
+          <tr>
+            <th>Nombre</th>
+            <th>Email</th>
+            <th>Foto</th>
+            <th>Activo</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (alumno of alumnosPaginados; track alumno.id) {
+          <tr>
+            <td>{{ alumno.nombre }} {{ alumno.apellidos }}</td>
+            <td>{{ alumno.email }}</td>
+            <td>
+              @if (alumno.foto) {
+              <a
+                href="javascript:void(0);"
+                (click)="abrirFoto(alumno.foto)"
+                class="foto-link"
+                >Ver Foto</a
+              >
+              } @else { No disponible }
+            </td>
+            <td>
+              <div class="form-check form-switch">
+                <input
+                  type="checkbox"
+                  class="form-check-input"
+                  [checked]="alumno.activo"
+                  (change)="
+                    alumno.id !== undefined &&
+                      cambiarEstadoUsuario(alumno.id, !alumno.activo)
+                  "
+                />
+                <label class="form-check-label">{{
+                  alumno.activo ? "On" : "Off"
+                }}</label>
+              </div>
+            </td>
+          </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div class="mobile-cards">
+      @for (alumno of alumnosPaginados; track alumno.id) {
+      <div class="card mb-2 shadow">
+        <div class="card-header">
+          <h5>{{ alumno.nombre }} {{ alumno.apellidos }}</h5>
+        </div>
+        <div class="card-body">
+          <div><strong>Email: </strong> {{ alumno.email }}</div>
+          <div>
+            <strong>Foto: </strong>
             @if (alumno.foto) {
             <a
               href="javascript:void(0);"
@@ -232,8 +345,9 @@
               >Ver Foto</a
             >
             } @else { No disponible }
-          </td>
-          <td>
+          </div>
+          <div class="d-flex mt-2">
+            <strong class="me-2">Activo:</strong>
             <div class="form-check form-switch">
               <input
                 type="checkbox"
@@ -248,11 +362,11 @@
                 alumno.activo ? "On" : "Off"
               }}</label>
             </div>
-          </td>
-        </tr>
-        }
-      </tbody>
-    </table>
+          </div>
+        </div>
+      </div>
+      }
+    </div>
 
     <!-- Paginación -->
     <div class="pagination-container">
