@@ -1,19 +1,20 @@
 import { DatePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
   FormGroup,
   ReactiveFormsModule,
   FormsModule,
 } from '@angular/forms';
+import Swal from 'sweetalert2';
+
 import { Iusuario } from '../../../interfaces/iusuario';
-import { CommonModule } from '@angular/common';
+import { Iregistros } from '../../../interfaces/iregistros';
 import { environment } from '../../../../environments/environments';
 import { RegistrosService } from '../../../services/registros.service';
 import { UsuariosService } from '../../../services/usuarios.service';
 import { Router } from '@angular/router';
-import { Iregistros } from '../../../interfaces/iregistros';
-import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-my-students',
