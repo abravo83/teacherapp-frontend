@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environments';
 import { firstValueFrom } from 'rxjs';
+
+import { environment } from '../../environments/environments';
 import { Iusuario } from '../interfaces/iusuario';
 import { LoginService } from './login.service';
 
@@ -34,11 +35,9 @@ export class UsuariosService {
     return firstValueFrom(
       this.httpClient.get<Iusuario>(`${this.BASE_URL}/${idUsuario}`)
     );
-
-    // return this.arrUsuarios.find((user) => user.id === this.usuarioActualId);
   }
 
-  getUsuarioById(id:number): Promise<Iusuario> {
+  getUsuarioById(id: number): Promise<Iusuario> {
     return firstValueFrom(
       this.httpClient.get<Iusuario>(`${this.BASE_URL}/${id}`)
     );

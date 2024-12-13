@@ -1,10 +1,9 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { firstValueFrom } from 'rxjs';
 
-import { OPINIONES } from '../db/opiniones';
 import { environment } from '../../environments/environments';
 import { Iopinion } from '../interfaces/iopinion';
-import { firstValueFrom } from 'rxjs';
 import { Iusuario } from '../interfaces/iusuario';
 
 @Injectable({
@@ -15,7 +14,6 @@ export class OpinionesService {
   httpClient = inject(HttpClient);
 
   // Atributos
-  arrOpiniones: Iopinion[] = OPINIONES;
   baseUrl = `${environment.API_URL}/api/opiniones`;
 
   // Funciones del ciclo de vida

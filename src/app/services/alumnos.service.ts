@@ -1,10 +1,10 @@
 import { inject, Injectable } from '@angular/core';
-import { Iusuario } from '../interfaces/iusuario';
-import { UsuariosService } from './usuarios.service';
-import { USUARIOS } from '../db/usuarios';
-import { environment } from '../../environments/environments';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
+
+import { Iusuario } from '../interfaces/iusuario';
+import { UsuariosService } from './usuarios.service';
+import { environment } from '../../environments/environments';
 
 @Injectable({
   providedIn: 'root',
@@ -28,7 +28,7 @@ export class AlumnosService {
   getAlumnoById(id: number): Promise<Iusuario | undefined> {
     return firstValueFrom(
       this.httpClient.get<Iusuario>(`${this.BASE_URL}/${id}`)
-    );    
+    );
   }
 
   registroAlumno(alumnoDataForm: any): Promise<Iusuario> {
@@ -51,7 +51,6 @@ export class AlumnosService {
       )
     );
   }
-
 
   async listarAlumnos(): Promise<Iusuario[]> {
     return firstValueFrom(this.httpClient.get<Iusuario[]>(this.BASE_URL));

@@ -1,10 +1,10 @@
-import { inject, Injectable } from '@angular/core';
-import { Iusuario } from '../interfaces/iusuario';
-import { firstValueFrom } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
-import { USUARIOS } from '../db/usuarios';
+import { inject, Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
+import { jwtDecode, JwtPayload } from 'jwt-decode';
+
+import { Iusuario } from '../interfaces/iusuario';
 import { environment } from '../../environments/environments';
-import { jwtDecode, JwtPayload } from "jwt-decode";
 
 type Body = { email: string; password: string };
 type Response = { message: string; token: string };
@@ -19,10 +19,8 @@ interface CustomPayload extends JwtPayload {
 export class LoginService {
   private baseUrl: string = `${environment.API_URL}/api`;
   private http = inject(HttpClient);
-  arrUsers: Iusuario[] = USUARIOS;
 
   login(user: Body): Promise<Response> {
-  
     console.log(`${this.baseUrl}/login`);
     console.log(user);
 
