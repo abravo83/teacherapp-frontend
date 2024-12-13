@@ -65,10 +65,12 @@ export const routes: Routes = [
       { path: '', redirectTo: 'my-account', pathMatch: 'full' },
       {
         path: 'editar-profesor/:id',
+        canActivate: [checkIdGuard],
         component: TeachersFormComponent,
       },
       {
         path: 'editar-alumno/:id',
+        canActivate: [checkIdGuard],
         component: StudentsFormComponent,
       },
     ],
