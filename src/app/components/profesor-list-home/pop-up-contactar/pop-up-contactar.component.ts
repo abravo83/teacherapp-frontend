@@ -1,10 +1,4 @@
-import {
-  Component,
-  Input,
-  EventEmitter,
-  Output,
-  inject
-} from '@angular/core';
+import { Component, Input, EventEmitter, Output, inject } from '@angular/core';
 import { Iprofesor } from '../../../interfaces/iprofesor';
 import { Iopinion } from '../../../interfaces/iopinion';
 import { Iusuario } from '../../../interfaces/iusuario';
@@ -50,10 +44,10 @@ export class PopUpContactarComponent {
   login: boolean = false;
   id_alumno: number = 0;
   id_profesor: number = 0;
-  success_message: string = "";
+  success_message: string = '';
   show_message: boolean = false;
   URLAPI: string = environment.API_URL;
-  
+
   constructor(private router: Router) {}
 
   cerrar() {
@@ -61,7 +55,6 @@ export class PopUpContactarComponent {
   }
 
   redirect() {
-
     //para comprobar que estamos logueados
     if (!this.login) {
       this.router.navigate(['/login']);
@@ -88,7 +81,6 @@ export class PopUpContactarComponent {
             text: '¡Ya estás inscrito en tus clases con este profesor!',
             showConfirmButton: false,
             timer: 1500,
-
           });
           this.cerrarPopUp.emit();
         },
@@ -124,8 +116,6 @@ export class PopUpContactarComponent {
         this.opinionesProfesor = this.myProfesor.opiniones || [];
         // console.log('Opiniones:', this.opinionesProfesor); // Verifica las opiniones en la consola
       }
-
-      console.log(this.myProfesor.id); // Verifica que se obtiene el profesor correcto
     } catch (error) {
       console.error('Error al obtener los datos:', error);
     }
