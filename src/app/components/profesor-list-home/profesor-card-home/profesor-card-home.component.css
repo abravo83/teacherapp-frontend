@@ -152,7 +152,7 @@ section {
   .button-contact {
     background-color: var(--color-button1);
     color: var(--color-text-secondary);
-    padding: 0;
+    padding: 5px 10px;
     margin-top: 1em;
     width: 100%;
     border: none;
@@ -172,6 +172,10 @@ section {
   overflow: hidden;
 }
 
-.info-prof-container{
+.info-prof-container {
   max-width: 60%;
+}
+
+.list_card__header {
+  background-color: #bcdcaa;
 }
