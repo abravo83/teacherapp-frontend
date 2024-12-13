@@ -48,6 +48,7 @@ img {
   border: 1px solid #ccc;
   border-radius: 10px;
   padding: 10px;
+  max-width: calc(100% - 1px);
 }
 
 /* Responsive styles for small devices (smartphones) */
@@ -100,7 +101,8 @@ img {
   }
 
   .profesor-list-home {
-    max-height: 600px; /* Limit height for large lists */
+    /* max-height: 600px; Limit height for large lists */
+    overflow-y: hidden;
   }
 
   .img-prof {
