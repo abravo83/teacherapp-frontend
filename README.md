@@ -60,7 +60,7 @@ El contenido del archivo enviroments.ts debe tener este formato:
 ```bash
 export const environment = {
   token: 'tu_token_googlemaps',
-  mytoken: 'tu_token_api_geocode',
+  mytoken: 'tu_token_api_mapbox',
   API_URL: 'http://localhost:3000',
 };
 ```
